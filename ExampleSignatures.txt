@@ -1,0 +1,7 @@
+#Software signature example
+
+gui : input -> '(Team1 Team2 Place Time[default = now])
+
+crawler : '(Team1 Team2 Place Time) -> data
+
+algorithm : data -> probabilities
