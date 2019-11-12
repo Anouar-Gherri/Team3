@@ -1,4 +1,4 @@
-# Creates the Algorithm
+# Creates the Functions for the Relative Frequency Algorithm
 
 # --- Helper functions ---
 # Creates a dictionary containing the normalized results
@@ -18,7 +18,8 @@ def calculate_win(host, guest, team1, team2, goals_t1, goals_t2):
     else:
         return host == team1
 
-
+    
+# --- Algorithm Functions ---
 # Simply copies the csv crawler data into library-name.csv
 def csv_lib_creator(lib_name, crawler_data_file):
     with open(lib_name, "w+") as lib_file:
