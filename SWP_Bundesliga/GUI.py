@@ -6,7 +6,7 @@ class startGUI:
     def __init__(self):
         # window items
         self.root = Tk()
-        self.root.geometry('300x400')
+        self.root.geometry('500x400')
         self.root.title('Bundesliga Vorhersage')
         
         # crawler items
@@ -32,13 +32,13 @@ class startGUI:
         
         # TODO label, structure
         
-        self.teamList = ['A', 'B', 'C', 'D']
+        self.teamList = ['A', 'B', 'C', 'D','E']
         
         self.labelHomeTeam = Label(self.root, text='Home Team:')
         self.labelHomeTeam.pack()
         
         self.selectHome = ttk.Combobox(self.root, values=self.teamList)
-        self.selectHome.bind('<<ComboboxSelected>>', self.updateSelection)
+        self.selectHome.bind('welcome', self.updateSelection)
         self.selectHome.pack()
         
         self.labelAwayTeam = Label(self.root, text='Away Team:')
@@ -73,8 +73,8 @@ class startGUI:
         homePick = self.selectHome.get()
         awayPick = self.selectAway.get()
         statusText = 'Prediction for '+ homePick +' against '+ awayPick + " is..."
-        if (homePick is not '' and homePick in self.teamList 
-            and awayPick is not '' and awayPick in self.teamList):
+        if (homePick != '' and homePick in self.teamList
+            and awayPick != '' and awayPick in self.teamList):
             self.statusPrediction['text'] = statusText
     
     # make it impossible to select the same team as home and away team 
