@@ -1,6 +1,6 @@
-import pytest as pt
+import pytest
 import AlgorithmClass as ac
-import Algorithm as algo
+import algorithm as algo
 
 
 @pytest.fixture
@@ -42,16 +42,21 @@ def test_AlgorithmClass_request():
 
 
 
-RFAlgo.train("Library.csv", 'Mappe1.csv')
+#other tests
+def running_test():
+    RFAlgo = ac.Algorithm("RelativeFrequencyAlgorithm", algo.csv_lib_creator,
+                          algo.csv_reader, '.csv', '.csv')
 
-def print_results(host, guest):
-    print('Statistic for ' + host + ' against ' + guest +':')
-    results = RFAlgo.request(dict(host=host, guest= guest))
-    for (x,y) in results.items():
-        print(x + ": " + str(y))
+    RFAlgo.train("Library.csv", 'Mappe1.csv')
 
-print_results('Munich', 'Duesseldorf')
-print_results('Frankfurt', 'Duesseldorf')
-print_results('Bavaria', 'Stuttgart')
+    def print_results(host, guest):
+        print('Statistic for ' + host + ' against ' + guest +':')
+        results = RFAlgo.request(dict(host=host, guest= guest))
+        for (x,y) in results.items():
+            print(x + ": " + str(y))
 
+    print_results('Munich', 'Duesseldorf')
+    print_results('Frankfurt', 'Duesseldorf')
+    print_results('Bavaria', 'Stuttgart')
 
+running_test()

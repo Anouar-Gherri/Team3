@@ -3,6 +3,7 @@
 # - Ich bin kein Python Experte- kann man das so machen?
 # - Passen die Error-Typen?
 
+
 # The Algorithm class
 # An Algorithm has the following properties:
 # - name (string):
@@ -28,9 +29,8 @@
 #           You cannot train unless your crawler-data-file and libname are/have the according
 #           filetype
 class Algorithm:
-    def __init__(self, name: str, training_function: function, request_function: function,
-                 data_filetype: str, library_filetype: str, library_name: str ='',
-                 trained: bool = False):
+    def __init__(self, name: str, training_function, request_function, data_filetype: str,
+                 library_filetype: str, library_name: str ='', trained: bool = False):
         self.name = name
         self.training_function = training_function
         self.library_name = library_name
@@ -81,7 +81,7 @@ class Algorithm:
     # Requests a match
     # Output type: {'host': '---', 'win': --%, 'lose': --%, 'draw': --%}
     def request(self, match_dict):
-        if not self.trained_lib:
+        if not self.trained:
             raise NameError('The library "' + self.library_name
                             + '" has to be trained first')
 

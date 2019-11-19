@@ -5,7 +5,7 @@
 def result_dict(result_list, host):
     dict = {'host': host}
     result_list_normalized = [r / sum(result_list) for r in result_list]
-    dict.append({case: res for case, res in zip(["win", "lose", "draw"], result_list_normalized)})
+    dict.update({case: res for case, res in zip(["win", "lose", "draw"], result_list_normalized)})
     return dict
 
 
@@ -70,14 +70,14 @@ def csv_reader(match_dict, library, column_separator=";"):
     # --- Calculating Probabilities ---
     # Case matches occured
     if sum(results) > 0:
-        return result_dict(results)
+        return result_dict(host, results)
     # else if at least one team played a game
     elif sum(results_guest + results_host) > 0:
         # Do some rule of thumb math
         pseudo_results = [results_host[i] + results_guest[j]
                           for i,j in zip([0, 1, 2], [1, 0, 2])]
-        return result_dict(pseudo_results)
+        return result_dict(host, pseudo_results)
         # else return 100% draw
     else:
         pseudo_results = [0, 0, 1]
-        return result_dict(pseudo_results)
+        return result_dict(host, pseudo_results)
