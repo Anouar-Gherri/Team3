@@ -4,30 +4,38 @@
 # - Passen die Error-Typen?
 
 # The Algorithm class
+# An Algorithm has the following properties:
+# - name (string):
+#           a dummy name, e.g. 'RelativeFrequenzyAlgorithm"
+# - training_function (library-file-name crawler-file -> library-file):
+#           a function wich takes the Crawler data and a library-name and trains a
+#           'Libraryfile' with given name. The calculations for the probabilities will later
+#           base on this file
+# - library_name (string):
+#           the filename of the library
+# - trained (boolean):
+#           tells you whether the algorithm has trained or not
+#           (i.e. whether the library exists)
+# - request_function (match-dict library-file -> probability-dict):
+#           will calculate the probability based on the library-file and the match specified
+#           in the match-dict. The calculated probabilites will be returned as a dictionary
+#           with chances for winning, loosing or drawing, refering to the host.
+#           e.g. {"host": "munich", "guest": 'dusseldorf', "Place": "munich",
+#                 "date": "2009-08-07T20:30:00"}
+#                -> {'host': 'Munich', 'win': 0.4, 'lose': 0.4, 'draw': 0.2}
+# - file_type(dictionary):
+#           A small dictionary containing the file-types of the crawler-data and the library.
+#           You cannot train unless your crawler-data-file and libname are/have the according
+#           filetype
 class Algorithm:
     def __init__(self, name: str, training_function: function, request_function: function,
                  data_filetype: str, library_filetype: str, library_name: str ='',
-                 trained_lib: bool = False):
-        # A dummy name, e.g. 'RelativeFrequenzyAlgorithm"
+                 trained: bool = False):
         self.name = name
-        # tf : (library-file-name crawler-file -> library_file)
-        # Eats a library name and a crawler-data-file and creates a
-        # library file with library-file-name
         self.training_function = training_function
-        # The filename for the library which somehow stores the probablities
-        # e.g. "Library.csv"
         self.library_name = library_name
-        # Tells you whether the lib is already trained (created) or not
-        self.trained_lib = trained_lib
-        # rf : (match-dict library -> probability-dict)
-        # Takes a dicionary with match data and returns outcome probabilities
-        # e.g. {"host": "munich", "guest": 'dusseldorf', "Place": "munich",
-        #      "date": "2009-08-07T20:30:00"}
-        #      -> {"win": 0.4, "lose": 0.4, "draw": 0.2} (refering to host)
+        self.trained = trained
         self.request_function = request_function
-        # A small dictionary stating the file-type of the crawler data and
-        # library (e.g. {"crawler": ".csv", "library": ".csv"}
-        # The trainings and request functions need to be based on those types
         self.file_types = dict(crawler= data_filetype, library=library_filetype)
 
     # --- Set Properties ---
@@ -51,7 +59,7 @@ class Algorithm:
 
     # --- Common Funcitons ---
     # Trains the Library
-    # It will also set obj.library_name to lib_name and obj.trained_lib = true
+    # It will also set obj.library_name to lib_name and obj.trained = true
     def train(self, lib_name, crawler_data_file_name):
         if not crawler_data_file_name.endswith(self.file_types["crawler"]):
             raise ValueError(
@@ -68,10 +76,10 @@ class Algorithm:
         data.close()
 
         self.library_name = lib_name
-        self.trained_lib = True
+        self.trained = True
 
     # Requests a match
-    # Output type: {"win": --%, "lose": --%, "draw": --%} (refering to host)
+    # Output type: {'host': '---', 'win': --%, 'lose': --%, 'draw': --%}
     def request(self, match_dict):
         if not self.trained_lib:
             raise NameError('The library "' + self.library_name
