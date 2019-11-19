@@ -33,18 +33,19 @@ class startGUI:
         # TODO label, structure
         
         self.teamList = ['A', 'B', 'C', 'D','E']
-        
+        le = max(len(x) for x in self.teamList)
         self.labelHomeTeam = Label(self.root, text='Home Team:')
         self.labelHomeTeam.pack()
         
-        self.selectHome = ttk.Combobox(self.root, values=self.teamList)
-        self.selectHome.bind('welcome', self.updateSelection)
+        self.selectHome = ttk.Combobox(self.root, values=self.teamList,width = le+1)
+        self.selectHome.bind('<<ComboboxSelected>>', self.updateSelection)
         self.selectHome.pack()
         
         self.labelAwayTeam = Label(self.root, text='Away Team:')
         self.labelAwayTeam.pack()
         
-        self.selectAway = ttk.Combobox(self.root, values=self.teamList)
+        self.selectAway = ttk.Combobox(self.root, values=self.teamList,width = le+1)
+
         self.selectAway.bind('<<ComboboxSelected>>', self.updateSelection)
         self.selectAway.pack()
         
@@ -74,7 +75,7 @@ class startGUI:
         awayPick = self.selectAway.get()
         statusText = 'Prediction for '+ homePick +' against '+ awayPick + " is..."
         if (homePick != '' and homePick in self.teamList
-            and awayPick != '' and awayPick in self.teamList):
+                and awayPick != '' and awayPick in self.teamList):
             self.statusPrediction['text'] = statusText
     
     # make it impossible to select the same team as home and away team 
