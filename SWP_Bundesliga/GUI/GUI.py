@@ -5,8 +5,9 @@ from _datetime import datetime
 import csv
 
 from Crawler import crawler_class
+from builtins import int
 
-class startGUI:
+class GUI:
     def __init__(self):
         """Builds the main window of the GUI."""
         # window properties
@@ -58,8 +59,7 @@ class startGUI:
         self.statusPrediction.grid(row=5)
         self.frameNextMatchday.grid(row=6)
         
-        self.root.mainloop()  # Start the event loop
-        
+        #self.root.mainloop()  # Start the event loop
 
     def initCrawlerObjects(self):
         """Builds the GUI objects pertaining to the crawler."""
@@ -132,32 +132,86 @@ class startGUI:
         
     def initListTeams(self):
         """Sets team selection options based on crawled data."""
-        teams = []
-        with open('all_teams_' + str(self.currentCrawl.year) + '.csv') as csvfile:
-            reader = csv.DictReader(csvfile)
-            for team in reader:
-                teams.append(team['team_name'])
-        self.selectHome.config(values=teams, 
-                               width=self.genComboboxWidth(teams))
-        self.selectAway.config(values=teams, 
-                               width=self.genComboboxWidth(teams))
+        self.listTeamSelection = []
+        
+        for year in range(self.crawledFromSeason, self.crawledToSeason+1):
+            with open('all_teams_' + str(year) + '.csv') as csvfile:
+                reader = csv.DictReader(csvfile)
+                for team in reader:
+                    if team['team_name'] not in self.listTeamSelection:
+                        self.listTeamSelection.append(team['team_name'])
+        self.listTeamSelection.sort()
+        self.selectHome.config(values=self.listTeamSelection, 
+                               width=self.genComboboxWidth(self.listTeamSelection))
+        self.selectAway.config(values=self.listTeamSelection, 
+                               width=self.genComboboxWidth(self.listTeamSelection))
         
     def startCrawler(self):
-        year = self.selectCrawlToSeason.get()
-        # if no selection made default to current year
-        if year == '':
-            year = datetime.today().year
+        """Starts the crawler after checking input values and inserting default values."""
+        thisSeason = datetime.today().year
+        
+        self.crawledFromSeason = self.selectCrawlFromSeason.get()
+        fromMatchday = self.selectCrawlFromMatchday.get()
+        self.crawledToSeason = self.selectCrawlToSeason.get()
+        toMatchday = self.selectCrawlToMatchday.get()
+        # if no selection made default to current season
+        if self.crawledToSeason == '':
+            self.crawledToSeason = thisSeason
         elif self.selectCrawlToSeason.current() == -1:
-            print('Invalid input.')
+            self.returnInvalid(self.statusCrawled)
             return
         else:
-            year = int(year)
+            self.crawledToSeason = int(self.crawledToSeason)
+        # if no selection made default to selected crawledToSeason
+        if self.crawledFromSeason == '':
+            self.crawledFromSeason = self.crawledToSeason
+        elif self.selectCrawlFromSeason.current() == -1:
+            self.returnInvalid(self.statusCrawled)
+            return
+        else:
+            self.crawledFromSeason = int(self.crawledFromSeason)
+        # if no selection made default to first matchday
+        if fromMatchday == '':
+            fromMatchday = 1
+        elif self.selectCrawlFromMatchday.current() == -1:
+            self.returnInvalid(self.statusCrawled)
+            return
+        else:
+            fromMatchday = int(fromMatchday)
+        # if no selection made default to last matchday
+        if toMatchday == '':
+            toMatchday = 34
+        elif self.selectCrawlToMatchday.current() == -1:
+            self.returnInvalid(self.statusCrawled)
+            return
+        else:
+            toMatchday = int(toMatchday)
+            
+        if (self.crawledFromSeason > self.crawledToSeason
+            or (self.crawledFromSeason == self.crawledToSeason
+                and fromMatchday > toMatchday)):
+            self.returnInvalid(self.statusCrawled)
+            return
         
-        self.currentCrawl = crawler_class.Crawler("https://www.openligadb.de/api", year)
-        self.currentCrawl.get_match_data()
-        self.currentCrawl.get_all_teams()
+        self.currentCrawl = crawler_class.Crawler("https://www.openligadb.de/api")
+        self.currentCrawl.get_match_data_interval(self.crawledFromSeason, 
+                                                  fromMatchday, 
+                                                  self.crawledToSeason, 
+                                                  toMatchday)
         
-        self.statusCrawled['text'] = 'Crawling of match data from year ' + str(year-1) + ' done.'
+        for i in range(self.crawledFromSeason, self.crawledToSeason+1):
+            self.currentCrawl.get_all_teams(i)
+        
+        if self.crawledFromSeason == self.crawledToSeason:
+            crawledInterval = str(self.crawledFromSeason)
+        else:
+            crawledInterval = "{}{}{}".format(str(self.crawledFromSeason),
+                                              " to ",
+                                              str(self.crawledToSeason))
+        
+        self.statusCrawled['text'] = "{}{}{}".format("Crawling of match data from ",
+                                                     crawledInterval,
+                                                     " done.")
         self.buttonTraining['state'] = 'normal'
         
     def startTraining(self):
@@ -166,11 +220,14 @@ class startGUI:
         self.initListTeams()
         
     def startPrediction(self):
-        homePick = self.selectHome.get()
-        awayPick = self.selectAway.get()
-        statusText = 'Prediction for '+ homePick +' against '+ awayPick + " is..."
-        if (homePick != '' and homePick in self.listTeams
-                and awayPick != '' and awayPick in self.listTeams):
+        homePick = self.selectHome.current()
+        awayPick = self.selectAway.current()
+        statusText = "{}{}{}{}{}".format('Prediction for ',
+                                         self.listTeamSelection[homePick],
+                                         ' against ',
+                                         self.listTeamSelection[awayPick],
+                                         ' is...')
+        if (homePick != -1 and awayPick != -1):
             self.statusPrediction['text'] = statusText
     
     def updateSelection(self, select):
@@ -197,10 +254,18 @@ class startGUI:
             allSeasons.append(i)
         return allSeasons
     
-    # cosmetic methods
+    # visuals
+    
+    def returnInvalid(self, status):
+        """Displays a text to let the user know that an invalid input has been made."""
+        status['text'] = 'Invalid input.'
     
     def genComboboxWidth(self, list):
         """Calculates an appropriate size for comboboxes depending on their values."""
         return max(len(str(x)) for x in list)+1
         
-startGUI()
+def initiateGUI():
+    GUI_object = GUI()
+    GUI_object.root.mainloop()
+
+#initiateGUI()
