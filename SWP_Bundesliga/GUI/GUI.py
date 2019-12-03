@@ -243,17 +243,31 @@ class GUI:
         else:
             self.selectHomeCurrent = self.selectHome.get()
             self.selectAwayCurrent = self.selectAway.get()
-            
+
+    def get_Last_finished_Round(self):
+        current_year=datetime.today().year
+
+        c=crawler_class.Crawler("https://www.openligadb.de/api")
+        data_for_next_round=c.get_match_data(current_year)
+
+        with open(data_for_next_round, newline='') as csvfile:
+            spamreader=csv.reader(csvfile, delimiter=' '
+                                                     '', quotechar='|')
+
+            for row in spamreader:
+                print(', '.join(row))
+
     def getSeasons(self):
         """Returns a list with all the Bundesliga seasons from 2002/2003 to now."""
         current = datetime.today().year
         firstSeason = 2003
         allSeasons = []
         
-        for i in range(firstSeason,current+1):
+        for i in range(firstSeason, current+1):
             allSeasons.append(i)
+
         return allSeasons
-    
+
     # visuals
     
     def returnInvalid(self, status):
