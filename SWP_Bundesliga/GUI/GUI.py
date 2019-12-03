@@ -7,6 +7,7 @@ import csv
 from Crawler import crawler_class
 from builtins import int
 
+
 class GUI:
     def __init__(self):
         """Builds the main window of the GUI."""
@@ -38,7 +39,7 @@ class GUI:
         
         # team selection objects
         self.initTeamSelectionObjects()
-        
+
         # prediction objects
         self.buttonPrediction = Button(self.mainGrid,
                                        text='Start Prediction',
@@ -60,7 +61,7 @@ class GUI:
         self.frameNextMatchday.grid(row=6)
         
         #self.root.mainloop()  # Start the event loop
-
+        
     def initCrawlerObjects(self):
         """Builds the GUI objects pertaining to the crawler."""
         self.listSeasons = self.getSeasons()
@@ -149,7 +150,6 @@ class GUI:
     def startCrawler(self):
         """Starts the crawler after checking input values and inserting default values."""
         thisSeason = datetime.today().year
-        
         self.crawledFromSeason = self.selectCrawlFromSeason.get()
         fromMatchday = self.selectCrawlFromMatchday.get()
         self.crawledToSeason = self.selectCrawlToSeason.get()
@@ -244,18 +244,12 @@ class GUI:
             self.selectHomeCurrent = self.selectHome.get()
             self.selectAwayCurrent = self.selectAway.get()
 
-    def get_Last_finished_Round(self):
+    def make_current_season_list(self):
         current_year=datetime.today().year
 
         c=crawler_class.Crawler("https://www.openligadb.de/api")
-        data_for_next_round=c.get_match_data(current_year)
-
-        with open(data_for_next_round, newline='') as csvfile:
-            spamreader=csv.reader(csvfile, delimiter=' '
-                                                     '', quotechar='|')
-
-            for row in spamreader:
-                print(', '.join(row))
+        data_for_next_round=c.get_match_data(int(current_year))
+        return data_for_next_round
 
     def getSeasons(self):
         """Returns a list with all the Bundesliga seasons from 2002/2003 to now."""
@@ -277,9 +271,10 @@ class GUI:
     def genComboboxWidth(self, list):
         """Calculates an appropriate size for comboboxes depending on their values."""
         return max(len(str(x)) for x in list)+1
-        
+
+
 def initiateGUI():
     GUI_object = GUI()
     GUI_object.root.mainloop()
 
-#initiateGUI()
+initiateGUI()
