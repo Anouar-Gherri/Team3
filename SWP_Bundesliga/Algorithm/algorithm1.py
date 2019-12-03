@@ -1,17 +1,14 @@
 # Creates the Functions for the Relative Frequency Algorithm
+import csv
+
 
 # --- Helper functions ---
 # Creates a dictionary containing the normalized results
-
-
-def result_dict(host, result_list):
+def normalize(result_list):
     if sum(result_list) < 1:
         raise ValueError('The result_list contains no results')
-
-    res_dict = {'host': host}
     result_list_normalized = [r / sum(result_list) for r in result_list]
-    res_dict.update({case: res for case, res in zip(["win", "lose", "draw"], result_list_normalized)})
-    return res_dict
+    return result_list_normalized
 
 
 # Returns who won the game ( 0 = host, 1 = guest, 2 = none )
@@ -29,11 +26,35 @@ def calculate_win(host, guest, team1, team2, goals_t1, goals_t2):
 
 # --- Algorithm Functions ---
 # Simply copies the csv crawler data into library-name.csv
-def csv_lib_creator(lib_name, crawler_data_file):
-    with open(lib_name, "w+") as lib_file:
-        for line in crawler_data_file:
-            lib_file.write(line)
+# Also creates a set of the unique teams
+def csv_lib_creator(lib_name, crawler_data_file, delimiter_=','):
+    """
+
+    :param lib_name: The filename of the Library
+    :param crawler_data_file:
+    :param delimiter_:
+    :return:
+    """
+    # read the data file into a list
+    matches = list(csv.reader(crawler_data_file, delimiter=delimiter_))
+
+    # skips the header
+    if 'date' in matches[0]:
+        del matches[0]
+
+    # get the set of unique teams
+    teams_set = set()
+    for row in matches:
+        teams_set.add(row[1])
+        teams_set.add(row[2])
+
+    # and write the library
+    with open(lib_name, "w+", newline='') as lib_file:
+        writer = csv.writer(lib_file)
+        writer.writerows(matches)
     lib_file.close()
+
+    return teams_set
 
 
 # Request a prediction from the library
@@ -78,14 +99,14 @@ def csv_reader(library, match_dict, column_separator=","):
     # --- Calculating Probabilities ---
     # Case matches occurred
     if sum(results) > 0:
-        return result_dict(host, results)
+        return normalize(results)
     # else if at least one team played a game
     elif sum(results_guest + results_host) > 0:
         # Do some rule of thumb math
         pseudo_results = [results_host[i] + results_guest[j]
                           for i, j in zip([0, 1, 2], [1, 0, 2])]
-        return result_dict(host, pseudo_results)
+        return normalize(pseudo_results)
         # else return 100% draw
     else:
         pseudo_results = [0, 0, 1]
-        return result_dict(host, pseudo_results)
+        return normalize(pseudo_results)

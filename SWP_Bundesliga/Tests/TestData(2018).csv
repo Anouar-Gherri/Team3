@@ -1,37 +1,37 @@
 date, team1, team2, goals_team1, goals_team2
 2018-08-24T20:30:00,FC Bayern,TSG 1899 Hoffenheim,3,1
-2018-08-25T15:30:00,Hertha BSC,1. FC Nürnberg,1,0
+2018-08-25T15:30:00,Hertha BSC,1. FC Nï¿½rnberg,1,0
 2018-08-25T15:30:00,Werder Bremen,Hannover 96,1,1
 2018-08-25T15:30:00,SC Freiburg,Eintracht Frankfurt,0,2
 2018-08-25T15:30:00,VfL Wolfsburg,FC Schalke 04,2,1
-2018-08-25T15:30:00,Fortuna Düsseldorf,FC Augsburg,1,2
-2018-08-25T18:30:00,Borussia Mönchengladbach,Bayer Leverkusen,2,0
+2018-08-25T15:30:00,Fortuna Dï¿½sseldorf,FC Augsburg,1,2
+2018-08-25T18:30:00,Borussia Mï¿½nchengladbach,Bayer Leverkusen,2,0
 2018-08-26T15:30:00,1. FSV Mainz 05,VfB Stuttgart,1,0
 2018-08-26T18:00:00,Borussia Dortmund,RB Leipzig,4,1
 2018-08-31T20:30:00,Hannover 96,Borussia Dortmund,0,0
 2018-09-01T15:30:00,TSG 1899 Hoffenheim,SC Freiburg,3,1
 2018-09-01T15:30:00,Bayer Leverkusen,VfL Wolfsburg,1,3
 2018-09-01T15:30:00,Eintracht Frankfurt,Werder Bremen,1,2
-2018-09-01T15:30:00,FC Augsburg,Borussia Mönchengladbach,1,1
-2018-09-01T15:30:00,1. FC Nürnberg,1. FSV Mainz 05,1,1
+2018-09-01T15:30:00,FC Augsburg,Borussia Mï¿½nchengladbach,1,1
+2018-09-01T15:30:00,1. FC Nï¿½rnberg,1. FSV Mainz 05,1,1
 2018-09-01T18:30:00,VfB Stuttgart,FC Bayern,0,3
-2018-09-02T15:30:00,RB Leipzig,Fortuna Düsseldorf,1,1
+2018-09-02T15:30:00,RB Leipzig,Fortuna Dï¿½sseldorf,1,1
 2018-09-02T18:00:00,FC Schalke 04,Hertha BSC,0,2
 2018-09-14T20:30:00,Borussia Dortmund,Eintracht Frankfurt,3,1
 2018-09-15T15:30:00,FC Bayern,Bayer Leverkusen,3,1
 2018-09-15T15:30:00,RB Leipzig,Hannover 96,3,2
 2018-09-15T15:30:00,1. FSV Mainz 05,FC Augsburg,2,1
 2018-09-15T15:30:00,VfL Wolfsburg,Hertha BSC,2,2
-2018-09-15T15:30:00,Fortuna Düsseldorf,TSG 1899 Hoffenheim,2,1
-2018-09-15T18:30:00,Borussia Mönchengladbach,FC Schalke 04,2,1
-2018-09-16T15:30:00,Werder Bremen,1. FC Nürnberg,1,1
+2018-09-15T15:30:00,Fortuna Dï¿½sseldorf,TSG 1899 Hoffenheim,2,1
+2018-09-15T18:30:00,Borussia Mï¿½nchengladbach,FC Schalke 04,2,1
+2018-09-16T15:30:00,Werder Bremen,1. FC Nï¿½rnberg,1,1
 2018-09-16T18:00:00,SC Freiburg,VfB Stuttgart,3,3
-2018-09-21T20:30:00,VfB Stuttgart,Fortuna Düsseldorf,0,0
+2018-09-21T20:30:00,VfB Stuttgart,Fortuna Dï¿½sseldorf,0,0
 2018-09-22T15:30:00,TSG 1899 Hoffenheim,Borussia Dortmund,1,1
-2018-09-22T15:30:00,Hertha BSC,Borussia Mönchengladbach,4,2
+2018-09-22T15:30:00,Hertha BSC,Borussia Mï¿½nchengladbach,4,2
 2018-09-22T15:30:00,FC Augsburg,Werder Bremen,2,3
 2018-09-22T15:30:00,VfL Wolfsburg,SC Freiburg,1,3
-2018-09-22T15:30:00,1. FC Nürnberg,Hannover 96,2,0
+2018-09-22T15:30:00,1. FC Nï¿½rnberg,Hannover 96,2,0
 2018-09-22T18:30:00,FC Schalke 04,FC Bayern,0,2
 2018-09-23T15:30:00,Bayer Leverkusen,1. FSV Mainz 05,1,0
 2018-09-23T18:00:00,Eintracht Frankfurt,RB Leipzig,1,1
@@ -39,17 +39,17 @@ date, team1, team2, goals_team1, goals_team2
 2018-09-25T20:30:00,FC Bayern,FC Augsburg,1,1
 2018-09-25T20:30:00,Hannover 96,TSG 1899 Hoffenheim,1,3
 2018-09-25T20:30:00,SC Freiburg,FC Schalke 04,1,0
-2018-09-26T18:30:00,Fortuna Düsseldorf,Bayer Leverkusen,1,2
-2018-09-26T20:30:00,Borussia Dortmund,1. FC Nürnberg,7,0
+2018-09-26T18:30:00,Fortuna Dï¿½sseldorf,Bayer Leverkusen,1,2
+2018-09-26T20:30:00,Borussia Dortmund,1. FC Nï¿½rnberg,7,0
 2018-09-26T20:30:00,RB Leipzig,VfB Stuttgart,2,0
-2018-09-26T20:30:00,Borussia Mönchengladbach,Eintracht Frankfurt,3,1
+2018-09-26T20:30:00,Borussia Mï¿½nchengladbach,Eintracht Frankfurt,3,1
 2018-09-26T20:30:00,1. FSV Mainz 05,VfL Wolfsburg,0,0
 2018-09-28T20:30:00,Hertha BSC,FC Bayern,2,0
 2018-09-29T15:30:00,FC Schalke 04,1. FSV Mainz 05,1,0
 2018-09-29T15:30:00,TSG 1899 Hoffenheim,RB Leipzig,1,2
 2018-09-29T15:30:00,VfB Stuttgart,Werder Bremen,2,1
-2018-09-29T15:30:00,VfL Wolfsburg,Borussia Mönchengladbach,2,2
-2018-09-29T15:30:00,1. FC Nürnberg,Fortuna Düsseldorf,3,0
+2018-09-29T15:30:00,VfL Wolfsburg,Borussia Mï¿½nchengladbach,2,2
+2018-09-29T15:30:00,1. FC Nï¿½rnberg,Fortuna Dï¿½sseldorf,3,0
 2018-09-29T18:30:00,Bayer Leverkusen,Borussia Dortmund,2,4
 2018-09-30T15:30:00,Eintracht Frankfurt,Hannover 96,4,1
 2018-09-30T18:00:00,FC Augsburg,SC Freiburg,4,1
@@ -57,162 +57,162 @@ date, team1, team2, goals_team1, goals_team2
 2018-10-06T15:30:00,Borussia Dortmund,FC Augsburg,4,3
 2018-10-06T15:30:00,Hannover 96,VfB Stuttgart,3,1
 2018-10-06T15:30:00,1. FSV Mainz 05,Hertha BSC,0,0
-2018-10-06T15:30:00,Fortuna Düsseldorf,FC Schalke 04,0,2
-2018-10-06T18:30:00,FC Bayern,Borussia Mönchengladbach,0,3
+2018-10-06T15:30:00,Fortuna Dï¿½sseldorf,FC Schalke 04,0,2
+2018-10-06T18:30:00,FC Bayern,Borussia Mï¿½nchengladbach,0,3
 2018-10-07T13:30:00,SC Freiburg,Bayer Leverkusen,0,0
 2018-10-07T15:30:00,TSG 1899 Hoffenheim,Eintracht Frankfurt,1,2
-2018-10-07T18:00:00,RB Leipzig,1. FC Nürnberg,6,0
-2018-10-19T20:30:00,Eintracht Frankfurt,Fortuna Düsseldorf,7,1
+2018-10-07T18:00:00,RB Leipzig,1. FC Nï¿½rnberg,6,0
+2018-10-19T20:30:00,Eintracht Frankfurt,Fortuna Dï¿½sseldorf,7,1
 2018-10-20T15:30:00,Bayer Leverkusen,Hannover 96,2,2
 2018-10-20T15:30:00,VfB Stuttgart,Borussia Dortmund,0,4
 2018-10-20T15:30:00,FC Augsburg,RB Leipzig,0,0
 2018-10-20T15:30:00,VfL Wolfsburg,FC Bayern,1,3
-2018-10-20T15:30:00,1. FC Nürnberg,TSG 1899 Hoffenheim,1,3
+2018-10-20T15:30:00,1. FC Nï¿½rnberg,TSG 1899 Hoffenheim,1,3
 2018-10-20T18:30:00,FC Schalke 04,Werder Bremen,0,2
 2018-10-21T15:30:00,Hertha BSC,SC Freiburg,1,1
-2018-10-21T18:00:00,Borussia Mönchengladbach,1. FSV Mainz 05,4,0
-2018-10-26T20:30:00,SC Freiburg,Borussia Mönchengladbach,3,1
+2018-10-21T18:00:00,Borussia Mï¿½nchengladbach,1. FSV Mainz 05,4,0
+2018-10-26T20:30:00,SC Freiburg,Borussia Mï¿½nchengladbach,3,1
 2018-10-27T15:30:00,Borussia Dortmund,Hertha BSC,2,2
 2018-10-27T15:30:00,Hannover 96,FC Augsburg,1,2
 2018-10-27T15:30:00,1. FSV Mainz 05,FC Bayern,1,2
-2018-10-27T15:30:00,Fortuna Düsseldorf,VfL Wolfsburg,0,3
+2018-10-27T15:30:00,Fortuna Dï¿½sseldorf,VfL Wolfsburg,0,3
 2018-10-27T18:30:00,TSG 1899 Hoffenheim,VfB Stuttgart,4,0
-2018-10-28T13:30:00,1. FC Nürnberg,Eintracht Frankfurt,1,1
+2018-10-28T13:30:00,1. FC Nï¿½rnberg,Eintracht Frankfurt,1,1
 2018-10-28T15:30:00,RB Leipzig,FC Schalke 04,0,0
 2018-10-28T18:00:00,Werder Bremen,Bayer Leverkusen,2,6
 2018-11-02T20:30:00,VfB Stuttgart,Eintracht Frankfurt,0,3
 2018-11-03T15:30:00,FC Bayern,SC Freiburg,1,1
 2018-11-03T15:30:00,FC Schalke 04,Hannover 96,3,1
 2018-11-03T15:30:00,Bayer Leverkusen,TSG 1899 Hoffenheim,1,4
-2018-11-03T15:30:00,FC Augsburg,1. FC Nürnberg,2,2
+2018-11-03T15:30:00,FC Augsburg,1. FC Nï¿½rnberg,2,2
 2018-11-03T15:30:00,VfL Wolfsburg,Borussia Dortmund,0,1
 2018-11-03T18:30:00,Hertha BSC,RB Leipzig,0,3
-2018-11-04T15:30:00,Borussia Mönchengladbach,Fortuna Düsseldorf,3,0
+2018-11-04T15:30:00,Borussia Mï¿½nchengladbach,Fortuna Dï¿½sseldorf,3,0
 2018-11-04T18:00:00,1. FSV Mainz 05,Werder Bremen,2,1
 2018-11-09T20:30:00,Hannover 96,VfL Wolfsburg,2,1
 2018-11-10T15:30:00,TSG 1899 Hoffenheim,FC Augsburg,2,1
-2018-11-10T15:30:00,Werder Bremen,Borussia Mönchengladbach,1,3
+2018-11-10T15:30:00,Werder Bremen,Borussia Mï¿½nchengladbach,1,3
 2018-11-10T15:30:00,SC Freiburg,1. FSV Mainz 05,1,3
-2018-11-10T15:30:00,Fortuna Düsseldorf,Hertha BSC,4,1
-2018-11-10T15:30:00,1. FC Nürnberg,VfB Stuttgart,0,2
+2018-11-10T15:30:00,Fortuna Dï¿½sseldorf,Hertha BSC,4,1
+2018-11-10T15:30:00,1. FC Nï¿½rnberg,VfB Stuttgart,0,2
 2018-11-10T18:30:00,Borussia Dortmund,FC Bayern,3,2
 2018-11-11T15:30:00,RB Leipzig,Bayer Leverkusen,3,0
 2018-11-11T18:00:00,Eintracht Frankfurt,FC Schalke 04,3,0
 2018-11-23T20:30:00,Bayer Leverkusen,VfB Stuttgart,2,0
-2018-11-24T15:30:00,FC Bayern,Fortuna Düsseldorf,3,3
+2018-11-24T15:30:00,FC Bayern,Fortuna Dï¿½sseldorf,3,3
 2018-11-24T15:30:00,Hertha BSC,TSG 1899 Hoffenheim,3,3
 2018-11-24T15:30:00,FC Augsburg,Eintracht Frankfurt,1,3
 2018-11-24T15:30:00,1. FSV Mainz 05,Borussia Dortmund,1,2
 2018-11-24T15:30:00,VfL Wolfsburg,RB Leipzig,1,0
-2018-11-24T18:30:00,FC Schalke 04,1. FC Nürnberg,5,2
+2018-11-24T18:30:00,FC Schalke 04,1. FC Nï¿½rnberg,5,2
 2018-11-25T15:30:00,SC Freiburg,Werder Bremen,1,1
-2018-11-25T18:00:00,Borussia Mönchengladbach,Hannover 96,4,1
-2018-11-30T20:30:00,Fortuna Düsseldorf,1. FSV Mainz 05,0,1
+2018-11-25T18:00:00,Borussia Mï¿½nchengladbach,Hannover 96,4,1
+2018-11-30T20:30:00,Fortuna Dï¿½sseldorf,1. FSV Mainz 05,0,1
 2018-12-01T15:30:00,Borussia Dortmund,SC Freiburg,2,0
 2018-12-01T15:30:00,VfB Stuttgart,FC Augsburg,1,0
 2018-12-01T15:30:00,Werder Bremen,FC Bayern,1,2
 2018-12-01T15:30:00,Hannover 96,Hertha BSC,0,2
 2018-12-01T18:30:00,TSG 1899 Hoffenheim,FC Schalke 04,1,1
-2018-12-02T15:30:00,RB Leipzig,Borussia Mönchengladbach,2,0
+2018-12-02T15:30:00,RB Leipzig,Borussia Mï¿½nchengladbach,2,0
 2018-12-02T18:00:00,Eintracht Frankfurt,VfL Wolfsburg,1,2
-2018-12-03T20:30:00,1. FC Nürnberg,Bayer Leverkusen,1,1
-2018-12-07T20:30:00,Werder Bremen,Fortuna Düsseldorf,3,1
-2018-12-08T15:30:00,FC Bayern,1. FC Nürnberg,3,0
+2018-12-03T20:30:00,1. FC Nï¿½rnberg,Bayer Leverkusen,1,1
+2018-12-07T20:30:00,Werder Bremen,Fortuna Dï¿½sseldorf,3,1
+2018-12-08T15:30:00,FC Bayern,1. FC Nï¿½rnberg,3,0
 2018-12-08T15:30:00,FC Schalke 04,Borussia Dortmund,1,2
 2018-12-08T15:30:00,Bayer Leverkusen,FC Augsburg,1,0
 2018-12-08T15:30:00,SC Freiburg,RB Leipzig,3,0
 2018-12-08T15:30:00,VfL Wolfsburg,TSG 1899 Hoffenheim,2,2
 2018-12-08T18:30:00,Hertha BSC,Eintracht Frankfurt,1,0
 2018-12-09T15:30:00,1. FSV Mainz 05,Hannover 96,1,1
-2018-12-09T18:00:00,Borussia Mönchengladbach,VfB Stuttgart,3,0
-2018-12-14T20:30:00,1. FC Nürnberg,VfL Wolfsburg,0,2
-2018-12-15T15:30:00,TSG 1899 Hoffenheim,Borussia Mönchengladbach,0,0
+2018-12-09T18:00:00,Borussia Mï¿½nchengladbach,VfB Stuttgart,3,0
+2018-12-14T20:30:00,1. FC Nï¿½rnberg,VfL Wolfsburg,0,2
+2018-12-15T15:30:00,TSG 1899 Hoffenheim,Borussia Mï¿½nchengladbach,0,0
 2018-12-15T15:30:00,VfB Stuttgart,Hertha BSC,2,1
 2018-12-15T15:30:00,FC Augsburg,FC Schalke 04,1,1
 2018-12-15T15:30:00,Hannover 96,FC Bayern,0,4
-2018-12-15T15:30:00,Fortuna Düsseldorf,SC Freiburg,2,0
+2018-12-15T15:30:00,Fortuna Dï¿½sseldorf,SC Freiburg,2,0
 2018-12-15T18:30:00,Borussia Dortmund,Werder Bremen,2,1
 2018-12-16T15:30:00,RB Leipzig,1. FSV Mainz 05,4,1
 2018-12-16T18:00:00,Eintracht Frankfurt,Bayer Leverkusen,2,1
-2018-12-18T18:30:00,Borussia Mönchengladbach,1. FC Nürnberg,2,0
+2018-12-18T18:30:00,Borussia Mï¿½nchengladbach,1. FC Nï¿½rnberg,2,0
 2018-12-18T20:30:00,Hertha BSC,FC Augsburg,2,2
 2018-12-18T20:30:00,VfL Wolfsburg,VfB Stuttgart,2,0
-2018-12-18T20:30:00,Fortuna Düsseldorf,Borussia Dortmund,2,1
+2018-12-18T20:30:00,Fortuna Dï¿½sseldorf,Borussia Dortmund,2,1
 2018-12-19T18:30:00,FC Schalke 04,Bayer Leverkusen,1,2
 2018-12-19T20:30:00,FC Bayern,RB Leipzig,1,0
 2018-12-19T20:30:00,Werder Bremen,TSG 1899 Hoffenheim,1,1
 2018-12-19T20:30:00,SC Freiburg,Hannover 96,1,1
 2018-12-19T20:30:00,1. FSV Mainz 05,Eintracht Frankfurt,2,2
-2018-12-21T20:30:00,Borussia Dortmund,Borussia Mönchengladbach,2,1
+2018-12-21T20:30:00,Borussia Dortmund,Borussia Mï¿½nchengladbach,2,1
 2018-12-22T15:30:00,Bayer Leverkusen,Hertha BSC,3,1
 2018-12-22T15:30:00,RB Leipzig,Werder Bremen,3,2
 2018-12-22T15:30:00,VfB Stuttgart,FC Schalke 04,1,3
-2018-12-22T15:30:00,Hannover 96,Fortuna Düsseldorf,0,1
-2018-12-22T15:30:00,1. FC Nürnberg,SC Freiburg,0,1
+2018-12-22T15:30:00,Hannover 96,Fortuna Dï¿½sseldorf,0,1
+2018-12-22T15:30:00,1. FC Nï¿½rnberg,SC Freiburg,0,1
 2018-12-22T18:30:00,Eintracht Frankfurt,FC Bayern,0,3
 2018-12-23T15:30:00,FC Augsburg,VfL Wolfsburg,2,3
 2018-12-23T18:00:00,TSG 1899 Hoffenheim,1. FSV Mainz 05,1,1
 2019-01-18T20:30:00,TSG 1899 Hoffenheim,FC Bayern,1,3
-2019-01-19T15:30:00,Bayer Leverkusen,Borussia Mönchengladbach,0,1
+2019-01-19T15:30:00,Bayer Leverkusen,Borussia Mï¿½nchengladbach,0,1
 2019-01-19T15:30:00,VfB Stuttgart,1. FSV Mainz 05,2,3
 2019-01-19T15:30:00,Eintracht Frankfurt,SC Freiburg,3,1
-2019-01-19T15:30:00,FC Augsburg,Fortuna Düsseldorf,1,2
+2019-01-19T15:30:00,FC Augsburg,Fortuna Dï¿½sseldorf,1,2
 2019-01-19T15:30:00,Hannover 96,Werder Bremen,0,1
 2019-01-19T18:30:00,RB Leipzig,Borussia Dortmund,0,1
-2019-01-20T15:30:00,1. FC Nürnberg,Hertha BSC,1,3
+2019-01-20T15:30:00,1. FC Nï¿½rnberg,Hertha BSC,1,3
 2019-01-20T18:00:00,FC Schalke 04,VfL Wolfsburg,2,1
 2019-01-25T20:30:00,Hertha BSC,FC Schalke 04,2,2
 2019-01-26T15:30:00,Borussia Dortmund,Hannover 96,5,1
-2019-01-26T15:30:00,Borussia Mönchengladbach,FC Augsburg,2,0
+2019-01-26T15:30:00,Borussia Mï¿½nchengladbach,FC Augsburg,2,0
 2019-01-26T15:30:00,SC Freiburg,TSG 1899 Hoffenheim,2,4
-2019-01-26T15:30:00,1. FSV Mainz 05,1. FC Nürnberg,2,1
+2019-01-26T15:30:00,1. FSV Mainz 05,1. FC Nï¿½rnberg,2,1
 2019-01-26T15:30:00,VfL Wolfsburg,Bayer Leverkusen,0,3
 2019-01-26T18:30:00,Werder Bremen,Eintracht Frankfurt,2,2
 2019-01-27T15:30:00,FC Bayern,VfB Stuttgart,4,1
-2019-01-27T18:00:00,Fortuna Düsseldorf,RB Leipzig,0,4
+2019-01-27T18:00:00,Fortuna Dï¿½sseldorf,RB Leipzig,0,4
 2019-02-01T20:30:00,Hannover 96,RB Leipzig,0,3
-2019-02-02T15:30:00,TSG 1899 Hoffenheim,Fortuna Düsseldorf,1,1
+2019-02-02T15:30:00,TSG 1899 Hoffenheim,Fortuna Dï¿½sseldorf,1,1
 2019-02-02T15:30:00,Bayer Leverkusen,FC Bayern,3,1
 2019-02-02T15:30:00,Eintracht Frankfurt,Borussia Dortmund,1,1
 2019-02-02T15:30:00,Hertha BSC,VfL Wolfsburg,0,1
-2019-02-02T15:30:00,1. FC Nürnberg,Werder Bremen,1,1
-2019-02-02T18:30:00,FC Schalke 04,Borussia Mönchengladbach,0,2
+2019-02-02T15:30:00,1. FC Nï¿½rnberg,Werder Bremen,1,1
+2019-02-02T18:30:00,FC Schalke 04,Borussia Mï¿½nchengladbach,0,2
 2019-02-03T15:30:00,FC Augsburg,1. FSV Mainz 05,3,0
 2019-02-03T18:00:00,VfB Stuttgart,SC Freiburg,2,2
 2019-02-08T20:30:00,1. FSV Mainz 05,Bayer Leverkusen,1,5
 2019-02-09T15:30:00,Borussia Dortmund,TSG 1899 Hoffenheim,3,3
 2019-02-09T15:30:00,RB Leipzig,Eintracht Frankfurt,0,0
-2019-02-09T15:30:00,Borussia Mönchengladbach,Hertha BSC,0,3
-2019-02-09T15:30:00,Hannover 96,1. FC Nürnberg,2,0
+2019-02-09T15:30:00,Borussia Mï¿½nchengladbach,Hertha BSC,0,3
+2019-02-09T15:30:00,Hannover 96,1. FC Nï¿½rnberg,2,0
 2019-02-09T15:30:00,SC Freiburg,VfL Wolfsburg,3,3
 2019-02-09T18:30:00,FC Bayern,FC Schalke 04,3,1
 2019-02-10T15:30:00,Werder Bremen,FC Augsburg,4,0
-2019-02-10T18:00:00,Fortuna Düsseldorf,VfB Stuttgart,3,0
+2019-02-10T18:00:00,Fortuna Dï¿½sseldorf,VfB Stuttgart,3,0
 2019-02-15T20:30:00,FC Augsburg,FC Bayern,2,3
 2019-02-16T15:30:00,FC Schalke 04,SC Freiburg,0,0
 2019-02-16T15:30:00,TSG 1899 Hoffenheim,Hannover 96,3,0
 2019-02-16T15:30:00,VfB Stuttgart,RB Leipzig,1,3
 2019-02-16T15:30:00,VfL Wolfsburg,1. FSV Mainz 05,3,0
 2019-02-16T18:30:00,Hertha BSC,Werder Bremen,1,1
-2019-02-17T15:30:00,Eintracht Frankfurt,Borussia Mönchengladbach,1,1
-2019-02-17T18:00:00,Bayer Leverkusen,Fortuna Düsseldorf,2,0
-2019-02-18T20:30:00,1. FC Nürnberg,Borussia Dortmund,0,0
+2019-02-17T15:30:00,Eintracht Frankfurt,Borussia Mï¿½nchengladbach,1,1
+2019-02-17T18:00:00,Bayer Leverkusen,Fortuna Dï¿½sseldorf,2,0
+2019-02-18T20:30:00,1. FC Nï¿½rnberg,Borussia Dortmund,0,0
 2019-02-22T20:30:00,Werder Bremen,VfB Stuttgart,1,1
 2019-02-23T15:30:00,FC Bayern,Hertha BSC,1,0
-2019-02-23T15:30:00,Borussia Mönchengladbach,VfL Wolfsburg,0,3
+2019-02-23T15:30:00,Borussia Mï¿½nchengladbach,VfL Wolfsburg,0,3
 2019-02-23T15:30:00,SC Freiburg,FC Augsburg,5,1
 2019-02-23T15:30:00,1. FSV Mainz 05,FC Schalke 04,3,0
-2019-02-23T18:30:00,Fortuna Düsseldorf,1. FC Nürnberg,2,1
+2019-02-23T18:30:00,Fortuna Dï¿½sseldorf,1. FC Nï¿½rnberg,2,1
 2019-02-24T15:30:00,Hannover 96,Eintracht Frankfurt,0,3
 2019-02-24T18:00:00,Borussia Dortmund,Bayer Leverkusen,3,2
 2019-02-25T20:30:00,RB Leipzig,TSG 1899 Hoffenheim,1,1
 2019-03-01T20:30:00,FC Augsburg,Borussia Dortmund,2,1
-2019-03-02T15:30:00,FC Schalke 04,Fortuna Düsseldorf,0,4
+2019-03-02T15:30:00,FC Schalke 04,Fortuna Dï¿½sseldorf,0,4
 2019-03-02T15:30:00,Bayer Leverkusen,SC Freiburg,2,0
 2019-03-02T15:30:00,Eintracht Frankfurt,TSG 1899 Hoffenheim,3,2
 2019-03-02T15:30:00,Hertha BSC,1. FSV Mainz 05,2,1
-2019-03-02T15:30:00,1. FC Nürnberg,RB Leipzig,0,1
-2019-03-02T18:30:00,Borussia Mönchengladbach,FC Bayern,1,5
+2019-03-02T15:30:00,1. FC Nï¿½rnberg,RB Leipzig,0,1
+2019-03-02T18:30:00,Borussia Mï¿½nchengladbach,FC Bayern,1,5
 2019-03-03T15:30:00,VfB Stuttgart,Hannover 96,5,1
 2019-03-03T18:00:00,VfL Wolfsburg,Werder Bremen,1,1
 2019-03-08T20:30:00,Werder Bremen,FC Schalke 04,4,2
@@ -220,51 +220,51 @@ date, team1, team2, goals_team1, goals_team2
 2019-03-09T15:30:00,Borussia Dortmund,VfB Stuttgart,3,1
 2019-03-09T15:30:00,RB Leipzig,FC Augsburg,0,0
 2019-03-09T15:30:00,SC Freiburg,Hertha BSC,2,1
-2019-03-09T18:30:00,1. FSV Mainz 05,Borussia Mönchengladbach,0,1
-2019-03-10T15:30:00,TSG 1899 Hoffenheim,1. FC Nürnberg,2,1
+2019-03-09T18:30:00,1. FSV Mainz 05,Borussia Mï¿½nchengladbach,0,1
+2019-03-10T15:30:00,TSG 1899 Hoffenheim,1. FC Nï¿½rnberg,2,1
 2019-03-10T18:00:00,Hannover 96,Bayer Leverkusen,2,3
-2019-03-11T20:30:00,Fortuna Düsseldorf,Eintracht Frankfurt,0,3
-2019-03-15T20:30:00,Borussia Mönchengladbach,SC Freiburg,1,1
+2019-03-11T20:30:00,Fortuna Dï¿½sseldorf,Eintracht Frankfurt,0,3
+2019-03-15T20:30:00,Borussia Mï¿½nchengladbach,SC Freiburg,1,1
 2019-03-16T15:30:00,FC Schalke 04,RB Leipzig,0,1
 2019-03-16T15:30:00,VfB Stuttgart,TSG 1899 Hoffenheim,1,1
 2019-03-16T15:30:00,FC Augsburg,Hannover 96,3,1
-2019-03-16T15:30:00,VfL Wolfsburg,Fortuna Düsseldorf,5,2
+2019-03-16T15:30:00,VfL Wolfsburg,Fortuna Dï¿½sseldorf,5,2
 2019-03-16T18:30:00,Hertha BSC,Borussia Dortmund,2,3
 2019-03-17T13:30:00,Bayer Leverkusen,Werder Bremen,1,3
-2019-03-17T15:30:00,Eintracht Frankfurt,1. FC Nürnberg,1,0
+2019-03-17T15:30:00,Eintracht Frankfurt,1. FC Nï¿½rnberg,1,0
 2019-03-17T18:00:00,FC Bayern,1. FSV Mainz 05,6,0
 2019-03-29T20:30:00,TSG 1899 Hoffenheim,Bayer Leverkusen,4,1
 2019-03-30T15:30:00,Borussia Dortmund,VfL Wolfsburg,2,0
 2019-03-30T15:30:00,Werder Bremen,1. FSV Mainz 05,3,1
 2019-03-30T15:30:00,SC Freiburg,FC Bayern,1,1
-2019-03-30T15:30:00,Fortuna Düsseldorf,Borussia Mönchengladbach,3,1
-2019-03-30T15:30:00,1. FC Nürnberg,FC Augsburg,3,0
+2019-03-30T15:30:00,Fortuna Dï¿½sseldorf,Borussia Mï¿½nchengladbach,3,1
+2019-03-30T15:30:00,1. FC Nï¿½rnberg,FC Augsburg,3,0
 2019-03-30T18:30:00,RB Leipzig,Hertha BSC,5,0
 2019-03-31T15:30:00,Hannover 96,FC Schalke 04,0,1
 2019-03-31T18:00:00,Eintracht Frankfurt,VfB Stuttgart,3,0
 2019-04-05T20:30:00,1. FSV Mainz 05,SC Freiburg,5,0
 2019-04-06T15:30:00,FC Schalke 04,Eintracht Frankfurt,1,2
 2019-04-06T15:30:00,Bayer Leverkusen,RB Leipzig,2,4
-2019-04-06T15:30:00,VfB Stuttgart,1. FC Nürnberg,1,1
-2019-04-06T15:30:00,Hertha BSC,Fortuna Düsseldorf,1,2
+2019-04-06T15:30:00,VfB Stuttgart,1. FC Nï¿½rnberg,1,1
+2019-04-06T15:30:00,Hertha BSC,Fortuna Dï¿½sseldorf,1,2
 2019-04-06T15:30:00,VfL Wolfsburg,Hannover 96,3,1
 2019-04-06T18:30:00,FC Bayern,Borussia Dortmund,5,0
 2019-04-07T15:30:00,FC Augsburg,TSG 1899 Hoffenheim,0,4
-2019-04-07T18:00:00,Borussia Mönchengladbach,Werder Bremen,1,1
-2019-04-12T20:30:00,1. FC Nürnberg,FC Schalke 04,1,1
+2019-04-07T18:00:00,Borussia Mï¿½nchengladbach,Werder Bremen,1,1
+2019-04-12T20:30:00,1. FC Nï¿½rnberg,FC Schalke 04,1,1
 2019-04-13T15:30:00,RB Leipzig,VfL Wolfsburg,2,0
 2019-04-13T15:30:00,VfB Stuttgart,Bayer Leverkusen,0,1
 2019-04-13T15:30:00,Werder Bremen,SC Freiburg,2,1
-2019-04-13T15:30:00,Hannover 96,Borussia Mönchengladbach,0,1
+2019-04-13T15:30:00,Hannover 96,Borussia Mï¿½nchengladbach,0,1
 2019-04-13T18:30:00,Borussia Dortmund,1. FSV Mainz 05,2,1
 2019-04-14T13:30:00,TSG 1899 Hoffenheim,Hertha BSC,2,0
-2019-04-14T15:30:00,Fortuna Düsseldorf,FC Bayern,1,4
+2019-04-14T15:30:00,Fortuna Dï¿½sseldorf,FC Bayern,1,4
 2019-04-14T18:00:00,Eintracht Frankfurt,FC Augsburg,1,3
 2019-04-20T15:30:00,FC Bayern,Werder Bremen,1,0
-2019-04-20T15:30:00,Bayer Leverkusen,1. FC Nürnberg,2,0
+2019-04-20T15:30:00,Bayer Leverkusen,1. FC Nï¿½rnberg,2,0
 2019-04-20T15:30:00,FC Augsburg,VfB Stuttgart,6,0
-2019-04-20T15:30:00,1. FSV Mainz 05,Fortuna Düsseldorf,3,1
-2019-04-20T18:30:00,Borussia Mönchengladbach,RB Leipzig,1,2
+2019-04-20T15:30:00,1. FSV Mainz 05,Fortuna Dï¿½sseldorf,3,1
+2019-04-20T18:30:00,Borussia Mï¿½nchengladbach,RB Leipzig,1,2
 2019-04-20T20:30:00,FC Schalke 04,TSG 1899 Hoffenheim,2,5
 2019-04-21T15:30:00,SC Freiburg,Borussia Dortmund,0,4
 2019-04-21T18:00:00,Hertha BSC,Hannover 96,0,0
@@ -274,34 +274,34 @@ date, team1, team2, goals_team1, goals_team2
 2019-04-27T15:30:00,RB Leipzig,SC Freiburg,2,1
 2019-04-27T15:30:00,Eintracht Frankfurt,Hertha BSC,0,0
 2019-04-27T15:30:00,Hannover 96,1. FSV Mainz 05,1,0
-2019-04-27T15:30:00,Fortuna Düsseldorf,Werder Bremen,4,1
-2019-04-27T18:30:00,VfB Stuttgart,Borussia Mönchengladbach,1,0
+2019-04-27T15:30:00,Fortuna Dï¿½sseldorf,Werder Bremen,4,1
+2019-04-27T18:30:00,VfB Stuttgart,Borussia Mï¿½nchengladbach,1,0
 2019-04-28T15:30:00,TSG 1899 Hoffenheim,VfL Wolfsburg,1,4
-2019-04-28T18:00:00,1. FC Nürnberg,FC Bayern,1,1
+2019-04-28T18:00:00,1. FC Nï¿½rnberg,FC Bayern,1,1
 2019-05-03T20:30:00,1. FSV Mainz 05,RB Leipzig,3,3
 2019-05-04T15:30:00,FC Bayern,Hannover 96,3,1
-2019-05-04T15:30:00,Borussia Mönchengladbach,TSG 1899 Hoffenheim,2,2
+2019-05-04T15:30:00,Borussia Mï¿½nchengladbach,TSG 1899 Hoffenheim,2,2
 2019-05-04T15:30:00,Hertha BSC,VfB Stuttgart,3,1
-2019-05-04T15:30:00,VfL Wolfsburg,1. FC Nürnberg,2,0
+2019-05-04T15:30:00,VfL Wolfsburg,1. FC Nï¿½rnberg,2,0
 2019-05-04T18:30:00,Werder Bremen,Borussia Dortmund,2,2
 2019-05-05T13:30:00,FC Schalke 04,FC Augsburg,0,0
-2019-05-05T15:30:00,SC Freiburg,Fortuna Düsseldorf,1,1
+2019-05-05T15:30:00,SC Freiburg,Fortuna Dï¿½sseldorf,1,1
 2019-05-05T18:00:00,Bayer Leverkusen,Eintracht Frankfurt,6,1
 2019-05-11T15:30:00,TSG 1899 Hoffenheim,Werder Bremen,0,1
-2019-05-11T15:30:00,Borussia Dortmund,Fortuna Düsseldorf,3,2
+2019-05-11T15:30:00,Borussia Dortmund,Fortuna Dï¿½sseldorf,3,2
 2019-05-11T15:30:00,Bayer Leverkusen,FC Schalke 04,1,1
 2019-05-11T15:30:00,RB Leipzig,FC Bayern,0,0
 2019-05-11T15:30:00,VfB Stuttgart,VfL Wolfsburg,3,0
 2019-05-11T15:30:00,FC Augsburg,Hertha BSC,3,4
 2019-05-11T15:30:00,Hannover 96,SC Freiburg,3,0
-2019-05-11T15:30:00,1. FC Nürnberg,Borussia Mönchengladbach,0,4
+2019-05-11T15:30:00,1. FC Nï¿½rnberg,Borussia Mï¿½nchengladbach,0,4
 2019-05-12T18:00:00,Eintracht Frankfurt,1. FSV Mainz 05,0,2
 2019-05-18T15:30:00,FC Bayern,Eintracht Frankfurt,5,1
 2019-05-18T15:30:00,FC Schalke 04,VfB Stuttgart,0,0
-2019-05-18T15:30:00,Borussia Mönchengladbach,Borussia Dortmund,0,2
+2019-05-18T15:30:00,Borussia Mï¿½nchengladbach,Borussia Dortmund,0,2
 2019-05-18T15:30:00,Hertha BSC,Bayer Leverkusen,1,5
 2019-05-18T15:30:00,Werder Bremen,RB Leipzig,2,1
-2019-05-18T15:30:00,SC Freiburg,1. FC Nürnberg,5,1
+2019-05-18T15:30:00,SC Freiburg,1. FC Nï¿½rnberg,5,1
 2019-05-18T15:30:00,1. FSV Mainz 05,TSG 1899 Hoffenheim,4,2
 2019-05-18T15:30:00,VfL Wolfsburg,FC Augsburg,8,1
-2019-05-18T15:30:00,Fortuna Düsseldorf,Hannover 96,2,1
+2019-05-18T15:30:00,Fortuna Dï¿½sseldorf,Hannover 96,2,1

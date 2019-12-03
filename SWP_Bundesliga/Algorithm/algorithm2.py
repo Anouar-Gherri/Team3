@@ -1,40 +1,44 @@
 import csv
 
 
-def csv_lib_creator(library_name, crawler_data_file, delimiter=','):
-    matches = list(csv.reader(crawler_data_file, delimiter=delimiter))
+def csv_lib_creator(library_name, crawler_data_file, delimiter_=','):
+    matches = list(csv.reader(crawler_data_file, delimiter=delimiter_))
     if 'date' in matches[0]:
         del matches[0]  # skips the header
 
+    # create list of unique teams
     teams_set = set()
     for row in matches:
         teams_set.add(row[1])
         teams_set.add(row[2])
+    teams = list(teams_set)
 
-    teams = list(teams_set)  # create list of unique teams
-
-    # first list refers to total goals scored, second to totals games played
-    teams_goals = {team: 0 for team in teams}
-    teams_matches = {team: 0 for team in teams}
+    team_stats = {team: [0, 0] for team in teams}  # {team: [total goals, total games]}
+    home_away_goals = [0, 0]  # [total goals home, total goals away]
 
     for match in matches:
-        team1 = match[1]
-        team2 = match[2]
-        goals_t1 = int(match[3])
-        goals_t2 = int(match[4])
+        # takes first host (i = 1), then guest (i = 2). i+2 are the according goals
+        for i in [1, 2]:
+            team = match[i]
+            goals = int(match[i + 2])
 
-        teams_goals[team1] += goals_t1
-        teams_goals[team2] += goals_t2
-        teams_matches[team1] += 1
-        teams_matches[team2] += 1
+            team_stats[team][0] += goals
+            team_stats[team][1] += 1
 
-    teams_goals_per_match = \
-        [[team, teams_goals[team] / teams_matches[team]] for team in teams]
+            home_away_goals[i == 2] += goals
+
+    teams_gpm = [[team, team_stats[team][0] / team_stats[team][1]] for team in teams]
+
+    home_away_gpm = [['home_gpm', home_away_goals[0] / len(matches)],
+                     ['away_gpm', home_away_goals[1] / len(matches)]]
 
     with open(library_name, 'w+', newline='') as lib_file:
         writer = csv.writer(lib_file)
-        writer.writerows(teams_goals_per_match)
+        writer.writerows(teams_gpm)
+        writer.writerows(home_away_gpm)
     lib_file.close()
+
+    return teams_set
 
 
 def library_request(library, match_dict):
@@ -44,13 +48,10 @@ def library_request(library, match_dict):
     host = match_dict['host']
     guest = match_dict['guest']
 
-    if host not in goals_per_match:
-        raise NameError("Couldn't find {} in the Library!".format(host))
-    if guest not in goals_per_match:
-        raise NameError("Couldn't find {} in the Library!".format(guest))
+    gpm_home, gpm_away = goals_per_match['home_gpm'], goals_per_match['away_gpm']
 
-    gpm_host = goals_per_match[host]
-    gpm_guest = goals_per_match[guest]
+    gpm_host = 0.75 * goals_per_match[host] + 0.25 * gpm_home
+    gpm_guest = 0.75 * goals_per_match[guest] + 0.25 * gpm_away
 
     results = [0, 0, 0]
 
@@ -67,7 +68,4 @@ def library_request(library, match_dict):
     else:
         results[1] += 1
 
-    result_dict = {'host': host}
-    result_dict.update({case: res for case, res in zip(["win", "lose", "draw"], results)})
-
-    return result_dict
+    return results
