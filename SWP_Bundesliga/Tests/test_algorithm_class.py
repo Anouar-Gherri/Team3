@@ -107,4 +107,4 @@ def algorithm1_print_running():
     print_results('SC Freiburg', 'FC Bayern')
 
 # Uncomment this to see some output
-# algorithm1_print_running()
+algorithm1_print_running()
