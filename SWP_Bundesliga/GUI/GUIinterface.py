@@ -127,7 +127,7 @@ class GUI:
         t=Texttable()
         for i in range(2):
             t.add_row(ListOfTheNextGames[i])
-        
+
 
         self.labelNMDTitle=Label(self.frameNextMatchday, text=t.draw())
 

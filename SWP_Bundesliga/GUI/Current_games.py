@@ -62,11 +62,3 @@ class TheCurrentLists:
         else: #if the csv data is empty that mean this season data are not availble
             print(f'The Season {self.year}/{self.year+1} is not started yet. \n Stay tuned ;)')
 
-nextgamelist=TheCurrentLists(2019)
-nextgamelist.CheckingIfTeamsOfTheCurrentSeasonFileExist()
-ListOfTheNextGames=nextgamelist.g()
-print(ListOfTheNextGames)
-t=Texttable()
-for i in range(2):
-    t.add_row(ListOfTheNextGames[i])
-print(t.draw())
