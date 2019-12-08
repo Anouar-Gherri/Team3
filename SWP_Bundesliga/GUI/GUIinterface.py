@@ -3,14 +3,10 @@ from tkinter import *
 from tkinter import ttk
 from _datetime import datetime
 import csv
-
 from Crawler import crawler_class
 from builtins import int
 from texttable import Texttable
-
 from GUI.Current_games import TheCurrentLists
-
-
 class GUI:
     def __init__(self):
         """Builds the main window of the GUI."""
@@ -31,29 +27,22 @@ class GUI:
 
         # crawler objects
         self.initCrawlerObjects()
-
         # training objects
         self.buttonTraining=Button(self.mainGrid,
                                    text='Start Training',
                                    command=self.startTraining,
                                    state='disabled')
-
         self.statusTraining=Label(self.mainGrid, text='')
-
         # team selection objects
         self.initTeamSelectionObjects()
-
         # prediction objects
         self.buttonPrediction=Button(self.mainGrid,
                                      text='Start Prediction',
                                      command=self.startPrediction,
                                      state='disabled')
-
         self.statusPrediction=Label(self.mainGrid, text='')
-
         # next matchday table
         self.initNextMatchdayTable()
-
         # position all objects
         self.frameCrawler.grid(row=0)
         self.buttonTraining.grid(row=1)
@@ -62,9 +51,7 @@ class GUI:
         self.buttonPrediction.grid(row=4)
         self.statusPrediction.grid(row=5)
         self.frameNextMatchday.grid(row=6)
-
         # self.root.mainloop()  # Start the event loop
-
     def initCrawlerObjects(self):
         """Builds the GUI objects pertaining to the crawler."""
         self.listSeasons=self.getSeasons()
@@ -100,44 +87,42 @@ class GUI:
         self.frameCrawler.grid_columnconfigure(7, minsize=self.spacing)
         self.buttonCrawler.grid(row=0, column=8)
         self.statusCrawled.grid(row=1, columnspan=9)
-
     def initTeamSelectionObjects(self):
         """Builds the GUI objects pertaining to the team selection."""
-
         self.labelHomeTeam=Label(self.frameTeamSelection, text='Home Team:')
         self.selectHome=ttk.Combobox(self.frameTeamSelection, width=2)
         self.selectHomeCurrent=self.selectHome.current()
         self.selectHome.bind('<<ComboboxSelected>>', self.updateSelection)
-
         self.labelAwayTeam=Label(self.frameTeamSelection, text='Away Team:')
         self.selectAway=ttk.Combobox(self.frameTeamSelection, width=2)
         self.selectAwayCurrent=self.selectAway.current()
         self.selectAway.bind('<<ComboboxSelected>>', self.updateSelection)
-
         self.labelHomeTeam.grid(row=0, column=0)
         self.selectHome.grid(row=0, column=1)
         self.labelAwayTeam.grid(row=1, column=0)
         self.selectAway.grid(row=1, column=1)
 
+
     def initNextMatchdayTable(self):
         nextgamelist=TheCurrentLists(2019)
         nextgamelist.CheckingIfTeamsOfTheCurrentSeasonFileExist()
         ListOfTheNextGames=nextgamelist.g()
-        print(ListOfTheNextGames)
+        listlength=len(ListOfTheNextGames)
         t=Texttable()
-        for i in range(2):
+        for i in range(listlength):
+            t.set_chars(['-', '', '|', '-'])
+            t.set_deco(Texttable.BORDER | Texttable.HEADER | Texttable.HLINES | Texttable.VLINES)
+            t.header(["Next Matches will be:"])
+            t.set_cols_align(["c"])
             t.add_row(ListOfTheNextGames[i])
-
-
         self.labelNMDTitle=Label(self.frameNextMatchday, text=t.draw())
-
         self.labelNMDTitle.grid(row=0, columnspan=6)
         # column 0 saved for home team img
+
 
     def initListTeams(self):
         """Sets team selection options based on crawled data."""
         self.listTeamSelection=[]
-
         for year in range(self.crawledFromSeason, self.crawledToSeason + 1):
             with open('all_teams_' + str(year) + '.csv') as csvfile:
                 reader=csv.DictReader(csvfile)
@@ -149,6 +134,7 @@ class GUI:
                                width=self.genComboboxWidth(self.listTeamSelection))
         self.selectAway.config(values=self.listTeamSelection,
                                width=self.genComboboxWidth(self.listTeamSelection))
+
 
     def startCrawler(self):
         """Starts the crawler after checking input values and inserting default values."""
@@ -172,7 +158,7 @@ class GUI:
             self.returnInvalid(self.statusCrawled)
             return
         else:
-            self.crawledFromSeason=int(self.crawledFromSeason)
+             self.crawledFromSeason=int(self.crawledFromSeason)
         # if no selection made default to first matchday
         if fromMatchday == '':
             fromMatchday=1
@@ -189,39 +175,32 @@ class GUI:
             return
         else:
             toMatchday=int(toMatchday)
-
         if (self.crawledFromSeason > self.crawledToSeason
                 or (self.crawledFromSeason == self.crawledToSeason
                     and fromMatchday > toMatchday)):
             self.returnInvalid(self.statusCrawled)
             return
-
         self.currentCrawl=crawler_class.Crawler("https://www.openligadb.de/api")
         self.currentCrawl.get_match_data_interval(self.crawledFromSeason,
                                                   fromMatchday,
                                                   self.crawledToSeason,
                                                   toMatchday)
-
-        for i in range(self.crawledFromSeason, self.crawledToSeason + 1):
+        for i in range(self.crawledFromSeason,self.crawledToSeason+1):
             self.currentCrawl.get_all_teams(i)
-
         if self.crawledFromSeason == self.crawledToSeason:
             crawledInterval=str(self.crawledFromSeason)
         else:
             crawledInterval="{}{}{}".format(str(self.crawledFromSeason),
                                             " to ",
                                             str(self.crawledToSeason))
-
         self.statusCrawled['text']="{}{}{}".format("Crawling of match data from ",
                                                    crawledInterval,
                                                    " done.")
         self.buttonTraining['state']='normal'
-
     def startTraining(self):
         self.statusTraining['text']='Training done.'
         self.buttonPrediction['state']='normal'
         self.initListTeams()
-
     def startPrediction(self):
         homePick=self.selectHome.current()
         awayPick=self.selectAway.current()
@@ -232,7 +211,6 @@ class GUI:
                                        ' is...')
         if (homePick != -1 and awayPick != -1):
             self.statusPrediction['text']=statusText
-
     def updateSelection(self, select):
         """Switches home team and away team selection if the user tries to select the same team twice."""
         if (self.selectHome.get() == self.selectAwayCurrent):
@@ -246,39 +224,28 @@ class GUI:
         else:
             self.selectHomeCurrent=self.selectHome.get()
             self.selectAwayCurrent=self.selectAway.get()
-
     def make_current_season_list(self):
         current_year=datetime.today().year
 
         c=crawler_class.Crawler("https://www.openligadb.de/api")
         data_for_next_round=c.get_match_data(int(current_year))
         return data_for_next_round
-
     def getSeasons(self):
         """Returns a list with all the Bundesliga seasons from 2002/2003 to now."""
         current=datetime.today().year
         firstSeason=2003
         allSeasons=[]
-
         for i in range(firstSeason, current + 1):
             allSeasons.append(i)
-
         return allSeasons
-
     # visuals
-
     def returnInvalid(self, status):
         """Displays a text to let the user know that an invalid input has been made."""
         status['text']='Invalid input.'
-
     def genComboboxWidth(self, list):
         """Calculates an appropriate size for comboboxes depending on their values."""
         return max(len(str(x)) for x in list) + 1
-
-
 def initiateGUI():
     GUI_object=GUI()
     GUI_object.root.mainloop()
-
-
 initiateGUI()
