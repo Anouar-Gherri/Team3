@@ -1,64 +1,49 @@
 # Creates the Functions for the Relative Frequency Algorithm
+from Algorithm import AlgorithmClass as aC
 import csv
-
-
-# --- Helper functions ---
-# Creates a dictionary containing the normalized results
-def normalize(result_list):
-    if sum(result_list) < 1:
-        raise ValueError('The result_list contains no results')
-    result_list_normalized = [r / sum(result_list) for r in result_list]
-    return result_list_normalized
-
-
-# Returns who won the game ( 0 = host, 1 = guest, 2 = none )
-def calculate_win(host, guest, team1, team2, goals_t1, goals_t2):
-    if not {host, guest} == {team1, team2}:
-        raise ValueError("host or guest didn't play in the match!" +
-                         "(host: {}, guest: {}, team1: {}, team2: {})".format(host, guest, team1, team2))
-    if goals_t1 == goals_t2:
-        return 2
-    elif goals_t1 > goals_t2:
-        return guest == team1
-    else:
-        return host == team1
 
 
 # --- Algorithm Functions ---
 # Simply copies the csv crawler data into library-name.csv
-# Also creates a set of the unique teams
-def csv_lib_creator(lib_name, crawler_data_file, delimiter_=','):
+def library_creator(library_name, crawler_data_file, column_separator=',', **kwargs):
+    """Creates the Library.
+
+    :param library_name: The filename of the Library
+    :param crawler_data_file: the data file with the crawler data
+    :param column_separator: the separator string for the columns in the csv file
     """
 
-    :param lib_name: The filename of the Library
-    :param crawler_data_file:
-    :param delimiter_:
-    :return:
-    """
+    if 'column_separator' in kwargs:
+        column_separator = kwargs['column_separator']
+
     # read the data file into a list
-    matches = list(csv.reader(crawler_data_file, delimiter=delimiter_))
+    matches = list(csv.reader(crawler_data_file, delimiter=column_separator))
 
     # skips the header
     if 'date' in matches[0]:
         del matches[0]
 
-    # get the set of unique teams
-    teams_set = set()
-    for row in matches:
-        teams_set.add(row[1])
-        teams_set.add(row[2])
-
     # and write the library
-    with open(lib_name, "w+", newline='') as lib_file:
+    with open(library_name, "w+", newline='') as lib_file:
         writer = csv.writer(lib_file)
         writer.writerows(matches)
     lib_file.close()
 
-    return teams_set
-
 
 # Request a prediction from the library
-def csv_reader(library, match_dict, column_separator=","):
+def library_reader(library, match_dict, column_separator=",", **kwargs):
+    """Request form the Library.
+
+    :param library: a library file
+    :param match_dict: a dictionary with match specifications
+    :param column_separator: the separator for the columns in the csv file
+
+    :return: A list containing the predicted results for the host
+    """
+
+    if 'column_separator' in kwargs:
+        column_separator = kwargs['column_separator']
+
     host = match_dict["host"]
     guest = match_dict["guest"]
     # The result list stores the occurrences like this: [wins, losses, draws]
@@ -97,16 +82,44 @@ def csv_reader(library, match_dict, column_separator=","):
                                         goals_t2)] += 1
 
     # --- Calculating Probabilities ---
-    # Case matches occurred
-    if sum(results) > 0:
-        return normalize(results)
-    # else if at least one team played a game
-    elif sum(results_guest + results_host) > 0:
-        # Do some rule of thumb math
-        pseudo_results = [results_host[i] + results_guest[j]
-                          for i, j in zip([0, 1, 2], [1, 0, 2])]
-        return normalize(pseudo_results)
-        # else return 100% draw
+    # Case matches didn't occur
+    if sum(results) <= 0:
+        if sum(results_guest + results_host) > 0:  # if at least one team played a game
+            results = [results_host[i] + results_guest[j]
+                       for i, j in zip([0, 1, 2], [1, 0, 2])]
+        else:
+            results = [0, 0, 1]  # else return 100% draw
+
+    return normalize(results)
+
+
+# --- Helper functions ---
+# Creates a dictionary containing the normalized results
+def normalize(result_list):
+    if sum(result_list) < 1:
+        raise ValueError('The result_list contains no results')
+    result_list_normalized = [r / sum(result_list) for r in result_list]
+    return result_list_normalized
+
+
+# Returns who won the game ( 0 = host, 1 = guest, 2 = none )
+def calculate_win(host, guest, team1, team2, goals_t1, goals_t2):
+    if not {host, guest} == {team1, team2}:
+        raise ValueError("host or guest didn't play in the match!" +
+                         "(host: {}, guest: {}, team1: {}, team2: {})".format(host, guest, team1, team2))
+    if goals_t1 == goals_t2:
+        return 2
+    elif goals_t1 > goals_t2:
+        return guest == team1
     else:
-        pseudo_results = [0, 0, 1]
-        return normalize(pseudo_results)
+        return host == team1
+
+
+def create():
+    """Creates the RelativeFrequency-Algorithm
+
+    :return: Algorithm (RelativeFrequency)
+    """
+    rfa = aC.Algorithm("RelativeFrequencyAlgorithm", library_creator,
+                       library_reader, 'csv', 'csv', 'RFA')
+    return rfa

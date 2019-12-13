@@ -1,12 +1,10 @@
 import pytest
-from Algorithm import AlgorithmClass as aC
 from Algorithm import algorithm1 as al1
 
 
 @pytest.fixture
 def rfa():
-    rfa = aC.Algorithm("RelativeFrequencyAlgorithm", al1.csv_lib_creator,
-                       al1.csv_reader, '.csv', '.csv', 'RFA')
+    rfa = al1.create()
     return rfa
 
 
@@ -39,8 +37,7 @@ def test_algorithm1_returns_dict(rfa):
 
 
 def algorithm1_print_running():
-    rfa = aC.Algorithm("RelativeFrequencyAlgorithm", al1.csv_lib_creator,
-                       al1.csv_reader, 'csv', 'csv', 'RFA')
+    rfa = al1.create()
 
     rfa.train('TestData(2018).csv')
 
@@ -54,5 +51,6 @@ def algorithm1_print_running():
     print_results('Borussia Dortmund', 'SC Freiburg')
     print_results('SC Freiburg', 'FC Bayern')
 
+
 # Uncomment this to see some output
-# algorithm1_print_running()
+algorithm1_print_running()

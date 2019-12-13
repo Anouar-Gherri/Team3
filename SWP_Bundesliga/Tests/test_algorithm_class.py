@@ -1,33 +1,39 @@
 import pytest
 from Algorithm import AlgorithmClass as aC
 from Algorithm import algorithm1 as al1
+from Algorithm import algorithm2_2 as al2_2
 
 
 @pytest.fixture
 def rfa():
-    rfa = aC.Algorithm("RelativeFrequencyAlgorithm", al1.csv_lib_creator,
-                       al1.csv_reader, 'csv', 'csv', 'RFA')
+    rfa = al1.create()
     return rfa
 
 
+@pytest.fixture
+def gpma():
+    gpma = al2_2.create()
+    return gpma
+
 
 @pytest.mark.AlgorithmClass
-def test_algorithm_creation(rfa):
+def test_algorithm_creation(rfa, gpma):
     assert rfa.name == "RelativeFrequencyAlgorithm"
     assert callable(rfa.request_function) is True
     assert callable(rfa.training_function) is True
     assert rfa.file_types == dict(crawler='csv', library='csv')
     assert rfa.trained is False
     assert rfa.library_filename == 'Library_RFA.csv'
-    assert rfa.teams == set()
+    assert rfa.specifications == {'request_kwargs': {}, 'train_kwargs': {}}
+    assert gpma.specifications == {'request_kwargs': dict(kw_weight_team=0.5), 'train_kwargs': {}}
 
     rfa.train('TestData(2018).csv')
     assert rfa.trained is True
 
 
 def test_name_as_libname():
-    rfa2 = aC.Algorithm("RelativeFrequencyAlgorithm", al1.csv_lib_creator,
-                        al1.csv_reader, 'csv', 'csv')
+    rfa2 = aC.Algorithm("RelativeFrequencyAlgorithm", al1.library_creator,
+                        al1.library_reader, 'csv', 'csv')
     assert rfa2.library_filename == 'Library_RelativeFrequencyAlgorithm.csv'
 
 
@@ -65,7 +71,6 @@ def test_algorithm_class_train_creation(rfa):
     data.close()
 
     assert rfa.trained is True
-    assert rfa.teams != set()  # checks if the
 
 
 # Checks whether requesting without training raises an Error
@@ -74,25 +79,16 @@ def test_algorithm_class_request_error1(rfa):
         rfa.request(dict(host='FC Bayern', guest='1899 Hoffenheim'))
 
 
-# Checks whether not listed team names are detected
-def test_algorithm_class_request_error1(rfa):
-    rfa.train('TestData(2018).csv')
-    with pytest.raises(ValueError):
-        rfa.request(dict(host='FC Bayern', guest='Bad Input'))
-        rfa.request(dict(host='Bad Input', guest='FC Bayern'))
-
-
 # Checks whether the outcome is correct for an example
 def test_algorithm_class_request(rfa):
     rfa.train('TestData(2018).csv')
     assert rfa.request(dict(host='FC Bayern', guest='Werder Bremen')) ==\
-           dict(host='FC Bayern', win=1, lose=0, draw=0)
+        dict(host='FC Bayern', win=1, lose=0, draw=0)
 
 
 # Just visualisation. Uncomment below to see
 def algorithm1_print_running():
-    rfa = aC.Algorithm("RelativeFrequencyAlgorithm", al1.csv_lib_creator,
-                       al1.csv_reader, 'csv', 'csv')
+    rfa = al1.create()
 
     rfa.train('TestData(2018).csv')
 
