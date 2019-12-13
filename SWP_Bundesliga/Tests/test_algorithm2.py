@@ -23,8 +23,8 @@ def test_algorithm2_running(gpma, gpma2):
     assert gpma.request(dict(host='Borussia Dortmund', guest='SC Freiburg'), 0.75) \
         == dict(host='Borussia Dortmund', win=0.8725490196078431, lose=0, draw=0.12745098039215685)
 
-    assert gpma.request(dict(host='Borussia Dortmund', guest='SC Freiburg')) != \
-        gpma.request(dict(host='SC Freiburg', guest='Borussia Dortmund'))
+    assert gpma.request(dict(host='Borussia Dortmund', guest='SC Freiburg'), 1) != \
+        gpma.request(dict(host='Borussia Dortmund', guest='SC Freiburg'), 0.9)
 
     assert gpma.request(dict(host='Borussia Dortmund', guest='SC Freiburg'), 1) == \
         gpma.request(dict(host='Borussia Dortmund', guest='SC Freiburg'))
@@ -48,7 +48,8 @@ def algorithm2_print_running():
     print_results('VfL Wolfsburg', 'Bayer Leverkusen')
     print_results('1. FSV Mainz 05', 'VfL Wolfsburg')
     print_results('Borussia Dortmund', 'SC Freiburg')
+    print_results('SC Freiburg', 'Borussia Dortmund')
 
 
 # Uncomment this to see some output
-# algorithm2_print_running()
+algorithm2_print_running()

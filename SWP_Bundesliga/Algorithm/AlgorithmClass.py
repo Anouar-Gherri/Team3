@@ -60,7 +60,7 @@ class Algorithm:
 
         data_format = data_format.replace('.', '')
         library_format = library_format.replace('.', '')
-        nickname = self.name if nickname == '' else nickname
+        nickname = name if nickname == '' else nickname
 
         self.name = name
         self.training_function = training_function

@@ -11,13 +11,13 @@ def rfa():
 
 
 @pytest.fixture
-def gpma():
-    gpma = al2_2.create()
-    return gpma
+def gpma2():
+    gpma2 = al2_2.create()
+    return gpma2
 
 
 @pytest.mark.AlgorithmClass
-def test_algorithm_creation(rfa, gpma):
+def test_algorithm_creation(rfa, gpma2):
     assert rfa.name == "RelativeFrequencyAlgorithm"
     assert callable(rfa.request_function) is True
     assert callable(rfa.training_function) is True
@@ -25,7 +25,7 @@ def test_algorithm_creation(rfa, gpma):
     assert rfa.trained is False
     assert rfa.library_filename == 'Library_RFA.csv'
     assert rfa.specifications == {'request_kwargs': {}, 'train_kwargs': {}}
-    assert gpma.specifications == {'request_kwargs': dict(kw_weight_team=0.5), 'train_kwargs': {}}
+    assert gpma2.specifications == {'request_kwargs': dict(kw_weight_team=0.5), 'train_kwargs': {}}
 
     rfa.train('TestData(2018).csv')
     assert rfa.trained is True
