@@ -6,13 +6,14 @@ import csv
 from Crawler import crawler_class
 from builtins import int
 from texttable import Texttable
-from GUI.Current_games import TheCurrentLists
+from GUI.current_games import TheCurrentLists
 class GUI:
     def __init__(self):
         """Builds the main window of the GUI."""
         # window properties
         self.root=Tk()
-        self.root.geometry('500x400')
+        self.root.geometry('1000x1000')
+        self.root.state('zoomed')
         self.root.title('Bundesliga Vorhersage')
 
         # structural attributes
@@ -104,18 +105,23 @@ class GUI:
 
 
     def initNextMatchdayTable(self):
-        nextgamelist=TheCurrentLists(2019)
-        nextgamelist.CheckingIfTeamsOfTheCurrentSeasonFileExist()
-        ListOfTheNextGames=nextgamelist.g()
-        listlength=len(ListOfTheNextGames)
-        t=Texttable()
-        for i in range(listlength):
-            t.set_chars(['-', '', '|', '-'])
-            t.set_deco(Texttable.BORDER | Texttable.HEADER | Texttable.HLINES | Texttable.VLINES)
-            t.header(["Next Matches will be:"])
-            t.set_cols_align(["c"])
-            t.add_row(ListOfTheNextGames[i])
-        self.labelNMDTitle=Label(self.frameNextMatchday, text=t.draw())
+        next_game_list = TheCurrentLists(datetime.today().year-1)
+        next_game_list.CheckingIfTeamsOfTheCurrentSeasonFileExist()
+        next_game_list.MakeCurrentSeasonTeamsList()
+        list_of_the_next_games = next_game_list.GetTheListOfTheNextRoundIfItExist()
+        listlength = len(list_of_the_next_games)
+        t = Texttable()
+        t.set_chars(['', '', '', ''])
+        t.set_deco(Texttable.BORDER | Texttable.HEADER | Texttable.HLINES | Texttable.VLINES)
+        t.header(["Next Matches will be:"])
+        t.set_cols_align(["c"])
+        print(list_of_the_next_games[0])
+        if listlength == 1:
+            t.add_row(list_of_the_next_games[0])
+        else:
+            for i in range(listlength):
+             t.add_row(list_of_the_next_games[i])
+        self.labelNMDTitle = Label(self.frameNextMatchday, text=t.draw())
         self.labelNMDTitle.grid(row=0, columnspan=6)
         # column 0 saved for home team img
 

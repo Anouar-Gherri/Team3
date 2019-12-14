@@ -182,10 +182,11 @@ class Crawler:
             url=self.url + "/getavailableteams/bl1/" + str(year),
             data=None,
             headers={'Content-Type': 'application/xml'}  # änder von json nach xml
+
          )
 
         # öffnet Seite
-        page = urllib.request.urlopen(url_header_xml)
+        page = urllib.request.urlopen(url_header_xml,timeout=)
 
         # Erstellt "xml_soup"
         soup = bs.BeautifulSoup(page, 'xml')
