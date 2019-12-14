@@ -14,22 +14,28 @@ class TheCurrentLists:
         new = crawler_class.Crawler("https://www.openligadb.de/api")
         return new.get_match_data(self.year)
 
+    """
     # Make a list of the Teams of the (year) season
     def MakeCurrentSeasonTeamsList(self):
         new = crawler_class.Crawler("https://www.openligadb.de/api")
-        print(type(new.get_all_teams(self.year)))
         return new.get_all_teams(self.year)
-
-    # Check if the csv file exist with the current season Matches
-    def CheckingIfMatchesOfTheCurrentSeasonFileExist(self):
+        
+        
+ # Check if the csv file exist with the current season Teams
+    def CheckingIfTeamsOfTheCurrentSeasonFileExist(self):
         file = f'all_games{self.year}.csv'
         path = Path(file)
         if not path.exists():
             file = self.MakeCurrentSeasonList()
+        print(file)
         return file
+   
+    """
 
-    # Check if the csv file exist with the current season Teams
-    def CheckingIfTeamsOfTheCurrentSeasonFileExist(self):
+
+
+    # Check if the csv file exist with the current season Matches
+    def CheckingIfMatchesOfTheCurrentSeasonFileExist(self):
         file = f'all_games{self.year}.csv'
         path = Path(file)
         if not path.exists():
@@ -50,6 +56,7 @@ class TheCurrentLists:
             if round_not_completely.empty:
                 list2.append(f'The Season {self.year}/{self.year + 1} is Finished See you Soon in The next Season ;)')
                 list2 = numpy.reshape(list2, (1, 1))
+                print(list2)
                 return list2
             else:
                 # if the current season is currently not finished then return a list with the next round
@@ -69,8 +76,10 @@ class TheCurrentLists:
                     list2.append(f'{list1[0 + i]} will play against {list1[listlength + i]} on {data[0]} at this time {data[1]}')
                 lengthlist2 = len(list2)
                 list2 = numpy.reshape(list2, (lengthlist2, 1))
+                print(list2)
                 return list2
         else:  # if the csv data is empty that mean this season data are not available
             list2.append(f'The Season {self.year}/{self.year + 1} is not started yet. Stay tuned ;)')
             list2 = numpy.reshape(list2, (1, 1))
+            print(list2)
             return list2

@@ -105,9 +105,8 @@ class GUI:
 
 
     def initNextMatchdayTable(self):
-        next_game_list = TheCurrentLists(datetime.today().year-1)
-        next_game_list.CheckingIfTeamsOfTheCurrentSeasonFileExist()
-        next_game_list.MakeCurrentSeasonTeamsList()
+        next_game_list = TheCurrentLists(datetime.today().year)
+        next_game_list.CheckingIfMatchesOfTheCurrentSeasonFileExist()
         list_of_the_next_games = next_game_list.GetTheListOfTheNextRoundIfItExist()
         listlength = len(list_of_the_next_games)
         t = Texttable()

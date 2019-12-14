@@ -186,7 +186,7 @@ class Crawler:
          )
 
         # öffnet Seite
-        page = urllib.request.urlopen(url_header_xml,timeout=)
+        page = urllib.request.urlopen(url_header_xml,timeout=1)
 
         # Erstellt "xml_soup"
         soup = bs.BeautifulSoup(page, 'xml')
