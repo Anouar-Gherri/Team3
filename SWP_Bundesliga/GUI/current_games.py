@@ -56,7 +56,6 @@ class TheCurrentLists:
             if round_not_completely.empty:
                 list2.append(f'The Season {self.year}/{self.year + 1} is Finished See you Soon in The next Season ;)')
                 list2 = numpy.reshape(list2, (1, 1))
-                print(list2)
                 return list2
             else:
                 # if the current season is currently not finished then return a list with the next round
@@ -76,10 +75,8 @@ class TheCurrentLists:
                     list2.append(f'{list1[0 + i]} will play against {list1[listlength + i]} on {data[0]} at this time {data[1]}')
                 lengthlist2 = len(list2)
                 list2 = numpy.reshape(list2, (lengthlist2, 1))
-                print(list2)
                 return list2
         else:  # if the csv data is empty that mean this season data are not available
             list2.append(f'The Season {self.year}/{self.year + 1} is not started yet. Stay tuned ;)')
             list2 = numpy.reshape(list2, (1, 1))
-            print(list2)
             return list2

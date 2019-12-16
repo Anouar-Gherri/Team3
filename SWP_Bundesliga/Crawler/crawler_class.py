@@ -1,11 +1,56 @@
 import urllib.request
 import pandas as pd
-
+import bs4 as bs  # BeautifulSoup4 Packet
 
 class Crawler:
 
     def __init__(self, url):
         self.url = url
+
+    def get_match_data(self, year):
+
+
+           url_header_xml = urllib.request.Request(
+               url=self.url + "/getmatchdata/bl1/" + str(year),
+               data=None,
+               headers={'Content-Type': 'application/xml'}   )
+
+           # öffnet Seite
+           page = urllib.request.urlopen(url_header_xml)
+
+           # Erstellt "xml_soup"
+           soup = bs.BeautifulSoup(page, 'xml')
+
+           # erstelle eine csv, öffne diese und schreibe die headers
+           filename = "all_games_" + str(year) + ".csv"
+           f = open(filename, "w")
+           headers = "date, team1, team2, goals_team1, goals_team2, is_Finished , round \n"
+           f.write(headers)
+
+           # liest aus jedem gefundenem Match date, team1 ,team2 ,pointsTeam1 und pointsTeam2
+           for m in soup.find_all('Match'):
+               date=str(m.MatchDateTime.text)
+               team1 = m.Team1.TeamName.text
+               team2 = m.Team2.TeamName.text
+               is_Finished = m.MatchIsFinished.text
+               round = m.Group.GroupOrderID.text
+               # If zum unterscheiden von endständen und halbzeitergebnissen da diese keine "vorgegebene Folge" haben
+               if m.MatchIsFinished.text == "true":
+                 if m.find('ResultName').text == "Endergebnis":
+                   goals_team1 = m.MatchResults.MatchResult.PointsTeam1.text
+                   goals_team2 = m.MatchResults.MatchResult.PointsTeam2.text
+                 else:
+                   goals_team1 = m.find('MatchResult').find_next('MatchResult').PointsTeam1.text
+                   goals_team2 = m.find('MatchResult').find_next('MatchResult').PointsTeam2.text
+                 f.write(date + "," + team1 + "," + team2 + "," + goals_team1 + "," + goals_team2 + "," + is_Finished + "," + round + "\n" )
+               else:
+                   goals_team1 = ''
+                   goals_team2 = ''
+                   f.write( date + "," + team1 + "," + team2 + "," + goals_team1 + "," + goals_team2 + "," + is_Finished + "," + round + "\n")
+                    # print(date + "," + team1 + "," + team2 + "," + goals_team1 + "," + goals_team2 "," + is_Finished )
+           f.close()
+
+       # holt alle Spiele aus dem angegebenen Interval "s_" Anfangs Jahr/tag, "e_" End Jahr/Tag
 
     def get_data(self, year, data, s_day, e_day):
         """Loads and stores a portion the wanted data into a dictionary and returns the dictionary.
