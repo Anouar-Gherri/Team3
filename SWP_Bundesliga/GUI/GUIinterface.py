@@ -156,7 +156,6 @@ class GUI:
 
     def init_NMD_table(self):
         next_game_list = TheCurrentLists(datetime.today().year)
-        next_game_list.CheckingIfMatchesOfTheCurrentSeasonFileExist()
         list_of_the_next_games = next_game_list.GetTheListOfTheNextRoundIfItExist()
         list_length = len(list_of_the_next_games)
         t = Texttable(0)
@@ -165,7 +164,6 @@ class GUI:
                    Texttable.HLINES | Texttable.VLINES)
         t.header(["Next Matches will be:"])
         t.set_cols_align(["c"])
-        print(list_of_the_next_games[0])
         if list_length == 1:
             t.add_row(list_of_the_next_games[0])
         else:
@@ -177,12 +175,11 @@ class GUI:
     def init_list_teams(self):
         """Sets team selection options based on crawled data."""
         self.list_teamselection = []
-        for year in range(self.crd_from_season, self.crd_to_season + 1):
-            with open('all_teams_' + str(year) + '.csv') as csvfile:
-                reader = csv.DictReader(csvfile)
-                for team in reader:
-                    if team['team_name'] not in self.list_teamselection:
-                        self.list_teamselection.append(team['team_name'])
+        with open('teams.csv', encoding='utf-8') as csvfile:
+            reader = csv.DictReader(csvfile)
+            for team in reader:
+                if team['name'] not in self.list_teamselection:
+                    self.list_teamselection.append(team['name'])
         self.list_teamselection.sort()
         self.select_home.config(values=self.list_teamselection,
                                 width=self.cbb_width(self.list_teamselection))
@@ -239,8 +236,7 @@ class GUI:
                                                    self.crd_from_md,
                                                    self.crd_to_season,
                                                    self.crd_to_md)
-        for i in range(self.crd_from_season, self.crd_to_season + 1):
-            self.current_crawl.get_all_teams(i)
+        self.current_crawl.get_teams(self.crd_from_season, self.crd_to_season)
         self.status_crawled['text'] = 'Done'
         self.label_current_dataset['text'] = "Current data: {}.{}-{}.{}".format(
             self.crd_from_season, self.crd_from_md, self.crd_to_season, self.crd_to_md)
@@ -252,11 +248,7 @@ class GUI:
             return
         self.current_algorithm = self.dict_algorithm.get(
             self.select_algorithm.get())
-        csv_path = "all_games_{}.{}-{}.{}.csv".format(self.crd_from_season,
-                                                      self.crd_from_md,
-                                                      self.crd_to_season,
-                                                      self.crd_to_md)
-        self.current_algorithm.train(csv_path)
+        self.current_algorithm.train('matches.csv')
 
         self.status_training['text'] = 'Done'
         self.label_current_algorithm['text'] = "Current training: {}".format(
