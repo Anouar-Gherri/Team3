@@ -7,250 +7,324 @@ from Crawler import crawler_class
 from builtins import int
 from texttable import Texttable
 from GUI.current_games import TheCurrentLists
+from Algorithm import algorithm_dict
+
+
 class GUI:
     def __init__(self):
         """Builds the main window of the GUI."""
         # window properties
-        self.root=Tk()
+        self.root = Tk()
         self.root.geometry('1000x1000')
         self.root.state('zoomed')
         self.root.title('Bundesliga Vorhersage')
 
         # structural attributes
-        self.mainGrid=Frame(self.root)
-        self.mainGrid.pack()
+        self.main_grid = Frame(self.root)
+        self.main_grid.pack()
 
-        self.frameCrawler=Frame(self.mainGrid)
-        self.frameTeamSelection=Frame(self.mainGrid)
-        self.frameNextMatchday=Frame(self.mainGrid)
+        self.frame_config = Frame(self.main_grid)
+        self.frame_current = Frame(self.main_grid)
+        self.frame_teamselection = Frame(self.main_grid)
+        self.frame_NMD = Frame(self.main_grid)
 
-        self.spacing=10
+        self.spacing = 10
 
         # crawler objects
-        self.initCrawlerObjects()
+        self.init_crawler_objects()
         # training objects
-        self.buttonTraining=Button(self.mainGrid,
-                                   text='Start Training',
-                                   command=self.startTraining,
-                                   state='disabled')
-        self.statusTraining=Label(self.mainGrid, text='')
+        self.init_training_objects()
+
         # team selection objects
-        self.initTeamSelectionObjects()
+        self.init_team_selection_objects()
         # prediction objects
-        self.buttonPrediction=Button(self.mainGrid,
-                                     text='Start Prediction',
-                                     command=self.startPrediction,
-                                     state='disabled')
-        self.statusPrediction=Label(self.mainGrid, text='')
+        self.button_prediction = Button(self.main_grid,
+                                        text='Start Prediction',
+                                        command=self.start_prediction,
+                                        state='disabled')
+        self.status_prediction = Label(self.main_grid, text='\n\n\n\n')
         # next matchday table
-        self.initNextMatchdayTable()
+        self.init_NMD_table()
         # position all objects
-        self.frameCrawler.grid(row=0)
-        self.buttonTraining.grid(row=1)
-        self.statusTraining.grid(row=2)
-        self.frameTeamSelection.grid(row=3)
-        self.buttonPrediction.grid(row=4)
-        self.statusPrediction.grid(row=5)
-        self.frameNextMatchday.grid(row=6)
-        # self.root.mainloop()  # Start the event loop
-    def initCrawlerObjects(self):
+        self.frame_config.grid(row=0)
+        self.frame_current.grid(row=1)
+        self.frame_teamselection.grid(row=2)
+        self.button_prediction.grid(row=3)
+        self.status_prediction.grid(row=4)
+        self.frame_NMD.grid(row=5)
+
+    def init_crawler_objects(self):
         """Builds the GUI objects pertaining to the crawler."""
-        self.listSeasons=self.getSeasons()
-        self.listMatchdays=[x for x in range(1, 35)]
+        self.list_seasons = self.get_seasons()
+        self.list_matchdays = [x for x in range(1, 35)]
 
-        self.labelCrawlFrom=Label(self.frameCrawler, text='From:')
-        self.selectCrawlFromSeason=ttk.Combobox(self.frameCrawler,
-                                                values=self.listSeasons,
-                                                width=self.genComboboxWidth(self.listSeasons))
-        self.selectCrawlFromMatchday=ttk.Combobox(self.frameCrawler,
-                                                  values=self.listMatchdays,
-                                                  width=self.genComboboxWidth(self.listMatchdays))
+        self.label_crawl_from = Label(self.frame_config, text='From:')
+        self.select_crawl_from_season = ttk.Combobox(
+            self.frame_config,
+            values=self.list_seasons,
+            width=self.cbb_width(
+                self.list_seasons))
+        self.select_crawl_from_md = ttk.Combobox(
+            self.frame_config,
+            values=self.list_matchdays,
+            width=self.cbb_width(
+                self.list_matchdays))
 
-        self.labelCrawlTo=Label(self.frameCrawler, text='To:')
-        self.selectCrawlToSeason=ttk.Combobox(self.frameCrawler,
-                                              values=self.listSeasons,
-                                              width=self.genComboboxWidth(self.listSeasons))
-        self.selectCrawlToMatchday=ttk.Combobox(self.frameCrawler,
-                                                values=self.listMatchdays,
-                                                width=self.genComboboxWidth(self.listMatchdays))
-        self.buttonCrawler=Button(self.frameCrawler,
-                                  text='Start Crawler',
-                                  command=self.startCrawler)
-        self.statusCrawled=Label(self.frameCrawler, text='')
+        self.label_crawl_to = Label(self.frame_config, text='To:')
+        self.select_crawl_to_season = ttk.Combobox(
+            self.frame_config,
+            values=self.list_seasons,
+            width=self.cbb_width(
+                self.list_seasons))
+        self.select_crawl_to_md = ttk.Combobox(
+            self.frame_config,
+            values=self.list_matchdays,
+            width=self.cbb_width(
+                self.list_matchdays))
+        self.button_crawler = Button(self.frame_config,
+                                     text='Start Crawler',
+                                     command=self.start_crawler)
+        self.status_crawled = Label(self.frame_config, text='')
 
-        self.labelCrawlFrom.grid(row=0, column=0)
-        self.selectCrawlFromSeason.grid(row=0, column=1)
-        self.selectCrawlFromMatchday.grid(row=0, column=2)
-        self.frameCrawler.grid_columnconfigure(3, minsize=self.spacing)
-        self.labelCrawlTo.grid(row=0, column=4)
-        self.selectCrawlToSeason.grid(row=0, column=5)
-        self.selectCrawlToMatchday.grid(row=0, column=6)
-        self.frameCrawler.grid_columnconfigure(7, minsize=self.spacing)
-        self.buttonCrawler.grid(row=0, column=8)
-        self.statusCrawled.grid(row=1, columnspan=9)
-    def initTeamSelectionObjects(self):
+        self.label_crawl_from.grid(row=0, column=0)
+        self.select_crawl_from_season.grid(row=0, column=1)
+        self.select_crawl_from_md.grid(row=0, column=2)
+        self.frame_config.grid_columnconfigure(3, weight=1)
+        self.label_crawl_to.grid(row=0, column=4)
+        self.select_crawl_to_season.grid(row=0, column=5)
+        self.select_crawl_to_md.grid(row=0, column=6)
+        self.frame_config.grid_columnconfigure(7, minsize=self.spacing)
+        self.button_crawler.grid(row=0, column=8, sticky=N + S + E + W)
+        self.status_crawled.grid(row=0, column=9)
+        self.frame_config.grid_columnconfigure(9, minsize=50)
+
+        # display: current state
+        self.label_current_dataset = Label(self.frame_current, text='')
+        self.label_current_dataset.grid(row=0)
+
+    def init_training_objects(self):
+        """Builds the GUI objects pertaining to the training."""
+        self.dict_algorithm = algorithm_dict.create_algorithms()
+        self.list_algorithms = [name for name in self.dict_algorithm.keys()]
+
+        self.frame_algorithm = Frame(self.frame_config)
+        self.label_algorithm = Label(
+            self.frame_algorithm,
+            text='Select algorithm:')
+        self.select_algorithm = ttk.Combobox(
+            self.frame_algorithm,
+            values=self.list_algorithms,
+            width=self.cbb_width(
+                self.list_algorithms),
+            state='readonly')
+        self.button_training = Button(self.frame_config,
+                                      text='Start Training',
+                                      command=self.start_training,
+                                      state='disabled')
+        self.status_training = Label(self.frame_config, text='')
+
+        self.frame_algorithm.grid(row=1, columnspan=7)
+        self.label_algorithm.grid(row=0, column=0)
+        self.select_algorithm.grid(row=0, column=1)
+        self.button_training.grid(row=1, column=8)
+        self.status_training.grid(row=1, column=9)
+
+        # display: current state
+        self.label_current_algorithm = Label(self.frame_current, text='')
+        self.label_current_algorithm.grid(row=1)
+
+    def init_team_selection_objects(self):
         """Builds the GUI objects pertaining to the team selection."""
-        self.labelHomeTeam=Label(self.frameTeamSelection, text='Home Team:')
-        self.selectHome=ttk.Combobox(self.frameTeamSelection, width=2)
-        self.selectHomeCurrent=self.selectHome.current()
-        self.selectHome.bind('<<ComboboxSelected>>', self.updateSelection)
-        self.labelAwayTeam=Label(self.frameTeamSelection, text='Away Team:')
-        self.selectAway=ttk.Combobox(self.frameTeamSelection, width=2)
-        self.selectAwayCurrent=self.selectAway.current()
-        self.selectAway.bind('<<ComboboxSelected>>', self.updateSelection)
-        self.labelHomeTeam.grid(row=0, column=0)
-        self.selectHome.grid(row=0, column=1)
-        self.labelAwayTeam.grid(row=1, column=0)
-        self.selectAway.grid(row=1, column=1)
+        self.label_hometeam = Label(
+            self.frame_teamselection,
+            text='Home Team:')
+        self.select_home = ttk.Combobox(
+            self.frame_teamselection, width=2, state='readonly')
+        self.select_home_current = self.select_home.current()
+        self.select_home.bind('<<ComboboxSelected>>', self.update_selection)
+        self.label_awayteam = Label(
+            self.frame_teamselection,
+            text='Away Team:')
+        self.select_away = ttk.Combobox(
+            self.frame_teamselection, width=2, state='readonly')
+        self.select_away_current = self.select_away.current()
+        self.select_away.bind('<<ComboboxSelected>>', self.update_selection)
+        self.label_hometeam.grid(row=0, column=0)
+        self.select_home.grid(row=0, column=1)
+        self.label_awayteam.grid(row=1, column=0)
+        self.select_away.grid(row=1, column=1)
 
-
-    def initNextMatchdayTable(self):
+    def init_NMD_table(self):
         next_game_list = TheCurrentLists(datetime.today().year)
         next_game_list.CheckingIfMatchesOfTheCurrentSeasonFileExist()
         list_of_the_next_games = next_game_list.GetTheListOfTheNextRoundIfItExist()
-        listlength = len(list_of_the_next_games)
-        t = Texttable()
+        list_length = len(list_of_the_next_games)
+        t = Texttable(0)
         t.set_chars(['', '', '', ''])
-        t.set_deco(Texttable.BORDER | Texttable.HEADER | Texttable.HLINES | Texttable.VLINES)
+        t.set_deco(Texttable.BORDER | Texttable.HEADER |
+                   Texttable.HLINES | Texttable.VLINES)
         t.header(["Next Matches will be:"])
         t.set_cols_align(["c"])
         print(list_of_the_next_games[0])
-        if listlength == 1:
+        if list_length == 1:
             t.add_row(list_of_the_next_games[0])
         else:
-            for i in range(listlength):
-             t.add_row(list_of_the_next_games[i])
-        self.labelNMDTitle = Label(self.frameNextMatchday, text=t.draw())
-        self.labelNMDTitle.grid(row=0, columnspan=6)
-        # column 0 saved for home team img
+            for i in range(list_length):
+                t.add_row(list_of_the_next_games[i])
+        table = Label(self.frame_NMD, text=t.draw())
+        table.grid(row=0)
 
-
-    def initListTeams(self):
+    def init_list_teams(self):
         """Sets team selection options based on crawled data."""
-        self.listTeamSelection=[]
-        for year in range(self.crawledFromSeason, self.crawledToSeason + 1):
+        self.list_teamselection = []
+        for year in range(self.crd_from_season, self.crd_to_season + 1):
             with open('all_teams_' + str(year) + '.csv') as csvfile:
-                reader=csv.DictReader(csvfile)
+                reader = csv.DictReader(csvfile)
                 for team in reader:
-                    if team['team_name'] not in self.listTeamSelection:
-                        self.listTeamSelection.append(team['team_name'])
-        self.listTeamSelection.sort()
-        self.selectHome.config(values=self.listTeamSelection,
-                               width=self.genComboboxWidth(self.listTeamSelection))
-        self.selectAway.config(values=self.listTeamSelection,
-                               width=self.genComboboxWidth(self.listTeamSelection))
+                    if team['team_name'] not in self.list_teamselection:
+                        self.list_teamselection.append(team['team_name'])
+        self.list_teamselection.sort()
+        self.select_home.config(values=self.list_teamselection,
+                                width=self.cbb_width(self.list_teamselection))
+        self.select_away.config(values=self.list_teamselection,
+                                width=self.cbb_width(self.list_teamselection))
 
-
-    def startCrawler(self):
+    def start_crawler(self):
         """Starts the crawler after checking input values and inserting default values."""
-        thisSeason=datetime.today().year
-        self.crawledFromSeason=self.selectCrawlFromSeason.get()
-        fromMatchday=self.selectCrawlFromMatchday.get()
-        self.crawledToSeason=self.selectCrawlToSeason.get()
-        toMatchday=self.selectCrawlToMatchday.get()
+        this_season = datetime.today().year
+        self.crd_from_season = self.select_crawl_from_season.get()
+        self.crd_from_md = self.select_crawl_from_md.get()
+        self.crd_to_season = self.select_crawl_to_season.get()
+        self.crd_to_md = self.select_crawl_to_md.get()
         # if no selection made default to current season
-        if self.crawledToSeason == '':
-            self.crawledToSeason=thisSeason
-        elif self.selectCrawlToSeason.current() == -1:
-            self.returnInvalid(self.statusCrawled)
+        if self.crd_to_season == '':
+            self.crd_to_season = this_season
+        elif self.select_crawl_to_season.current() == -1:
+            self.return_invalid(self.status_crawled)
             return
         else:
-            self.crawledToSeason=int(self.crawledToSeason)
-        # if no selection made default to selected crawledToSeason
-        if self.crawledFromSeason == '':
-            self.crawledFromSeason=self.crawledToSeason
-        elif self.selectCrawlFromSeason.current() == -1:
-            self.returnInvalid(self.statusCrawled)
+            self.crd_to_season = int(self.crd_to_season)
+        # if no selection made default to selected crd_to_season
+        if self.crd_from_season == '':
+            self.crd_from_season = self.crd_to_season
+        elif self.select_crawl_from_season.current() == -1:
+            self.return_invalid(self.status_crawled)
             return
         else:
-             self.crawledFromSeason=int(self.crawledFromSeason)
+            self.crd_from_season = int(self.crd_from_season)
         # if no selection made default to first matchday
-        if fromMatchday == '':
-            fromMatchday=1
-        elif self.selectCrawlFromMatchday.current() == -1:
-            self.returnInvalid(self.statusCrawled)
+        if self.crd_from_md == '':
+            self.crd_from_md = 1
+        elif self.select_crawl_from_md.current() == -1:
+            self.return_invalid(self.status_crawled)
             return
         else:
-            fromMatchday=int(fromMatchday)
+            self.crd_from_md = int(self.crd_from_md)
         # if no selection made default to last matchday
-        if toMatchday == '':
-            toMatchday=34
-        elif self.selectCrawlToMatchday.current() == -1:
-            self.returnInvalid(self.statusCrawled)
+        if self.crd_to_md == '':
+            self.crd_to_md = 34
+        elif self.select_crawl_to_md.current() == -1:
+            self.return_invalid(self.status_crawled)
             return
         else:
-            toMatchday=int(toMatchday)
-        if (self.crawledFromSeason > self.crawledToSeason
-                or (self.crawledFromSeason == self.crawledToSeason
-                    and fromMatchday > toMatchday)):
-            self.returnInvalid(self.statusCrawled)
+            self.crd_to_md = int(self.crd_to_md)
+        if (self.crd_from_season > self.crd_to_season
+                or (self.crd_from_season == self.crd_to_season
+                    and self.crd_from_md > self.crd_to_md)):
+            self.return_invalid(self.status_crawled)
             return
-        self.currentCrawl=crawler_class.Crawler("https://www.openligadb.de/api")
-        self.currentCrawl.get_match_data_interval(self.crawledFromSeason,
-                                                  fromMatchday,
-                                                  self.crawledToSeason,
-                                                  toMatchday)
-        for i in range(self.crawledFromSeason,self.crawledToSeason+1):
-            self.currentCrawl.get_all_teams(i)
-        if self.crawledFromSeason == self.crawledToSeason:
-            crawledInterval=str(self.crawledFromSeason)
-        else:
-            crawledInterval="{}{}{}".format(str(self.crawledFromSeason),
-                                            " to ",
-                                            str(self.crawledToSeason))
-        self.statusCrawled['text']="{}{}{}".format("Crawling of match data from ",
-                                                   crawledInterval,
-                                                   " done.")
-        self.buttonTraining['state']='normal'
-    def startTraining(self):
-        self.statusTraining['text']='Training done.'
-        self.buttonPrediction['state']='normal'
-        self.initListTeams()
-    def startPrediction(self):
-        homePick=self.selectHome.current()
-        awayPick=self.selectAway.current()
-        statusText="{}{}{}{}{}".format('Prediction for ',
-                                       self.listTeamSelection[homePick],
-                                       ' against ',
-                                       self.listTeamSelection[awayPick],
-                                       ' is...')
-        if (homePick != -1 and awayPick != -1):
-            self.statusPrediction['text']=statusText
-    def updateSelection(self, select):
-        """Switches home team and away team selection if the user tries to select the same team twice."""
-        if (self.selectHome.get() == self.selectAwayCurrent):
-            self.selectAway.set(self.selectHomeCurrent)
-            self.selectHomeCurrent=self.selectHome.get()
-            self.selectAwayCurrent=self.selectAway.get()
-        elif (self.selectAway.get() == self.selectHomeCurrent):
-            self.selectHome.set(self.selectAwayCurrent)
-            self.selectAwayCurrent=self.selectAway.get()
-            self.selectHomeCurrent=self.selectHome.get()
-        else:
-            self.selectHomeCurrent=self.selectHome.get()
-            self.selectAwayCurrent=self.selectAway.get()
-    def make_current_season_list(self):
-        current_year=datetime.today().year
+        self.current_crawl = crawler_class.Crawler(
+            "https://www.openligadb.de/api")
+        self.current_crawl.get_match_data_interval(self.crd_from_season,
+                                                   self.crd_from_md,
+                                                   self.crd_to_season,
+                                                   self.crd_to_md)
+        for i in range(self.crd_from_season, self.crd_to_season + 1):
+            self.current_crawl.get_all_teams(i)
+        self.status_crawled['text'] = 'Done'
+        self.label_current_dataset['text'] = "Current data: {}.{}-{}.{}".format(
+            self.crd_from_season, self.crd_from_md, self.crd_to_season, self.crd_to_md)
+        self.button_training['state'] = 'normal'
 
-        c=crawler_class.Crawler("https://www.openligadb.de/api")
-        data_for_next_round=c.get_match_data(int(current_year))
+    def start_training(self):
+        """Call selected algorithm."""
+        if self.select_algorithm.current() == -1:
+            return
+        self.current_algorithm = self.dict_algorithm.get(
+            self.select_algorithm.get())
+        csv_path = "all_games_{}.{}-{}.{}.csv".format(self.crd_from_season,
+                                                      self.crd_from_md,
+                                                      self.crd_to_season,
+                                                      self.crd_to_md)
+        self.current_algorithm.train(csv_path)
+
+        self.status_training['text'] = 'Done'
+        self.label_current_algorithm['text'] = "Current training: {}".format(
+            self.select_algorithm.get())
+        self.button_prediction['state'] = 'normal'
+        self.init_list_teams()
+
+    def start_prediction(self):
+        home_pick = self.select_home.current()
+        away_pick = self.select_away.current()
+        if (home_pick == -1 and away_pick == -1):
+            return
+        match_request = dict(host=self.list_teamselection[home_pick],
+                             guest=self.list_teamselection[away_pick])
+        result = self.current_algorithm.request(match_request)
+        status_text = "{}{}{}{}{}".format('Prediction for ',
+                                          self.list_teamselection[home_pick],
+                                          ' (host) against ',
+                                          self.list_teamselection[away_pick],
+                                          ' is:\n')
+        status_text += '\nWin: ' + "{:.2%}".format(result.get('win'))
+        status_text += '\nLose: ' + "{:.2%}".format(result.get('lose'))
+        status_text += '\nDraw: ' + "{:.2%}".format(result.get('draw'))
+        self.status_prediction['text'] = status_text
+
+    def update_selection(self, select):
+        """Switches home team and away team selection if the user tries to select the same team twice."""
+        if (self.select_home.get() == self.select_away_current):
+            self.select_away.set(self.select_home_current)
+            self.select_home_current = self.select_home.get()
+            self.select_away_current = self.select_away.get()
+        elif (self.select_away.get() == self.select_home_current):
+            self.select_home.set(self.select_away_current)
+            self.select_away_current = self.select_away.get()
+            self.select_home_current = self.select_home.get()
+        else:
+            self.select_home_current = self.select_home.get()
+            self.select_away_current = self.select_away.get()
+
+    def make_current_season_list(self):
+        current_year = datetime.today().year
+
+        c = crawler_class.Crawler("https://www.openligadb.de/api")
+        data_for_next_round = c.get_match_data(int(current_year))
         return data_for_next_round
-    def getSeasons(self):
+
+    def get_seasons(self):
         """Returns a list with all the Bundesliga seasons from 2002/2003 to now."""
-        current=datetime.today().year
-        firstSeason=2003
-        allSeasons=[]
-        for i in range(firstSeason, current + 1):
-            allSeasons.append(i)
-        return allSeasons
+        current = datetime.today().year
+        first_season = 2003
+        all_seasons = []
+        for i in range(first_season, current + 1):
+            all_seasons.append(i)
+        return all_seasons
     # visuals
-    def returnInvalid(self, status):
+
+    def return_invalid(self, status):
         """Displays a text to let the user know that an invalid input has been made."""
-        status['text']='Invalid input.'
-    def genComboboxWidth(self, list):
+        status['text'] = 'Invalid input.'
+
+    def cbb_width(self, list):
         """Calculates an appropriate size for comboboxes depending on their values."""
         return max(len(str(x)) for x in list) + 1
-def initiateGUI():
-    GUI_object=GUI()
-    GUI_object.root.mainloop()
-initiateGUI()
+
+
+def initiate_gui():
+    gui_object = GUI()
+    gui_object.root.mainloop()
+
+
+initiate_gui()

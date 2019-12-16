@@ -1,87 +1,65 @@
 import pytest
 import os
-from GUI import *
+from GUIinterface import *
 
 test_GUI = GUI()
 
-def resetAllInputs():
-    test_GUI.selectCrawlFromSeason.set('')
-    test_GUI.selectCrawlToSeason.set('')
-    test_GUI.selectCrawlFromMatchday.set('')
-    test_GUI.selectCrawlToMatchday.set('')
-    test_GUI.selectHome.set('')
-    test_GUI.selectAway.set('')
+def reset_all_inputs():
+    test_GUI.select_crawl_from_season.set('')
+    test_GUI.select_crawl_to_season.set('')
+    test_GUI.select_crawl_from_md.set('')
+    test_GUI.select_crawl_to_md.set('')
+    test_GUI.select_home.set('')
+    test_GUI.select_away.set('')
 
+def test_cr_button_defaultSeasonFrom():
+    reset_all_inputs()
+    test_GUI.select_crawl_to_season.set('2005')
+    test_GUI.start_crawler()
+    assert test_GUI.crd_from_season == 2005
 
-def test_crawlerButton_defaultSeasonFrom():
-    resetAllInputs()
-    test_GUI.selectCrawlToSeason.set('2005')
-    test_GUI.startCrawler()
-    
-def test_crawlerButton_defaultSeasonTo():
-    resetAllInputs()
-    test_GUI.selectCrawlFromSeason.set('2018')
-    test_GUI.selectCrawlToMatchday.set('3')
-    test_GUI.startCrawler()
-    
-def test_crawlerButton_defaultMatchdayFrom():
-    resetAllInputs()
-    test_GUI.selectCrawlFromSeason.set('2006')
-    test_GUI.selectCrawlToSeason.set('2006')
-    test_GUI.selectCrawlToMatchday.set('3')
-    test_GUI.startCrawler()
-    
-def test_crawlerButton_defaultMatchdayTo():
-    resetAllInputs()
-    test_GUI.selectCrawlFromSeason.set('2006')
-    test_GUI.selectCrawlToSeason.set('2006')
-    test_GUI.selectCrawlFromMatchday.set('30')
-    test_GUI.startCrawler()
-    
-def test_teamSelection():
-    resetAllInputs()
-    test_GUI.selectCrawlFromSeason.set('2006')
-    test_GUI.selectCrawlToSeason.set('2007')
-    test_GUI.selectCrawlFromMatchday.set('34')
-    test_GUI.selectCrawlToMatchday.set('1')
-    test_GUI.startCrawler()
-    test_GUI.startTraining()
-    
-# test with pytest
-    
-def pytest_crawlerButton_defaultSeasonFrom():
-    test_crawlerButton_defaultSeasonFrom()
-    assert test_GUI.crawledFromSeason == 2005
-    
-def pytest_crawlerButton_defaultSeasonTo():
-    test_crawlerButton_defaultSeasonTo()
-    thisYear = datetime.today().year
-    assert test_GUI.crawledToSeason == thisYear
-    
-def pytest_crawlerButton_defaultMatchdayFrom():
-    test_crawlerButton_defaultMatchdayFrom()
-    result = os.path.isfile('all_games_2006.1-2006.3.csv')
-    assert result == True
-    
-def pytest_crawlerButton_defaultMatchdayTo():
-    test_crawlerButton_defaultMatchdayTo()
-    result = os.path.isfile('all_games_2006.30-2006.34.csv')
-    assert result == True
-    
+def test_cr_button_defaultSeasonTo():
+    reset_all_inputs()
+    test_GUI.select_crawl_from_season.set('2018')
+    test_GUI.select_crawl_to_md.set('3')
+    test_GUI.start_crawler()
+    this_year = datetime.today().year
+    assert test_GUI.crd_to_season == this_year
+
+def test_cr_button_defaultMDFrom():
+    reset_all_inputs()
+    test_GUI.select_crawl_from_season.set('2006')
+    test_GUI.select_crawl_to_season.set('2006')
+    test_GUI.select_crawl_to_md.set('3')
+    test_GUI.start_crawler()
+    assert test_GUI.crd_from_md == 1
+
+def test_cr_button_defaultMDTo():
+    reset_all_inputs()
+    test_GUI.select_crawl_from_season.set('2006')
+    test_GUI.select_crawl_to_season.set('2006')
+    test_GUI.select_crawl_from_md.set('30')
+    test_GUI.start_crawler()
+    assert test_GUI.crd_to_md == 34
+
+def test_teamselection():
+    reset_all_inputs()
+    test_GUI.select_crawl_from_season.set('2006')
+    test_GUI.select_crawl_to_season.set('2007')
+    test_GUI.select_crawl_from_md.set('34')
+    test_GUI.select_crawl_to_md.set('1')
+    test_GUI.start_crawler()
+    test_GUI.select_algorithm.current(0)
+    test_GUI.start_training()
+    assert len(test_GUI.list_teamselection) == 21
+
 # TODO test training button (after implementation of training functionality)
-    
-def pytest_teamSelection():
-    test_teamSelection()
-    assert len(test_GUI.listTeamSelection) == 21
-    
-# call all tests
+def call_tests():
+    test_cr_button_defaultSeasonFrom()
+    test_cr_button_defaultSeasonTo()
+    test_cr_button_defaultMDFrom()
+    test_cr_button_defaultMDTo()
+    test_teamselection()
 
-pytest_crawlerButton_defaultSeasonFrom()
-pytest_crawlerButton_defaultSeasonTo()
-pytest_crawlerButton_defaultMatchdayFrom()
-pytest_crawlerButton_defaultMatchdayTo()
-
-pytest_teamSelection()
-
+call_tests()
 print('All tests done. Everything is OK!') 
-    
