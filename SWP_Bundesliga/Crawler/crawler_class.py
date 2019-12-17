@@ -30,23 +30,26 @@ class Crawler:
         )
         page = urllib.request.urlopen(url_header)
         matches = pd.read_json(page)
-        for m in range(0, 306):
-            if matches['Group'][m]['GroupOrderID'] in range(s_day, e_day + 1):
-                data['date'].append(matches['MatchDateTime'][m])
-                data['team1'].append(matches['Team1'][m]['TeamName'])
-                data['team2'].append(matches['Team2'][m]['TeamName'])
-                data['is_finished'].append(matches['MatchIsFinished'][m])
-                data['play_day'].append(matches['Group'][m]['GroupOrderID'])
-                if matches['MatchIsFinished'][m]:
-                    if matches['MatchResults'][m][0]['ResultName'] == "Endergebnis":
-                        data['goal1'].append(matches['MatchResults'][m][0]['PointsTeam1'])
-                        data['goal2'].append(matches['MatchResults'][m][0]['PointsTeam2'])
+        try:
+            for m in range(0, 306):
+                if matches['Group'][m]['GroupOrderID'] in range(s_day, e_day + 1):
+                    data['date'].append(matches['MatchDateTime'][m])
+                    data['team1'].append(matches['Team1'][m]['TeamName'])
+                    data['team2'].append(matches['Team2'][m]['TeamName'])
+                    data['is_finished'].append(matches['MatchIsFinished'][m])
+                    data['play_day'].append(matches['Group'][m]['GroupOrderID'])
+                    if matches['MatchIsFinished'][m]:
+                        if matches['MatchResults'][m][0]['ResultName'] == "Endergebnis":
+                            data['goal1'].append(matches['MatchResults'][m][0]['PointsTeam1'])
+                            data['goal2'].append(matches['MatchResults'][m][0]['PointsTeam2'])
+                        else:
+                            data['goal1'].append(matches['MatchResults'][m][1]['PointsTeam1'])
+                            data['goal2'].append(matches['MatchResults'][m][1]['PointsTeam2'])
                     else:
-                        data['goal1'].append(matches['MatchResults'][m][1]['PointsTeam1'])
-                        data['goal2'].append(matches['MatchResults'][m][1]['PointsTeam2'])
-                else:
-                    data['goal1'].append("-")
-                    data['goal2'].append("-")
+                        data['goal1'].append("-")
+                        data['goal2'].append("-")
+        except KeyError:
+            print('Can not find "Group" -> the file is empty ')
         return data
 
     def get_match_data_interval(self, s_year, s_day, e_year, e_day):
@@ -109,7 +112,6 @@ class Crawler:
                 team_dict['year'].append(y)
         df = pd.DataFrame(team_dict, columns=['name', 'year'])
         df.to_csv('teams.csv', index=False)
-
 
 # print(Crawler.get_teams.__doc__)
 # print(Crawler.get_data.__doc__)
