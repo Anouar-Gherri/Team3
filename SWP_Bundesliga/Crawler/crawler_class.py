@@ -5,6 +5,7 @@ import pandas as pd
 class Crawler:
 
     def __init__(self, url):
+        """Initializing of Crawler"""
         self.url = url
 
     def get_data(self, year, data, s_day, e_day):
@@ -53,8 +54,9 @@ class Crawler:
         return data
 
     def get_match_data_interval(self, s_year, s_day, e_year, e_day):
-        """Searches the match data which are requested. First stores all data into
-        a dictionary then when all data is collected Stores all the data into matches.csv File
+        """Searches the match data which are requested. All match data gets stored into a dict.
+        After all the required data is stored into the dictionary, the dictionary
+        then gets stored as matches.csv
 
         :param s_year: Specifies the starting year for the data
         :param s_day: Specifies the starting day in s_year
@@ -64,7 +66,7 @@ class Crawler:
         :type s_year: int
         :type s_day: int
         :type e_year: int
-        :type e_day: int \n"""
+        :type e_day: int """
 
         data = {'date': [],
                 'team1': [],
@@ -88,8 +90,8 @@ class Crawler:
         df.to_csv('matches.csv', index=False)
 
     def get_teams(self, s_year, e_year):
-        """ Stores all Teams which played between s_year and e_year in bl1
-        in teams.csv
+        """ Gets and stores all Teams which played between s_year and e_year in bl1
+        into the file teams.csv
 
          :param s_year: Specifies starting year for the Team data
          :param e_year: Specifies ending year for the Team data
@@ -113,9 +115,3 @@ class Crawler:
         df = pd.DataFrame(team_dict, columns=['name', 'year'])
         df.to_csv('teams.csv', index=False)
 
-# print(Crawler.get_teams.__doc__)
-# print(Crawler.get_data.__doc__)
-# print(Crawler.get_match_data_interval.__doc__)
-
-# c = Crawler("https://www.openligadb.de/api")
-# c.get_match_data_interval(2016, 1, 2016, 1)
