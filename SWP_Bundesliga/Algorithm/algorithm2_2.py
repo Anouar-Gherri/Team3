@@ -6,4 +6,4 @@ def create():
 
     :return: Algorithm (GoalsPerMatch with attention to home/away)
     """
-    return al2.gpma_base('GoalsPerMatchAlgorithmV2', 'GPMA_V2', 0.5)
+    return al2.gpma_base('GoalsPerMatchAlgorithmV2', 0.5)

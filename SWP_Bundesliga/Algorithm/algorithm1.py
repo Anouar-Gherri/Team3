@@ -1,48 +1,26 @@
-# Creates the Functions for the Relative Frequency Algorithm
 from Algorithm import AlgorithmClass as aC
-import csv
 
 
 # --- Algorithm Functions ---
 # Simply copies the csv crawler data into library-name.csv
-def library_creator(library_name, crawler_data_file, column_separator=',', **kwargs):
+def library_creator(matches, **kwargs):
     """Creates the Library.
 
-    :param library_name: The filename of the Library
-    :param crawler_data_file: the data file with the crawler data
-    :param column_separator: the separator string for the columns in the csv file
+    :param matches: the data file with the crawler data
     """
 
-    if 'column_separator' in kwargs:
-        column_separator = kwargs['column_separator']
-
-    # read the data file into a list
-    matches = list(csv.reader(crawler_data_file, delimiter=column_separator))
-
-    # skips the header
-    if 'date' in matches[0]:
-        del matches[0]
-
-    # and write the library
-    with open(library_name, "w+", newline='') as lib_file:
-        writer = csv.writer(lib_file)
-        writer.writerows(matches)
-    lib_file.close()
+    return matches
 
 
 # Request a prediction from the library
-def library_reader(library, match_dict, column_separator=",", **kwargs):
+def library_reader(library, match_dict, **kwargs):
     """Request form the Library.
 
     :param library: a library file
     :param match_dict: a dictionary with match specifications
-    :param column_separator: the separator for the columns in the csv file
 
     :return: A list containing the predicted results for the host
     """
-
-    if 'column_separator' in kwargs:
-        column_separator = kwargs['column_separator']
 
     host = match_dict["host"]
     guest = match_dict["guest"]
@@ -53,13 +31,9 @@ def library_reader(library, match_dict, column_separator=",", **kwargs):
     results_guest = [0, 0, 0]
 
     # --- Library reading ---
-    for line in library:
+    for data in library:
         # converts the lines in a list (assuming structure is [date, t1, t2, gt1, gt2])
-        data = line.strip().split(column_separator)
-        team1 = data[1]
-        team2 = data[2]
-        goals_t1 = data[3]
-        goals_t2 = data[4]
+        team1, team2, goals_t1, goals_t2 = data[1:5]
         # If host and guest played in this match
         if {team1, team2} == {host, guest}:
             # Calculate the results and increment
@@ -121,5 +95,5 @@ def create():
     :return: Algorithm (RelativeFrequency)
     """
     rfa = aC.Algorithm("RelativeFrequencyAlgorithm", library_creator,
-                       library_reader, 'csv', 'csv', 'RFA')
+                       library_reader, 'csv')
     return rfa
