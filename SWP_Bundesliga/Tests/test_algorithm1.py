@@ -53,4 +53,4 @@ def algorithm1_print_running():
 
 
 # Uncomment this to see some output
-algorithm1_print_running()
+# algorithm1_print_running()

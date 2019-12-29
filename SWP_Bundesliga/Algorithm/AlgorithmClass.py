@@ -1,15 +1,15 @@
-# The Algorithm class
+import pandas as pd
 
 
 # An Algorithm takes the following input:
 # - name (string):
 #           A dummy name, e.g. 'RelativeFrequencyAlgorithm'
-# - training_function (library-filename crawler_data_file *args -> library-file):
+# - training_function (crawler_data *args -> library):
 #           a function which takes the Crawler data and trains a
-#           'Library file'. The calculations for the probabilities will later
+#           'Library'. The calculations for the probabilities will later
 #           base on this file. It also has to return a set of the unique teams.
-# - request_function (library-file match-dict -> probability-dict):
-#           will calculate the probability based on the library-file and the match specified
+# - request_function (library match-dict -> probability-dict):
+#           will calculate the probability based on the library and the match specified
 #           in the match-dict. The calculated probabilities will be returned as a list
 #           with chances for winning, loosing or drawing, referring to the host.
 #           e.g. {"host": "munich", "guest": 'dusseldorf', "Place": "munich",
@@ -18,38 +18,26 @@
 # - data format (string):
 #           the format of the trainings data. has to fit with the trainings function.
 #           All '.' in the string will be deleted
-# - library format (string):
-#           the format of the library. has to fit the trainings function an request function.
-#           All '.' in the string will be deleted
 # - library_name [optional] (str):
 #           A name to determine the name of the library file. Case not given,
 #           <name> wil be taken.
-
 class Algorithm:
     def __init__(self, name: str, training_function, request_function, data_format: str,
-                 library_format: str, nickname: str = '', train_specifications=None,
-                 request_specifications=None):
+                 train_specifications=None, request_specifications=None):
         """Creates a new algorithm.
 
         :param name: A name for the Algorithm.
         :param training_function: A function using the crawler data to create a 'library'.
-               It has to return the set of the unique teams
         :param request_function: A function using the library and match information
                to predict its outcomes
         :param data_format: The file type of the crawler data
-        :param library_format: The file type of the library
-        :param nickname: An optional shorter name. Case not given, <name> will be used for this.
-               The final form will be Library_<library_name>.<library_format>
         :param train_specifications: A dict specifying settings in the training_function
         :param request_specifications: A dict specifying settings in the training_function
-
 
         :type name: str
         :type training_function: function
         :type request_function: function
         :type data_format: str
-        :type library_format: str
-        :type nickname: str
 
         :rtype: object (Algorithm)
         """
@@ -59,14 +47,12 @@ class Algorithm:
             request_specifications = {}
 
         data_format = data_format.replace('.', '')
-        library_format = library_format.replace('.', '')
-        nickname = name if nickname == '' else nickname
 
         self.name = name
         self.training_function = training_function
         self.request_function = request_function
-        self.file_types = dict(crawler=data_format, library=library_format)
-        self.library_filename = 'Library_{}.{}'.format(nickname, library_format)
+        self.data_format = data_format
+        self.library = []
         self.trained = False
         self.specifications = dict(train_kwargs=train_specifications, request_kwargs=request_specifications)
 
@@ -80,11 +66,8 @@ class Algorithm:
     def set_request_function(self, request_function):
         self.request_function = request_function
 
-    def set_file_types(self, file_types: dict):
-        self.file_types = file_types
-
-    def set_library_filename(self, library_filename: str):
-        self.library_filename = library_filename
+    def data_format(self, data_format: dict):
+        self.data_format = data_format
 
     def set_trained(self, trained: bool):
         self.trained = trained
@@ -107,17 +90,17 @@ class Algorithm:
 
         :type crawler_data_file_name: str
         """
-        data_format = self.file_types['crawler']
         # Generate the name of the Library from the Algorithm name and Library ending
-        if not crawler_data_file_name.endswith(data_format):
+        if not crawler_data_file_name.endswith(self.data_format):
             raise ValueError(
-                "The type of the requested crawler-data-file does not match the expected type: " + data_format)
+                "The type of the requested crawler-data-file does not match the expected type: " + self.data_format)
 
         kwargs = self.specifications['train_kwargs']
 
-        with open(crawler_data_file_name, "r") as data:
-            self.training_function(self.library_filename, data, *args, **kwargs)
-        data.close()
+        # reads the crawler data file and extracts all valid matches
+        data = extract_valid_matches(crawler_data_file_name)
+
+        self.library = self.training_function(data, *args, **kwargs)
 
         self.trained = True
 
@@ -135,13 +118,11 @@ class Algorithm:
         """
 
         if not self.trained:
-            raise NameError('The library "{}" has to be trained first (Use self.train)'.format(self.library_filename))
+            raise NameError('The library has to be trained first (Use self.train)')
 
         kwargs = self.specifications['request_kwargs']
 
-        with open(self.library_filename, "r") as lib:
-            results = self.request_function(lib, match_dict, *args, **kwargs)
-        lib.close()
+        results = self.request_function(self.library, match_dict, *args, **kwargs)
 
         host = match_dict['host']
         result_dict = results_to_dict(host, results)
@@ -161,3 +142,27 @@ def results_to_dict(host, results):
     res_dict = {'host': host}
     res_dict.update({case: res for case, res in zip(["win", "lose", "draw"], results)})
     return res_dict
+
+
+def extract_valid_matches(crawler_data_file_name: str, delimiter: str = ','):
+    data = pd.read_csv(crawler_data_file_name, delimiter=delimiter)
+
+    rows = data['is_finished'].values.tolist()
+    matches = data[rows]
+    matches = matches.drop(columns='is_finished')
+
+    matches['goal1'] = matches['goal1'].astype(int)
+    matches['goal2'] = matches['goal2'].astype(int)
+    matches = matches.values.tolist()
+
+    return matches
+
+
+def start_trained(name, training_function, request_function, data_format: str, data_file: str,
+                  train_specifications=None, request_specifications=None):
+
+    trained_algorithm = Algorithm(name, training_function, request_function, data_format,
+                                  train_specifications, request_specifications)
+    trained_algorithm.train(data_file)
+
+    return trained_algorithm

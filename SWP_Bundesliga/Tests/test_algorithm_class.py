@@ -1,4 +1,5 @@
 import pytest
+import csv
 from Algorithm import AlgorithmClass as aC
 from Algorithm import algorithm1 as al1
 from Algorithm import algorithm2_2 as al2_2
@@ -21,20 +22,14 @@ def test_algorithm_creation(rfa, gpma2):
     assert rfa.name == "RelativeFrequencyAlgorithm"
     assert callable(rfa.request_function) is True
     assert callable(rfa.training_function) is True
-    assert rfa.file_types == dict(crawler='csv', library='csv')
+    assert rfa.data_format == 'csv'
     assert rfa.trained is False
-    assert rfa.library_filename == 'Library_RFA.csv'
+    assert rfa.library == []
     assert rfa.specifications == {'request_kwargs': {}, 'train_kwargs': {}}
     assert gpma2.specifications == {'request_kwargs': dict(kw_weight_team=0.5), 'train_kwargs': {}}
 
     rfa.train('TestData(2018).csv')
     assert rfa.trained is True
-
-
-def test_name_as_libname():
-    rfa2 = aC.Algorithm("RelativeFrequencyAlgorithm", al1.library_creator,
-                        al1.library_reader, 'csv', 'csv')
-    assert rfa2.library_filename == 'Library_RelativeFrequencyAlgorithm.csv'
 
 
 def test_algorithm_class_result_dict():
@@ -62,13 +57,8 @@ def test_algorithm_class_train_error1(rfa):
 
 # Checks whether a library is created
 def test_algorithm_class_train_creation(rfa):
-    with open('TestData(2018).csv') as data:
-        rfa.train('TestData(2018).csv')
-        next(data)  # skips the header.
-        with open('Library_RFA.csv') as Library:
-            assert Library.read() == data.read()
-        Library.close()
-    data.close()
+    rfa.train('TestData(2018).csv')
+    assert rfa.library[0] == ['2018-08-24T20:30:00', 'FC Bayern', 'TSG 1899 Hoffenheim', 3, 1, 1]
 
     assert rfa.trained is True
 
@@ -102,5 +92,6 @@ def algorithm1_print_running():
     print_results('Borussia Dortmund', 'SC Freiburg')
     print_results('SC Freiburg', 'FC Bayern')
 
+
 # Uncomment this to see some output
-algorithm1_print_running()
+# algorithm1_print_running()

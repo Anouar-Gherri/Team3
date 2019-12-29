@@ -1,22 +1,15 @@
 from Algorithm import AlgorithmClass as aC
-import csv
 
 
-def library_creator(library_name, crawler_data_file, delimiter=',', **kwargs):
+def library_creator(data, delimiter=',', **kwargs):
     """Creates the Library.
 
-    :param library_name: The filename of the Library
-    :param crawler_data_file: the data file with the crawler data
+    :param data: the data file with the crawler data
     :param delimiter: the separator string for the columns in the csv file
     """
+    matches = data
 
-    if 'delimiter' in kwargs:
-        delimiter = kwargs['delimiter']
-
-    matches = list(csv.reader(crawler_data_file, delimiter=delimiter))
-    if 'date' in matches[0]:
-        del matches[0]  # skips the header
-
+    print(matches)
     # create list of unique teams
     teams_set = set()
     for row in matches:
@@ -43,11 +36,9 @@ def library_creator(library_name, crawler_data_file, delimiter=',', **kwargs):
     home_away_gpm = [['home_gpm', home_away_goals[0] / len(matches)],
                      ['away_gpm', home_away_goals[1] / len(matches)]]
 
-    with open(library_name, 'w+', newline='') as lib_file:
-        writer = csv.writer(lib_file)
-        writer.writerows(teams_gpm)
-        writer.writerows(home_away_gpm)
-    lib_file.close()
+    teams_gpm.extend(home_away_gpm)
+
+    return teams_gpm
 
 
 def library_request(library, match_dict, weight_team=1, **kwargs):
@@ -61,15 +52,13 @@ def library_request(library, match_dict, weight_team=1, **kwargs):
     if weight_team is library_request.__defaults__[0] and 'kw_weight_team' in kwargs:
         weight_team = kwargs['kw_weight_team']
 
-    reader = csv.reader(library)
-    goals_per_match = {rows[0]: float(rows[1]) for rows in reader}
+    goals_per_match = {rows[0]: float(rows[1]) for rows in library}
 
     host = match_dict['host']
     guest = match_dict['guest']
 
     gpm_home, gpm_away = goals_per_match['home_gpm'], goals_per_match['away_gpm']
 
-    print(weight_team)
     weight_place = 1 - weight_team
 
     gpm_host = weight_team * goals_per_match[host] + weight_place * gpm_home
@@ -93,8 +82,8 @@ def library_request(library, match_dict, weight_team=1, **kwargs):
     return results
 
 
-def gpma_base(name, libname, *args):
-    gpma = aC.Algorithm(name, library_creator, library_request, 'csv', 'csv', libname)
+def gpma_base(name, *args):
+    gpma = aC.Algorithm(name, library_creator, library_request, 'csv')
 
     if args:
         gpma.set_request_specifications(dict(kw_weight_team=args[0]))
@@ -107,4 +96,4 @@ def create():
 
     :return: Algorithm (GoalsPerMatch)
     """
-    return gpma_base('GoalsPerMatchAlgorithm', 'GPMA')
+    return gpma_base('GoalsPerMatchAlgorithm')

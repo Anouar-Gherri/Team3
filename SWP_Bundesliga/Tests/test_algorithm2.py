@@ -52,4 +52,4 @@ def algorithm2_print_running():
 
 
 # Uncomment this to see some output
-algorithm2_print_running()
+# algorithm2_print_running()
