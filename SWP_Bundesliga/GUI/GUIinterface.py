@@ -55,31 +55,31 @@ class GUI:
 
     def init_crawler_objects(self):
         """Builds the GUI objects pertaining to the crawler."""
-        self.list_seasons = self.get_seasons()
+        self.list_seasons = get_seasons()
         self.list_matchdays = [x for x in range(1, 35)]
 
         self.label_crawl_from = Label(self.frame_config, text='From:')
         self.select_crawl_from_season = ttk.Combobox(
             self.frame_config,
             values=self.list_seasons,
-            width=self.cbb_width(
+            width=cbb_width(
                 self.list_seasons))
         self.select_crawl_from_md = ttk.Combobox(
             self.frame_config,
             values=self.list_matchdays,
-            width=self.cbb_width(
+            width=cbb_width(
                 self.list_matchdays))
 
         self.label_crawl_to = Label(self.frame_config, text='To:')
         self.select_crawl_to_season = ttk.Combobox(
             self.frame_config,
             values=self.list_seasons,
-            width=self.cbb_width(
+            width=cbb_width(
                 self.list_seasons))
         self.select_crawl_to_md = ttk.Combobox(
             self.frame_config,
             values=self.list_matchdays,
-            width=self.cbb_width(
+            width=cbb_width(
                 self.list_matchdays))
         self.button_crawler = Button(self.frame_config,
                                      text='Start Crawler',
@@ -114,7 +114,7 @@ class GUI:
         self.select_algorithm = ttk.Combobox(
             self.frame_algorithm,
             values=self.list_algorithms,
-            width=self.cbb_width(
+            width=cbb_width(
                 self.list_algorithms),
             state='readonly')
         self.button_training = Button(self.frame_config,
@@ -155,7 +155,8 @@ class GUI:
         self.select_away.grid(row=1, column=1)
 
     def init_NMD_table(self):
-        next_game_list = TheCurrentLists(datetime.today().year)
+        year = get_current_season()
+        next_game_list = TheCurrentLists(year)
         list_of_the_next_games = next_game_list.GetTheListOfTheNextRoundIfItExist()
         list_length = len(list_of_the_next_games)
         t = Texttable(0)
@@ -182,13 +183,13 @@ class GUI:
                     self.list_teamselection.append(team['name'])
         self.list_teamselection.sort()
         self.select_home.config(values=self.list_teamselection,
-                                width=self.cbb_width(self.list_teamselection))
+                                width=cbb_width(self.list_teamselection))
         self.select_away.config(values=self.list_teamselection,
-                                width=self.cbb_width(self.list_teamselection))
+                                width=cbb_width(self.list_teamselection))
 
     def start_crawler(self):
         """Starts the crawler after checking input values and inserting default values."""
-        this_season = datetime.today().year
+        this_season = get_current_season()
         self.crd_from_season = self.select_crawl_from_season.get()
         self.crd_from_md = self.select_crawl_from_md.get()
         self.crd_to_season = self.select_crawl_to_season.get()
@@ -197,7 +198,7 @@ class GUI:
         if self.crd_to_season == '':
             self.crd_to_season = this_season
         elif self.select_crawl_to_season.current() == -1:
-            self.return_invalid(self.status_crawled)
+            return_invalid(self.status_crawled)
             return
         else:
             self.crd_to_season = int(self.crd_to_season)
@@ -205,7 +206,7 @@ class GUI:
         if self.crd_from_season == '':
             self.crd_from_season = self.crd_to_season
         elif self.select_crawl_from_season.current() == -1:
-            self.return_invalid(self.status_crawled)
+            return_invalid(self.status_crawled)
             return
         else:
             self.crd_from_season = int(self.crd_from_season)
@@ -213,7 +214,7 @@ class GUI:
         if self.crd_from_md == '':
             self.crd_from_md = 1
         elif self.select_crawl_from_md.current() == -1:
-            self.return_invalid(self.status_crawled)
+            return_invalid(self.status_crawled)
             return
         else:
             self.crd_from_md = int(self.crd_from_md)
@@ -221,14 +222,14 @@ class GUI:
         if self.crd_to_md == '':
             self.crd_to_md = 34
         elif self.select_crawl_to_md.current() == -1:
-            self.return_invalid(self.status_crawled)
+            return_invalid(self.status_crawled)
             return
         else:
             self.crd_to_md = int(self.crd_to_md)
         if (self.crd_from_season > self.crd_to_season
                 or (self.crd_from_season == self.crd_to_season
                     and self.crd_from_md > self.crd_to_md)):
-            self.return_invalid(self.status_crawled)
+            return_invalid(self.status_crawled)
             return
         self.current_crawl = crawler_class.Crawler(
             "https://www.openligadb.de/api")
@@ -288,30 +289,53 @@ class GUI:
             self.select_home_current = self.select_home.get()
             self.select_away_current = self.select_away.get()
 
-    def make_current_season_list(self):
-        current_year = datetime.today().year
 
-        c = crawler_class.Crawler("https://www.openligadb.de/api")
-        data_for_next_round = c.get_match_data(int(current_year))
-        return data_for_next_round
+def get_seasons():
+    """Returns a list with all the Bundesliga seasons from 2002/2003 to now."""
+    current = get_current_season()
+    first_season = 2003
+    all_seasons = []
+    for i in range(first_season, current + 1):
+        all_seasons.append(i)
+    return all_seasons
 
-    def get_seasons(self):
-        """Returns a list with all the Bundesliga seasons from 2002/2003 to now."""
-        current = datetime.today().year
-        first_season = 2003
-        all_seasons = []
-        for i in range(first_season, current + 1):
-            all_seasons.append(i)
-        return all_seasons
-    # visuals
 
-    def return_invalid(self, status):
-        """Displays a text to let the user know that an invalid input has been made."""
-        status['text'] = 'Invalid input.'
+def is_season_finished(year):
+    """Checks if all matches in a season have finished"""
+    data = {'date': [],
+            'team1': [],
+            'team2': [],
+            'is_finished': [],
+            'play_day': [],
+            'goal1': [],
+            'goal2': []}
+    last_match = crawler_class.Crawler(
+        "https://www.openligadb.de/api").get_data(year, data, 1, 34)
+    if (last_match['is_finished'] and all(last_match['is_finished'])):
+        return True
+    else:
+        return False
 
-    def cbb_width(self, list):
-        """Calculates an appropriate size for comboboxes depending on their values."""
-        return max(len(str(x)) for x in list) + 1
+
+def get_current_season():
+    """Return the current season based on current year or last year if season still unfinished"""
+    this_year = datetime.today().year
+    if is_season_finished(this_year - 1):
+        return this_year
+    else:
+        return this_year - 1
+
+
+# visuals
+
+def return_invalid(status):
+    """Displays a text to let the user know that an invalid input has been made."""
+    status['text'] = 'Invalid input.'
+
+
+def cbb_width(list):
+    """Calculates an appropriate size for comboboxes depending on their values."""
+    return max(len(str(x)) for x in list) + 1
 
 
 def initiate_gui():
