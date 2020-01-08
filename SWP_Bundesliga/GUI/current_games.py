@@ -3,7 +3,7 @@ from pathlib import Path
 from Crawler import crawler_class
 import pandas as pd
 import numpy
-
+import datetime
 
 class TheCurrentLists:
     def __init__(self, year):
@@ -34,6 +34,7 @@ class TheCurrentLists:
 
     # Give a list of the next round if it exist otherwise a list with the
     # appropriate string
+    @property
     def GetTheListOfTheNextRoundIfItExist(self) -> list:
         self.MakeCurrentSeasonList()
         df = pd.read_csv(f'matches.csv', encoding='utf-8')
@@ -68,10 +69,13 @@ class TheCurrentLists:
                         list1.append(df.loc[idx, i])
                 listlength = int(len(list1) / 3)
                 for i in range(listlength):
-                    datetime = list1[(listlength * 2) + i]
-                    data = datetime.split("T")
+                    DateCalender = list1[(listlength * 2) + i]
+                    data = DateCalender.split("T")
+                    WeekDay = datetime.datetime.strptime(f'{data[0]}', '%Y-%m-%d').strftime('%A')
+                    Month = datetime.datetime.strptime(f'{data[0]}', '%Y-%m-%d').strftime('%B')
+                    day = datetime.datetime.strptime(f'{data[0]}', '%Y-%m-%d').strftime('%d')
                     list2.append(
-                        f'{list1[0 + i]} will play against {list1[listlength + i]} on {data[0]} at this time {data[1]}')
+                        f'{list1[0 + i]} will play against  {list1[listlength + i]} on {WeekDay} the {day} of {Month} at  {data[1][0:5]}')
                 lengthlist2 = len(list2)
                 list2 = numpy.reshape(list2, (lengthlist2, 1))
                 return list2

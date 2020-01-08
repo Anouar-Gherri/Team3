@@ -157,7 +157,7 @@ class GUI:
     def init_NMD_table(self):
         year = get_current_season()
         next_game_list = TheCurrentLists(year)
-        list_of_the_next_games = next_game_list.GetTheListOfTheNextRoundIfItExist()
+        list_of_the_next_games = next_game_list.GetTheListOfTheNextRoundIfItExist
         list_length = len(list_of_the_next_games)
         t = Texttable(0)
         t.set_chars(['', '', '', ''])
