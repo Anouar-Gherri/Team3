@@ -9,7 +9,6 @@ def library_creator(data, delimiter=',', **kwargs):
     """
     matches = data
 
-    print(matches)
     # create list of unique teams
     teams_set = set()
     for row in matches:

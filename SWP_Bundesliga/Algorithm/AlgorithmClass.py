@@ -136,7 +136,7 @@ def results_to_dict(host, results):
     # Every entry has to be a positive number
     if not all(map(lambda x: isinstance(x, (int, float)) and x >= 0, results)):
         raise ValueError('Result list is not numeric')
-    if not sum(results) == 1:
+    if not 0.995 < sum(results) < 1.005:
         raise ValueError('Result list is not normalized')
 
     res_dict = {'host': host}
