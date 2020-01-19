@@ -11,13 +11,13 @@ class TheCurrentLists:
 
     # Make a list of the matches of the  (year) season
     def MakeCurrentSeasonList(self):
-        new = crawler_class.Crawler("https://www.openligadb.de/api")
+        new = crawler_class.Crawler("bl1")
         return new.get_match_data_interval(self.year, 1, self.year, 34)
 
     """
     # Make a list of the Teams of the (year) season
     def MakeCurrentSeasonTeamsList(self):
-        new = crawler_class.Crawler("https://www.openligadb.de/api")
+        new = crawler_class.Crawler("bl1")
         return new.get_all_teams(self.year)
 
 

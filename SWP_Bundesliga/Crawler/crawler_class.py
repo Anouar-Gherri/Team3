@@ -4,9 +4,15 @@ import pandas as pd
 
 class Crawler:
 
-    def __init__(self, url):
-        """Initializing of Crawler"""
-        self.url = url
+    def __init__(self, league):
+        """Initializing of Crawler for league from OpenLigaDB
+
+         :param league: Describes which league gets crawled
+
+         :type league: str"""
+
+        self.url = "https://www.openligadb.de/api"
+        self.league = league
 
     def get_data(self, year, data, s_day, e_day):
         """Loads and stores a portion the wanted data into a dictionary and returns the dictionary.
@@ -25,7 +31,7 @@ class Crawler:
          :return: a dictionary which contains the already collected data and the new data from the year \n"""
 
         url_header = urllib.request.Request(
-            url=self.url + "/getmatchdata/bl1/" + str(year),
+            url=self.url + "/getmatchdata/" + self.league + "/" + str(year),
             data=None,
             headers={'Content-Type': 'application/json'}
         )
@@ -103,7 +109,7 @@ class Crawler:
                      'year': []}
         for y in range(s_year, e_year + 1):
             url_header = urllib.request.Request(
-                url=self.url + "/getavailableteams/bl1/" + str(y),
+                url=self.url + "/getavailableteams/" + self.league + "/" + str(y),
                 data=None,
                 headers={'Content-Type': 'application/json'}
             )

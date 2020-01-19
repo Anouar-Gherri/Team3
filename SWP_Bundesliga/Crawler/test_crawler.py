@@ -5,7 +5,7 @@ import pandas as pd
 
 @pytest.fixture(scope='module')
 def crawler():
-    c = crawler_class.Crawler("https://www.openligadb.de/api")
+    c = crawler_class.Crawler("bl1")
     return c
 
 

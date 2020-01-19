@@ -232,7 +232,7 @@ class GUI:
             return_invalid(self.status_crawled)
             return
         self.current_crawl = crawler_class.Crawler(
-            "https://www.openligadb.de/api")
+            "bl1")
         self.current_crawl.get_match_data_interval(self.crd_from_season,
                                                    self.crd_from_md,
                                                    self.crd_to_season,
@@ -310,7 +310,7 @@ def is_season_finished(year):
             'goal1': [],
             'goal2': []}
     last_match = crawler_class.Crawler(
-        "https://www.openligadb.de/api").get_data(year, data, 1, 34)
+        "bl1").get_data(year, data, 1, 34)
     if (last_match['is_finished'] and all(last_match['is_finished'])):
         return True
     else:
