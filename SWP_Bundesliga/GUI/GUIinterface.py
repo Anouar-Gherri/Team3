@@ -26,32 +26,24 @@ class GUI:
         self.frame_config = Frame(self.main_grid)
         self.frame_current = Frame(self.main_grid)
         self.frame_teamselection = Frame(self.main_grid)
+        self.frame_prediction = Frame(self.main_grid)
         self.frame_NMD = Frame(self.main_grid)
 
         self.spacing = 10
 
-        # crawler objects
+        # load all gui objects
         self.init_crawler_objects()
-        # training objects
         self.init_training_objects()
-
-        # team selection objects
         self.init_team_selection_objects()
-        # prediction objects
-        self.button_prediction = Button(self.main_grid,
-                                        text='Start Prediction',
-                                        command=self.start_prediction,
-                                        state='disabled')
-        self.status_prediction = Label(self.main_grid, text='\n\n\n\n')
+        self.init_prediction_objects()
         # next matchday table
         self.init_NMD_table()
         # position all objects
         self.frame_config.grid(row=0)
         self.frame_current.grid(row=1)
         self.frame_teamselection.grid(row=2)
-        self.button_prediction.grid(row=3)
-        self.status_prediction.grid(row=4)
-        self.frame_NMD.grid(row=5)
+        self.frame_prediction.grid(row=3)
+        self.frame_NMD.grid(row=4)
 
     def init_crawler_objects(self):
         """Builds the GUI objects pertaining to the crawler."""
@@ -106,6 +98,10 @@ class GUI:
         """Builds the GUI objects pertaining to the training."""
         self.dict_algorithm = algorithm_dict.create_algorithms()
         self.list_algorithms = [name for name in self.dict_algorithm.keys()]
+        self.list_algorithms.insert(0, 'Train all')
+        self.is_trained = []
+        for algo in range(len(self.list_algorithms) - 1):
+            self.is_trained.append(None)
 
         self.frame_algorithm = Frame(self.frame_config)
         self.label_algorithm = Label(
@@ -153,6 +149,19 @@ class GUI:
         self.select_home.grid(row=0, column=1)
         self.label_awayteam.grid(row=1, column=0)
         self.select_away.grid(row=1, column=1)
+
+    def init_prediction_objects(self):
+        """Builds the GUI objects pertaining to the match prediction."""
+        self.button_prediction = Button(self.frame_prediction,
+                                        text='Start Prediction',
+                                        command=self.start_prediction,
+                                        state='disabled')
+        self.status_prediction = Label(self.frame_prediction, text='\n\n')
+        self.frame_result_table = Frame(self.frame_prediction)
+
+        self.button_prediction.grid(row=0)
+        self.status_prediction.grid(row=1)
+        self.frame_result_table.grid(row=2)
 
     def init_NMD_table(self):
         year = get_current_season()
@@ -247,9 +256,12 @@ class GUI:
         """Call selected algorithm."""
         if self.select_algorithm.current() == -1:
             return
-        self.current_algorithm = self.dict_algorithm.get(
-            self.select_algorithm.get())
-        self.current_algorithm.train('matches.csv')
+        self.current_algorithm = self.select_algorithm.current()
+        if self.current_algorithm == 0:
+            algorithm_dict.train_all(self.dict_algorithm, 'matches.csv')
+        else:
+            self.dict_algorithm.get(
+                self.select_algorithm.get()).train('matches.csv')
 
         self.status_training['text'] = 'Done'
         self.label_current_algorithm['text'] = "Current training: {}".format(
@@ -258,21 +270,90 @@ class GUI:
         self.init_list_teams()
 
     def start_prediction(self):
+        """Retrieves and displays prediction for selected match."""
         home_pick = self.select_home.current()
         away_pick = self.select_away.current()
-        if (home_pick == -1 and away_pick == -1):
+        if (home_pick == -1 or away_pick == -1):
             return
         match_request = dict(host=self.list_teamselection[home_pick],
                              guest=self.list_teamselection[away_pick])
-        result = self.current_algorithm.request(match_request)
-        status_text = "{}{}{}{}{}".format('Prediction for ',
+
+        Label(
+            self.frame_result_table,
+            relief=GROOVE,
+            text='Algorithm').grid(
+            row=0,
+            column=0,
+            sticky=N + S + E + W)
+        Label(
+            self.frame_result_table,
+            relief=GROOVE,
+            text='Win').grid(
+            row=0,
+            column=1,
+            sticky=N + S + E + W)
+        Label(
+            self.frame_result_table,
+            relief=GROOVE,
+            text='Lose').grid(
+            row=0,
+            column=2,
+            sticky=N + S + E + W)
+        Label(
+            self.frame_result_table,
+            relief=GROOVE,
+            text='Draw').grid(
+            row=0,
+            column=3,
+            sticky=N + S + E + W)
+        for a in range(1, len(self.list_algorithms)):
+            if self.current_algorithm == 0 or a == self.current_algorithm:
+                self.is_trained[a - 1] = self.dict_algorithm[self.list_algorithms[a]
+                                                             ].request(match_request)
+                name = self.list_algorithms[a]
+                win = "{:.2%}".format(self.is_trained[a - 1]['win'])
+                lose = "{:.2%}".format(
+                    self.is_trained[a - 1]['lose'])
+                draw = "{:.2%}".format(
+                    self.is_trained[a - 1]['draw'])
+
+                Label(
+                    self.frame_result_table,
+                    relief=GROOVE,
+                    text=name).grid(
+                    row=a,
+                    column=0,
+                    sticky=N + S + E + W)
+                Label(
+                    self.frame_result_table,
+                    relief=GROOVE,
+                    text=win).grid(
+                    row=a,
+                    column=1,
+                    sticky=N + S + E + W)
+                Label(
+                    self.frame_result_table,
+                    relief=GROOVE,
+                    text=lose).grid(
+                    row=a,
+                    column=2,
+                    sticky=N + S + E + W)
+                Label(
+                    self.frame_result_table,
+                    relief=GROOVE,
+                    text=draw).grid(
+                    row=a,
+                    column=3,
+                    sticky=N + S + E + W)
+            else:
+                for widget in self.frame_result_table.grid_slaves(row=a):
+                    widget.destroy()
+
+        status_text = "{}{}{}{}{}".format('\nPrediction for ',
                                           self.list_teamselection[home_pick],
                                           ' (host) against ',
                                           self.list_teamselection[away_pick],
                                           ' is:\n')
-        status_text += '\nWin: ' + "{:.2%}".format(result.get('win'))
-        status_text += '\nLose: ' + "{:.2%}".format(result.get('lose'))
-        status_text += '\nDraw: ' + "{:.2%}".format(result.get('draw'))
         self.status_prediction['text'] = status_text
 
     def update_selection(self, select):
@@ -330,7 +411,7 @@ def get_current_season():
 
 def return_invalid(status):
     """Displays a text to let the user know that an invalid input has been made."""
-    status['text'] = 'Invalid input.'
+    status['text'] = 'Invalid'
 
 
 def cbb_width(list):
@@ -343,4 +424,5 @@ def initiate_gui():
     gui_object.root.mainloop()
 
 
-initiate_gui()
+if __name__ == '__main__':
+    initiate_gui()

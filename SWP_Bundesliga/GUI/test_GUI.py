@@ -4,7 +4,6 @@ from Algorithm import algorithm1
 from GUI import GUIinterface
 
 
-# Important: Close the gui after it opens and tests will succeed
 @pytest.fixture()
 def new_gui():
     new_gui = GUI()
@@ -51,6 +50,7 @@ def test_algorithm_selection(new_gui):
     new_gui.select_home.set('Arminia Bielefeld')
     new_gui.select_away.set('Bayer Leverkusen')
     new_gui.start_prediction()
+    result_gui = new_gui.is_trained[0]
 
     rfa = algorithm1.create()
     rfa.train('matches.csv')
@@ -58,12 +58,7 @@ def test_algorithm_selection(new_gui):
         dict(
             host='Arminia Bielefeld',
             guest='Bayer Leverkusen'))
-    result_text = '{:.2%}{:.2%}{:.2%}'.format(result_algorithm.get('win'),
-                                              result_algorithm.get('lose'),
-                                              result_algorithm.get('draw'))
-    numbers_algorithm = list(filter(str.isdigit, result_text))
-    numbers_gui = list(filter(str.isdigit, new_gui.status_prediction['text']))
-    assert numbers_algorithm == numbers_gui
+    assert result_algorithm == result_gui
 
 
 def test_team_selection(new_gui):
