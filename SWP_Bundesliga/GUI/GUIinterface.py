@@ -7,7 +7,8 @@ from Crawler import crawler_class
 from builtins import int
 from texttable import Texttable
 from GUI.current_games import TheCurrentLists
-from Algorithm import algorithm_dict
+from Algorithm import algorithm_dict,algorithm3
+import numpy
 
 
 class GUI:
@@ -166,19 +167,39 @@ class GUI:
     def init_NMD_table(self):
         year = get_current_season()
         next_game_list = TheCurrentLists(year)
-        list_of_the_next_games = next_game_list.GetTheListOfTheNextRoundIfItExist
+        list_of_the_next_games = next_game_list.GetTheListOfTheNextRoundIfItExist[0]
+        list_of_the_next_games_to_be_predicted=next_game_list.GetTheListOfTheNextRoundIfItExist[1]
         list_length = len(list_of_the_next_games)
+        curr=crawler_class.Crawler("bl1")
+        curr.get_match_data_interval(year,1,year,15)
+        curr_algo=algorithm3.create()
+        curr_algo.train('matches.csv')
         t = Texttable(0)
         t.set_chars(['', '', '', ''])
         t.set_deco(Texttable.BORDER | Texttable.HEADER |
                    Texttable.HLINES | Texttable.VLINES)
+        t.set_max_width(0)
         t.header(["Next Matches will be:"])
         t.set_cols_align(["c"])
+        list1=[]
         if list_length == 1:
             t.add_row(list_of_the_next_games[0])
         else:
             for i in range(list_length):
+                match_request = dict(host=list_of_the_next_games_to_be_predicted[i][0],
+                                   guest=list_of_the_next_games_to_be_predicted[i][0])
+                result = curr_algo.request(match_request)
+                texte = '  HT: ' + "{:.2%}  ".format(result.get('win')) + '  AT: ' + "{:.2%}  ".format(result.get('lose')) + '  None: ' + "{:.2%}  ".format(result.get('draw'))
+                list1.append(texte)
+            lengthlist1=len(list1)
+            list1=numpy.array(numpy.resize(list1, (lengthlist1, 1)))
+            print(list1)
+            if (lengthlist1==list_length):
+             for i in range(list_length):
+                print(list_of_the_next_games[i][0])
+                print(list_of_the_next_games)
                 t.add_row(list_of_the_next_games[i])
+                t.add_row(list1[i])
         table = Label(self.frame_NMD, text=t.draw())
         table.grid(row=0)
 
@@ -277,7 +298,6 @@ class GUI:
             return
         match_request = dict(host=self.list_teamselection[home_pick],
                              guest=self.list_teamselection[away_pick])
-
         Label(
             self.frame_result_table,
             relief=GROOVE,

@@ -40,6 +40,7 @@ class TheCurrentLists:
         df = pd.read_csv(f'matches.csv', encoding='utf-8')
         is_it_empty = df.empty
         list2 = []
+        list22=[]
         # if the csv data is not empty that mean this season data are available
         # the_rounds_where_matches_are_not_completely_played is shorten to
         # round_not_completely
@@ -67,18 +68,19 @@ class TheCurrentLists:
                 for i in ('team1', 'team2', 'date'):
                     for idx in df.index:
                         list1.append(df.loc[idx, i])
-                listlength = int(len(list1) / 3)
+                listlength=int(len(list1) / 3)
                 for i in range(listlength):
-                    DateCalender = list1[(listlength * 2) + i]
-                    data = DateCalender.split("T")
-                    WeekDay = datetime.datetime.strptime(f'{data[0]}', '%Y-%m-%d').strftime('%A')
-                    Month = datetime.datetime.strptime(f'{data[0]}', '%Y-%m-%d').strftime('%B')
-                    day = datetime.datetime.strptime(f'{data[0]}', '%Y-%m-%d').strftime('%d')
+                    DateCalender=list1[(listlength * 2) + i]
+                    data=DateCalender.split("T")
+                    WeekDay=datetime.datetime.strptime(f'{data[0]}', '%Y-%m-%d').strftime('%A')
+                    Month=datetime.datetime.strptime(f'{data[0]}', '%Y-%m-%d').strftime('%B')
+                    day=datetime.datetime.strptime(f'{data[0]}', '%Y-%m-%d').strftime('%d')
                     list2.append(
                         f'{list1[0 + i]} will play against  {list1[listlength + i]} on {WeekDay} the {day} of {Month} at  {data[1][0:5]}')
-                lengthlist2 = len(list2)
-                list2 = numpy.reshape(list2, (lengthlist2, 1))
-                return list2
+                    list22.append([list1[0 + i], list1[listlength + i]])
+                lengthlist2=len(list2)
+                list2=numpy.array(numpy.resize(list2, (lengthlist2, 1)))
+                return list2, list22
         else:  # if the csv data is empty that mean this season data are not available
             list2.append(
                 f'The Season {self.year}/{self.year + 1} is not started yet. Stay tuned ;)')
