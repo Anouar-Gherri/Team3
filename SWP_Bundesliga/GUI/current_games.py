@@ -80,7 +80,8 @@ class TheCurrentLists:
                     list22.append([list1[0 + i], list1[listlength + i]])
                 lengthlist2=len(list2)
                 list2=numpy.array(numpy.resize(list2, (lengthlist2, 1)))
-                return list2, list22
+
+                return list2, list22,smallest_round
         else:  # if the csv data is empty that mean this season data are not available
             list2.append(
                 f'The Season {self.year}/{self.year + 1} is not started yet. Stay tuned ;)')

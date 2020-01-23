@@ -9,6 +9,8 @@ from texttable import Texttable
 from GUI.current_games import TheCurrentLists
 from Algorithm import algorithm_dict,algorithm3
 import numpy
+import urllib.request
+
 
 
 class GUI:
@@ -16,7 +18,8 @@ class GUI:
         """Builds the main window of the GUI."""
         # window properties
         self.root = Tk()
-        self.root.geometry('1000x1000')
+        w, h=self.root.winfo_screenwidth(), self.root.winfo_screenheight()
+        self.root.geometry("%dx%d+0+0" % (w, h))
         self.root.state('zoomed')
         self.root.title('Bundesliga Vorhersage')
 
@@ -29,7 +32,6 @@ class GUI:
         self.frame_teamselection = Frame(self.main_grid)
         self.frame_prediction = Frame(self.main_grid)
         self.frame_NMD = Frame(self.main_grid)
-
         self.spacing = 10
 
         # load all gui objects
@@ -169,16 +171,18 @@ class GUI:
         next_game_list = TheCurrentLists(year)
         list_of_the_next_games = next_game_list.GetTheListOfTheNextRoundIfItExist[0]
         list_of_the_next_games_to_be_predicted=next_game_list.GetTheListOfTheNextRoundIfItExist[1]
+        rouund=next_game_list.GetTheListOfTheNextRoundIfItExist[2]
         list_length = len(list_of_the_next_games)
         curr=crawler_class.Crawler("bl1")
-        curr.get_match_data_interval(year,1,year,15)
+        curr.get_match_data_interval(year,1,year,34)
         curr_algo=algorithm3.create()
         curr_algo.train('matches.csv')
+        #muss irgendwie anders
         t = Texttable(0)
         t.set_chars(['', '', '', ''])
         t.set_deco(Texttable.BORDER | Texttable.HEADER |
                    Texttable.HLINES | Texttable.VLINES)
-        t.set_max_width(0)
+
         t.header(["Next Matches will be:"])
         t.set_cols_align(["c"])
         list1=[]
@@ -188,8 +192,9 @@ class GUI:
             for i in range(list_length):
                 match_request = dict(host=list_of_the_next_games_to_be_predicted[i][0],
                                    guest=list_of_the_next_games_to_be_predicted[i][0])
-                result = curr_algo.request(match_request)
-                texte = '  HT: ' + "{:.2%}  ".format(result.get('win')) + '  AT: ' + "{:.2%}  ".format(result.get('lose')) + '  None: ' + "{:.2%}  ".format(result.get('draw'))
+
+                result = curr_algo.request(match_request) #muss irgendwie anders
+                texte = '  HomeTeam: ' + "{:.2%}  ".format(result.get('win')) + '  AwayTeam: ' + "{:.2%}  ".format(result.get('lose')) + '  Draw: ' + "{:.2%}  ".format(result.get('draw'))
                 list1.append(texte)
             lengthlist1=len(list1)
             list1=numpy.array(numpy.resize(list1, (lengthlist1, 1)))
@@ -200,9 +205,18 @@ class GUI:
                 print(list_of_the_next_games)
                 t.add_row(list_of_the_next_games[i])
                 t.add_row(list1[i])
-        table = Label(self.frame_NMD, text=t.draw())
-        table.grid(row=0)
+        table = Label(self.frame_NMD, text=t.draw(),relief=GROOVE)
 
+        # Vertical (y) Scroll Bar
+        yscrollbar=Scrollbar(self.frame_NMD)
+        yscrollbar.pack(side=LEFT,expand=False)
+        # Text Widget
+        text=Text(self.frame_NMD,yscrollcommand=yscrollbar.set)
+        text.insert(END,table['text'])
+        text.pack(fill="both", expand=True)
+        text.config(state=DISABLED,width=110,height=25,bg='green',fg="white")
+        # Configure the scrollbars
+        yscrollbar.config(command=text.yview)
     def init_list_teams(self):
         """Sets team selection options based on crawled data."""
         self.list_teamselection = []
@@ -391,6 +405,7 @@ class GUI:
             self.select_away_current = self.select_away.get()
 
 
+
 def get_seasons():
     """Returns a list with all the Bundesliga seasons from 2002/2003 to now."""
     current = get_current_season()
@@ -439,9 +454,20 @@ def cbb_width(list):
     return max(len(str(x)) for x in list) + 1
 
 
+
+
+def internet_on():
+    try:
+        urllib.request.urlopen('http://216.58.192.142', timeout=1)
+        return True
+    except urllib.request.URLError as err:
+        return False
+
 def initiate_gui():
+ if internet_on():
     gui_object = GUI()
     gui_object.root.mainloop()
+ else: return print('NO INTERNET')
 
 
 if __name__ == '__main__':
