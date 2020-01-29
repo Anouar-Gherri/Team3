@@ -41,8 +41,8 @@ def test_get_data(crawler, year, start_day, end_day, res):
     assert type(new_data) is dict
     assert len(new_data) == 7
     assert len(new_data['date']) == len(new_data['team1']) == \
-        len(new_data['team2']) == len(new_data['is_finished']) == \
-        len(new_data['play_day']) == len(new_data['goal1']) == len(new_data['goal2'])
+           len(new_data['team2']) == len(new_data['is_finished']) == \
+           len(new_data['play_day']) == len(new_data['goal1']) == len(new_data['goal2'])
     assert res.equals(new_df)
 
 
@@ -57,3 +57,15 @@ def test_get_data(crawler, year, start_day, end_day, res):
 def test_interval(crawler, start_year, end_year, start_day, end_day, res):
     crawler.get_match_data_interval(start_year, start_day, end_year, end_day)
     assert pd.read_csv('matches.csv').equals(res)
+
+
+@pytest.mark.parametrize('crw,year,res',
+                         [
+                             ('bl1', 2016, 34),
+                             ('bl2', 2010, 34),
+                             ('bl3', 2013, 38),
+                             ('bl1', 2000, 0)
+                         ])
+def test_group_size(crw, year, res):
+    c = crawler_class.Crawler(crw)
+    assert c.get_group_size(year) == res
