@@ -7,10 +7,9 @@ from Crawler import crawler_class
 from builtins import int
 from texttable import Texttable
 from GUI.current_games import TheCurrentLists
-from Algorithm import algorithm_dict,algorithm3
+from Algorithm import algorithm_dict, algorithm3
 import numpy
 import urllib.request
-
 
 
 class GUI:
@@ -18,7 +17,7 @@ class GUI:
         """Builds the main window of the GUI."""
         # window properties
         self.root = Tk()
-        w, h=self.root.winfo_screenwidth(), self.root.winfo_screenheight()
+        w, h = self.root.winfo_screenwidth(), self.root.winfo_screenheight()
         self.root.geometry("%dx%d+0+0" % (w, h))
         self.root.state('zoomed')
         self.root.title('Bundesliga Vorhersage')
@@ -50,48 +49,56 @@ class GUI:
 
     def init_crawler_objects(self):
         """Builds the GUI objects pertaining to the crawler."""
-        self.list_seasons = get_seasons()
-        self.list_matchdays = [x for x in range(1, 35)]
+        self.list_leagues = {'1. Bundesliga': 'bl1',
+                             '2. Bundesliga': 'bl2',
+                             '3. Bundesliga': 'bl3', }
+        leagues = [x for x in self.list_leagues.keys()]
+
+        self.label_league = Label(self.frame_config, text='League: ')
+        self.select_league = ttk.Combobox(
+            self.frame_config,
+            values=leagues,
+            width=cbb_width(
+                leagues),
+            state='readonly')
+        self.select_league.bind('<<ComboboxSelected>>', self.update_SMD)
 
         self.label_crawl_from = Label(self.frame_config, text='From:')
         self.select_crawl_from_season = ttk.Combobox(
             self.frame_config,
-            values=self.list_seasons,
-            width=cbb_width(
-                self.list_seasons))
+            values=[],
+            width=cbb_width([]))
         self.select_crawl_from_md = ttk.Combobox(
             self.frame_config,
-            values=self.list_matchdays,
-            width=cbb_width(
-                self.list_matchdays))
+            width=cbb_width([]))
 
         self.label_crawl_to = Label(self.frame_config, text='To:')
         self.select_crawl_to_season = ttk.Combobox(
             self.frame_config,
-            values=self.list_seasons,
-            width=cbb_width(
-                self.list_seasons))
+            values=[],
+            width=cbb_width([]))
         self.select_crawl_to_md = ttk.Combobox(
             self.frame_config,
-            values=self.list_matchdays,
-            width=cbb_width(
-                self.list_matchdays))
+            width=cbb_width([]))
         self.button_crawler = Button(self.frame_config,
                                      text='Start Crawler',
                                      command=self.start_crawler)
         self.status_crawled = Label(self.frame_config, text='')
 
-        self.label_crawl_from.grid(row=0, column=0)
-        self.select_crawl_from_season.grid(row=0, column=1)
-        self.select_crawl_from_md.grid(row=0, column=2)
-        self.frame_config.grid_columnconfigure(3, weight=1)
-        self.label_crawl_to.grid(row=0, column=4)
-        self.select_crawl_to_season.grid(row=0, column=5)
-        self.select_crawl_to_md.grid(row=0, column=6)
-        self.frame_config.grid_columnconfigure(7, minsize=self.spacing)
-        self.button_crawler.grid(row=0, column=8, sticky=N + S + E + W)
-        self.status_crawled.grid(row=0, column=9)
-        self.frame_config.grid_columnconfigure(9, minsize=50)
+        self.label_league.grid(row=0, column=0)
+        self.select_league.grid(row=0, column=1)
+        self.frame_config.grid_columnconfigure(2, minsize=self.spacing)
+        self.label_crawl_from.grid(row=0, column=3)
+        self.select_crawl_from_season.grid(row=0, column=4)
+        self.select_crawl_from_md.grid(row=0, column=5)
+        self.frame_config.grid_columnconfigure(6, weight=1)
+        self.label_crawl_to.grid(row=0, column=7)
+        self.select_crawl_to_season.grid(row=0, column=8)
+        self.select_crawl_to_md.grid(row=0, column=9)
+        self.frame_config.grid_columnconfigure(10, minsize=self.spacing)
+        self.button_crawler.grid(row=0, column=11, sticky=N + S + E + W)
+        self.status_crawled.grid(row=0, column=12)
+        self.frame_config.grid_columnconfigure(12, minsize=50)
 
         # display: current state
         self.label_current_dataset = Label(self.frame_current, text='')
@@ -116,17 +123,18 @@ class GUI:
             width=cbb_width(
                 self.list_algorithms),
             state='readonly')
+        self.select_algorithm.current(0)
         self.button_training = Button(self.frame_config,
                                       text='Start Training',
                                       command=self.start_training,
                                       state='disabled')
         self.status_training = Label(self.frame_config, text='')
 
-        self.frame_algorithm.grid(row=1, columnspan=7)
+        self.frame_algorithm.grid(row=1, column=3, columnspan=7)
         self.label_algorithm.grid(row=0, column=0)
         self.select_algorithm.grid(row=0, column=1)
-        self.button_training.grid(row=1, column=8)
-        self.status_training.grid(row=1, column=9)
+        self.button_training.grid(row=1, column=11)
+        self.status_training.grid(row=1, column=12)
 
         # display: current state
         self.label_current_algorithm = Label(self.frame_current, text='')
@@ -165,19 +173,21 @@ class GUI:
         self.button_prediction.grid(row=0)
         self.status_prediction.grid(row=1)
         self.frame_result_table.grid(row=2)
+        Label(self.frame_prediction, text='').grid(row=3)
 
     def init_NMD_table(self):
-        year = get_current_season()
+        year = get_current_season("bl1")
         next_game_list = TheCurrentLists(year)
         list_of_the_next_games = next_game_list.GetTheListOfTheNextRoundIfItExist[0]
-        list_of_the_next_games_to_be_predicted=next_game_list.GetTheListOfTheNextRoundIfItExist[1]
-        rouund=next_game_list.GetTheListOfTheNextRoundIfItExist[2]
+        list_of_the_next_games_to_be_predicted = next_game_list.GetTheListOfTheNextRoundIfItExist[
+            1]
+        rouund = next_game_list.GetTheListOfTheNextRoundIfItExist[2]
         list_length = len(list_of_the_next_games)
-        curr=crawler_class.Crawler("bl1")
-        curr.get_match_data_interval(year,1,year,34)
-        curr_algo=algorithm3.create()
+        curr = crawler_class.Crawler("bl1")
+        curr.get_match_data_interval(year, 1, year, 34)
+        curr_algo = algorithm3.create()
         curr_algo.train('matches.csv')
-        #muss irgendwie anders
+        # muss irgendwie anders
         t = Texttable(0)
         t.set_chars(['', '', '', ''])
         t.set_deco(Texttable.BORDER | Texttable.HEADER |
@@ -185,38 +195,47 @@ class GUI:
 
         t.header(["Next Matches will be:"])
         t.set_cols_align(["c"])
-        list1=[]
+        list1 = []
         if list_length == 1:
             t.add_row(list_of_the_next_games[0])
         else:
             for i in range(list_length):
-                match_request = dict(host=list_of_the_next_games_to_be_predicted[i][0],
-                                   guest=list_of_the_next_games_to_be_predicted[i][0])
+                match_request = dict(
+                    host=list_of_the_next_games_to_be_predicted[i][0],
+                    guest=list_of_the_next_games_to_be_predicted[i][0])
 
-                result = curr_algo.request(match_request) #muss irgendwie anders
-                texte = '  HomeTeam: ' + "{:.2%}  ".format(result.get('win')) + '  AwayTeam: ' + "{:.2%}  ".format(result.get('lose')) + '  Draw: ' + "{:.2%}  ".format(result.get('draw'))
+                result = curr_algo.request(
+                    match_request)  # muss irgendwie anders
+                texte = '  HomeTeam: ' + "{:.2%}  ".format(result.get('win')) + '  AwayTeam: ' + "{:.2%}  ".format(
+                    result.get('lose')) + '  Draw: ' + "{:.2%}  ".format(result.get('draw'))
                 list1.append(texte)
-            lengthlist1=len(list1)
-            list1=numpy.array(numpy.resize(list1, (lengthlist1, 1)))
+            lengthlist1 = len(list1)
+            list1 = numpy.array(numpy.resize(list1, (lengthlist1, 1)))
             print(list1)
-            if (lengthlist1==list_length):
-             for i in range(list_length):
-                print(list_of_the_next_games[i][0])
-                print(list_of_the_next_games)
-                t.add_row(list_of_the_next_games[i])
-                t.add_row(list1[i])
-        table = Label(self.frame_NMD, text=t.draw(),relief=GROOVE)
+            if (lengthlist1 == list_length):
+                for i in range(list_length):
+                    print(list_of_the_next_games[i][0])
+                    print(list_of_the_next_games)
+                    t.add_row(list_of_the_next_games[i])
+                    t.add_row(list1[i])
+        table = Label(self.frame_NMD, text=t.draw(), relief=GROOVE)
 
         # Vertical (y) Scroll Bar
-        yscrollbar=Scrollbar(self.frame_NMD)
-        yscrollbar.pack(side=LEFT,expand=False)
+        yscrollbar = Scrollbar(self.frame_NMD)
+        yscrollbar.pack(side=LEFT, expand=False)
         # Text Widget
-        text=Text(self.frame_NMD,yscrollcommand=yscrollbar.set)
-        text.insert(END,table['text'])
+        text = Text(self.frame_NMD, yscrollcommand=yscrollbar.set)
+        text.insert(END, table['text'])
         text.pack(fill="both", expand=True)
-        text.config(state=DISABLED,width=110,height=25,bg='green',fg="white")
+        text.config(
+            state=DISABLED,
+            width=110,
+            height=25,
+            bg='green',
+            fg="white")
         # Configure the scrollbars
         yscrollbar.config(command=text.yview)
+
     def init_list_teams(self):
         """Sets team selection options based on crawled data."""
         self.list_teamselection = []
@@ -233,11 +252,13 @@ class GUI:
 
     def start_crawler(self):
         """Starts the crawler after checking input values and inserting default values."""
-        this_season = get_current_season()
+        league = self.list_leagues.get(self.select_league.get())
+        this_season = get_current_season(league)
         self.crd_from_season = self.select_crawl_from_season.get()
         self.crd_from_md = self.select_crawl_from_md.get()
         self.crd_to_season = self.select_crawl_to_season.get()
         self.crd_to_md = self.select_crawl_to_md.get()
+        self.current_crawl = crawler_class.Crawler(league)
         # if no selection made default to current season
         if self.crd_to_season == '':
             self.crd_to_season = this_season
@@ -264,7 +285,7 @@ class GUI:
             self.crd_from_md = int(self.crd_from_md)
         # if no selection made default to last matchday
         if self.crd_to_md == '':
-            self.crd_to_md = 34
+            self.crd_to_md = self.current_crawl.get_group_size(2018)
         elif self.select_crawl_to_md.current() == -1:
             return_invalid(self.status_crawled)
             return
@@ -275,8 +296,6 @@ class GUI:
                     and self.crd_from_md > self.crd_to_md)):
             return_invalid(self.status_crawled)
             return
-        self.current_crawl = crawler_class.Crawler(
-            "bl1")
         self.current_crawl.get_match_data_interval(self.crd_from_season,
                                                    self.crd_from_md,
                                                    self.crd_to_season,
@@ -404,11 +423,25 @@ class GUI:
             self.select_home_current = self.select_home.get()
             self.select_away_current = self.select_away.get()
 
+    def update_SMD(self, s):
+        """Updates matchday selection according to selected league."""
+        league = self.list_leagues.get(self.select_league.get())
+        crawler = crawler_class.Crawler(league)
+        seasons = get_seasons(league)
+        MD = [x for x in range(1, crawler.get_group_size(2018) + 1)]
+        self.select_crawl_from_season.config(values=seasons,
+                                             width=cbb_width(seasons))
+        self.select_crawl_to_season.config(values=seasons,
+                                           width=cbb_width(seasons))
+        self.select_crawl_from_md.config(values=MD,
+                                         width=cbb_width(MD))
+        self.select_crawl_to_md.config(values=MD,
+                                       width=cbb_width(MD))
 
 
-def get_seasons():
+def get_seasons(league):
     """Returns a list with all the Bundesliga seasons from 2002/2003 to now."""
-    current = get_current_season()
+    current = get_current_season(league)
     first_season = 2003
     all_seasons = []
     for i in range(first_season, current + 1):
@@ -416,7 +449,7 @@ def get_seasons():
     return all_seasons
 
 
-def is_season_finished(year):
+def is_season_finished(league, year):
     """Checks if all matches in a season have finished"""
     data = {'date': [],
             'team1': [],
@@ -425,18 +458,19 @@ def is_season_finished(year):
             'play_day': [],
             'goal1': [],
             'goal2': []}
-    last_match = crawler_class.Crawler(
-        "bl1").get_data(year, data, 1, 34)
+    crawler = crawler_class.Crawler(league)
+    max_MD = crawler.get_group_size(year)
+    last_match = crawler.get_data(year, data, 1, max_MD)
     if (last_match['is_finished'] and all(last_match['is_finished'])):
         return True
     else:
         return False
 
 
-def get_current_season():
+def get_current_season(league):
     """Return the current season based on current year or last year if season still unfinished"""
     this_year = datetime.today().year
-    if is_season_finished(this_year - 1):
+    if is_season_finished(league, this_year - 1):
         return this_year
     else:
         return this_year - 1
@@ -451,9 +485,7 @@ def return_invalid(status):
 
 def cbb_width(list):
     """Calculates an appropriate size for comboboxes depending on their values."""
-    return max(len(str(x)) for x in list) + 1
-
-
+    return 1 if not list else max(len(str(x)) for x in list) + 1
 
 
 def internet_on():
@@ -463,11 +495,13 @@ def internet_on():
     except urllib.request.URLError as err:
         return False
 
+
 def initiate_gui():
- if internet_on():
-    gui_object = GUI()
-    gui_object.root.mainloop()
- else: return print('NO INTERNET')
+    if internet_on():
+        gui_object = GUI()
+        gui_object.root.mainloop()
+    else:
+        return print('NO INTERNET')
 
 
 if __name__ == '__main__':

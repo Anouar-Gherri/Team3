@@ -7,11 +7,13 @@ from GUI import GUIinterface
 @pytest.fixture()
 def new_gui():
     new_gui = GUI()
+    new_gui.select_league.set('1. Bundesliga')
     return new_gui
 
 
 @pytest.mark.guitest
 def test_cr_button_default_season_from(new_gui):
+    new_gui.update_SMD(None)
     new_gui.select_crawl_to_season.set('2005')
     new_gui.start_crawler()
     assert new_gui.crd_from_season == 2005
@@ -21,11 +23,12 @@ def test_cr_button_default_season_to(new_gui):
     new_gui.select_crawl_from_season.set('2018')
     new_gui.select_crawl_to_md.set('3')
     new_gui.start_crawler()
-    current_season = new_gui.list_seasons[-1]
+    current_season = get_current_season('bl1')
     assert new_gui.crd_to_season == current_season
 
 
 def test_cr_button_default_md_from(new_gui):
+    new_gui.update_SMD(None)
     new_gui.select_crawl_from_season.set('2006')
     new_gui.select_crawl_to_season.set('2006')
     new_gui.select_crawl_to_md.set('3')
@@ -34,6 +37,7 @@ def test_cr_button_default_md_from(new_gui):
 
 
 def test_cr_button_default_md_to(new_gui):
+    new_gui.update_SMD(None)
     new_gui.select_crawl_from_season.set('2006')
     new_gui.select_crawl_to_season.set('2006')
     new_gui.select_crawl_from_md.set('30')
@@ -62,6 +66,7 @@ def test_algorithm_selection(new_gui):
 
 
 def test_team_selection(new_gui):
+    new_gui.update_SMD(None)
     new_gui.select_crawl_from_season.set('2006')
     new_gui.select_crawl_to_season.set('2007')
     new_gui.start_crawler()
@@ -72,5 +77,5 @@ def test_team_selection(new_gui):
 
 def test_current_season(new_gui):
     this_year = datetime.today().year
-    assert is_season_finished(this_year - 5)
-    assert is_season_finished(this_year + 2) is False
+    assert is_season_finished('bl1', this_year - 5)
+    assert is_season_finished('bl1', this_year + 2) is False
