@@ -252,6 +252,9 @@ class GUI:
 
     def start_crawler(self):
         """Starts the crawler after checking input values and inserting default values."""
+        if self.select_league.current() == -1:
+            return_invalid(self.status_crawled)
+            return
         league = self.list_leagues.get(self.select_league.get())
         this_season = get_current_season(league)
         self.crd_from_season = self.select_crawl_from_season.get()
@@ -302,8 +305,8 @@ class GUI:
                                                    self.crd_to_md)
         self.current_crawl.get_teams(self.crd_from_season, self.crd_to_season)
         self.status_crawled['text'] = 'Done'
-        self.label_current_dataset['text'] = "Current data: {}.{}-{}.{}".format(
-            self.crd_from_season, self.crd_from_md, self.crd_to_season, self.crd_to_md)
+        self.label_current_dataset['text'] = "Current data: {}.{}.{}-{}.{}".format(
+            league, self.crd_from_season, self.crd_from_md, self.crd_to_season, self.crd_to_md)
         self.button_training['state'] = 'normal'
 
     def start_training(self):
@@ -442,7 +445,7 @@ class GUI:
 def get_seasons(league):
     """Returns a list with all the Bundesliga seasons from 2002/2003 to now."""
     current = get_current_season(league)
-    first_season = 2003
+    first_season = 2008
     all_seasons = []
     for i in range(first_season, current + 1):
         all_seasons.append(i)

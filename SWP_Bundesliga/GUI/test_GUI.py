@@ -14,9 +14,9 @@ def new_gui():
 @pytest.mark.guitest
 def test_cr_button_default_season_from(new_gui):
     new_gui.update_SMD(None)
-    new_gui.select_crawl_to_season.set('2005')
+    new_gui.select_crawl_to_season.set('2008')
     new_gui.start_crawler()
-    assert new_gui.crd_from_season == 2005
+    assert new_gui.crd_from_season == 2008
 
 
 def test_cr_button_default_season_to(new_gui):
@@ -29,8 +29,8 @@ def test_cr_button_default_season_to(new_gui):
 
 def test_cr_button_default_md_from(new_gui):
     new_gui.update_SMD(None)
-    new_gui.select_crawl_from_season.set('2006')
-    new_gui.select_crawl_to_season.set('2006')
+    new_gui.select_crawl_from_season.set('2009')
+    new_gui.select_crawl_to_season.set('2009')
     new_gui.select_crawl_to_md.set('3')
     new_gui.start_crawler()
     assert new_gui.crd_from_md == 1
@@ -38,14 +38,15 @@ def test_cr_button_default_md_from(new_gui):
 
 def test_cr_button_default_md_to(new_gui):
     new_gui.update_SMD(None)
-    new_gui.select_crawl_from_season.set('2006')
-    new_gui.select_crawl_to_season.set('2006')
+    new_gui.select_crawl_from_season.set('2009')
+    new_gui.select_crawl_to_season.set('2009')
     new_gui.select_crawl_from_md.set('30')
     new_gui.start_crawler()
     assert new_gui.crd_to_md == 34
 
 
 def test_algorithm_selection(new_gui):
+    new_gui.update_SMD(None)
     new_gui.select_crawl_from_season.set('2008')
     new_gui.select_crawl_to_season.set('2008')
     new_gui.start_crawler()
@@ -67,8 +68,8 @@ def test_algorithm_selection(new_gui):
 
 def test_team_selection(new_gui):
     new_gui.update_SMD(None)
-    new_gui.select_crawl_from_season.set('2006')
-    new_gui.select_crawl_to_season.set('2007')
+    new_gui.select_crawl_from_season.set('2011')
+    new_gui.select_crawl_to_season.set('2012')
     new_gui.start_crawler()
     new_gui.select_algorithm.current(0)
     new_gui.start_training()
