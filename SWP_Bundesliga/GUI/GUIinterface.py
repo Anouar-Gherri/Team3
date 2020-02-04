@@ -61,6 +61,7 @@ class GUI:
             width=cbb_width(
                 leagues),
             state='readonly')
+        self.select_league.current(0)
         self.select_league.bind('<<ComboboxSelected>>', self.update_SMD)
 
         self.label_crawl_from = Label(self.frame_config, text='From:')
@@ -124,6 +125,7 @@ class GUI:
                 self.list_algorithms),
             state='readonly')
         self.select_algorithm.current(0)
+        self.update_SMD(None)
         self.button_training = Button(self.frame_config,
                                       text='Start Training',
                                       command=self.start_training,
@@ -434,12 +436,16 @@ class GUI:
         MD = [x for x in range(1, crawler.get_group_size(2018) + 1)]
         self.select_crawl_from_season.config(values=seasons,
                                              width=cbb_width(seasons))
+        self.select_crawl_from_season.set(seasons[-2])
         self.select_crawl_to_season.config(values=seasons,
                                            width=cbb_width(seasons))
+        self.select_crawl_to_season.set(seasons[-2])
         self.select_crawl_from_md.config(values=MD,
                                          width=cbb_width(MD))
+        self.select_crawl_from_md.current(0)
         self.select_crawl_to_md.config(values=MD,
                                        width=cbb_width(MD))
+        self.select_crawl_to_md.set(MD[-1])
 
 
 def get_seasons(league):
