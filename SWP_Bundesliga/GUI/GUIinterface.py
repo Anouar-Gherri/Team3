@@ -212,9 +212,11 @@ class GUI:
         yscrollbar.pack(side=LEFT,expand=False)
         # Text Widget
         text=Text(self.frame_NMD,yscrollcommand=yscrollbar.set)
-        text.insert(END,table['text'])
-        text.pack(fill="both", expand=True)
-        text.config(state=DISABLED,width=110,height=25,bg='green',fg="white")
+        text.tag_configure("center", justify='center')
+        text.insert("1.0",table['text'])
+        text.tag_add("center", "1.0", "end")
+        text.pack(expand=1,fill=BOTH)
+        text.config(state=DISABLED,width=110,height=25,bg='green',fg="white",font='helvetica 12')
         # Configure the scrollbars
         yscrollbar.config(command=text.yview)
     def init_list_teams(self):
