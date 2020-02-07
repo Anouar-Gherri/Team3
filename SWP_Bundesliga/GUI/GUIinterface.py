@@ -226,14 +226,14 @@ class GUI:
         yscrollbar = Scrollbar(self.frame_NMD)
         yscrollbar.pack(side=LEFT, expand=False)
         # Text Widget
-<<<<<<< HEAD
+
         text=Text(self.frame_NMD,yscrollcommand=yscrollbar.set)
         text.tag_configure("center", justify='center')
         text.insert("1.0",table['text'])
         text.tag_add("center", "1.0", "end")
         text.pack(expand=1,fill=BOTH)
         text.config(state=DISABLED,width=110,height=25,bg='green',fg="white",font='helvetica 12')
-=======
+
         text = Text(self.frame_NMD, yscrollcommand=yscrollbar.set)
         text.insert(END, table['text'])
         text.pack(fill="both", expand=True)
@@ -243,7 +243,7 @@ class GUI:
             height=25,
             bg='green',
             fg="white")
->>>>>>> c5bcbf080e902a98ca969f90b710b916ea7bc52b
+
         # Configure the scrollbars
         yscrollbar.config(command=text.yview)
 
