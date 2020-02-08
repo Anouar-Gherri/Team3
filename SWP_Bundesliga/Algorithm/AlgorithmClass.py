@@ -8,7 +8,7 @@ import pandas as pd
 #           a function which takes the Crawler data and trains a
 #           'Library'. The calculations for the probabilities will later
 #           base on this file. It also has to return a set of the unique teams.
-# - request_function (library match-dict -> probability-dict):
+# - request_function (library match-dict *args-> probability-dict):
 #           will calculate the probability based on the library and the match specified
 #           in the match-dict. The calculated probabilities will be returned as a list
 #           with chances for winning, loosing or drawing, referring to the host.
@@ -18,9 +18,6 @@ import pandas as pd
 # - data format (string):
 #           the format of the trainings data. has to fit with the trainings function.
 #           All '.' in the string will be deleted
-# - library_name [optional] (str):
-#           A name to determine the name of the library file. Case not given,
-#           <name> wil be taken.
 class Algorithm:
     def __init__(self, name: str, training_function, request_function, data_format: str,
                  train_specifications=None, request_specifications=None):
@@ -82,8 +79,7 @@ class Algorithm:
     # Trains the Library (sets obj.trained = true)
     def train(self, crawler_data_file_name, *args):
         """Trains the algorithm. The function will use a file called
-        crawler_crawler_data_file_name to create a library called self.library_name.
-        Sets the teams attribute.
+        crawler_crawler_data_file_name to create a library
 
         :param crawler_data_file_name: The name of the data-file used to create the library
         :param args: additional arguments the training_function may use
@@ -156,13 +152,3 @@ def extract_valid_matches(crawler_data_file_name: str, delimiter: str = ','):
     matches = matches.values.tolist()
 
     return matches
-
-
-def start_trained(name, training_function, request_function, data_format: str, data_file: str,
-                  train_specifications=None, request_specifications=None):
-
-    trained_algorithm = Algorithm(name, training_function, request_function, data_format,
-                                  train_specifications, request_specifications)
-    trained_algorithm.train(data_file)
-
-    return trained_algorithm

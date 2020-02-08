@@ -45,6 +45,7 @@ def library_request(library, match_dict, **kwargs):
     predicted_outcomes = [np.sum(np.tril(results_array, -1)),
                           np.sum(np.triu(results_array, 1)),
                           np.sum(np.diag(results_array))]
+    predicted_outcomes = [round(x, 4) for x in predicted_outcomes]
 
     return predicted_outcomes
 

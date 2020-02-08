@@ -2,7 +2,7 @@ from Algorithm import AlgorithmClass as aC
 
 
 # --- Algorithm Functions ---
-# Simply copies the csv crawler data into library-name.csv
+# Simply copies the csv crawler data
 def library_creator(matches, **kwargs):
     """Creates the Library.
 
@@ -16,7 +16,7 @@ def library_creator(matches, **kwargs):
 def library_reader(library, match_dict, **kwargs):
     """Request form the Library.
 
-    :param library: a library file
+    :param library: the algorithms library
     :param match_dict: a dictionary with match specifications
 
     :return: A list containing the predicted results for the host

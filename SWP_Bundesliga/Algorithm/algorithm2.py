@@ -1,13 +1,13 @@
 from Algorithm import AlgorithmClass as aC
 
 
-def library_creator(data, delimiter=',', **kwargs):
+def library_creator(matches, **kwargs):
     """Creates the Library.
 
-    :param data: the data file with the crawler data
-    :param delimiter: the separator string for the columns in the csv file
+    :param matches: the data file with the crawler data
+    :param kwargs:
+    :return: a List containing each teams goals per match
     """
-    matches = data
 
     # create list of unique teams
     teams_set = set()
@@ -45,7 +45,7 @@ def library_request(library, match_dict, weight_team=1, **kwargs):
 
     :param library: a library file
     :param match_dict: a dictionary with match specifications
-    :param weight_team: The weight of the team
+    :param weight_team: The proportion (1 = 100%) of team GPM vs Home-Away GPM.
     :return: A list containing the predicted results for the host
     """
     if weight_team is library_request.__defaults__[0] and 'kw_weight_team' in kwargs:
