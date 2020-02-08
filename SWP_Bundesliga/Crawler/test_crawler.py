@@ -50,16 +50,11 @@ def test_get_data(crawler, year, start_day, end_day, res):
 
 @pytest.mark.parametrize('start_year,end_year, start_day, end_day, res',
                          [
-                             (2016, 2016, 1, 1, pd.read_csv(
-                                 '../../../../../Users/David/Desktop/Ordner/[3] Uni/Team3/SWP_Bundesliga/Crawler/test_file/dict_2016_1_1.csv')),
-                             (2010, 2010, 16, 18, pd.read_csv(
-                                 '../../../../../Users/David/Desktop/Ordner/[3] Uni/Team3/SWP_Bundesliga/Crawler/test_file/dict_2010_16_18.csv')),
-                             (2012, 2013, 34, 1, pd.read_csv(
-                                 '../../../../../Users/David/Desktop/Ordner/[3] Uni/Team3/SWP_Bundesliga/Crawler/test_file/df_2012_2013_34_1.csv')),
-                             (2012, 2014, 34, 1, pd.read_csv(
-                                 '../../../../../Users/David/Desktop/Ordner/[3] Uni/Team3/SWP_Bundesliga/Crawler/test_file/df_2012_2014_34_1.csv')),
-                             (2000, 2000, 1, 34, pd.read_csv(
-                                 '../../../../../Users/David/Desktop/Ordner/[3] Uni/Team3/SWP_Bundesliga/Crawler/test_file/df_empty.csv'))
+                             (2016, 2016, 1, 1, pd.read_csv('test_file/dict_2016_1_1.csv')),
+                             (2010, 2010, 16, 18, pd.read_csv('test_file/dict_2010_16_18.csv')),
+                             (2012, 2013, 34, 1, pd.read_csv('test_file/df_2012_2013_34_1.csv')),
+                             (2012, 2014, 34, 1, pd.read_csv('test_file/df_2012_2014_34_1.csv')),
+                             (2000, 2000, 1, 34, pd.read_csv('test_file/df_empty.csv'))
                          ])
 def test_interval(crawler, start_year, end_year, start_day, end_day, res):
     crawler.get_match_data_interval(start_year, start_day, end_year, end_day)
