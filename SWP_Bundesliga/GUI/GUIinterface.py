@@ -184,9 +184,11 @@ class GUI:
         rouund = next_game_list.GetTheListOfTheNextRoundIfItExist[2]
         list_length = len(list_of_the_next_games)
         #hier sollte ein Poisson regression deklariert und trainiert
-        #####
+        curr=crawler_class.Crawler("bl1")  # hier sollte ein Poisson regression deklariert und trainiert
+        curr.get_match_data_interval(year, 1, year, 34)  #####
+        curr_algo=algorithm3.create()
         self.dict_algorithm.get('PoissonAlgorithm').train('matches.csv')
-        #####
+        curr_algo.train('matches.csv')
         t = Texttable(0)
         t.set_chars(['', '', '', ''])
         t.set_deco(Texttable.BORDER | Texttable.HEADER |
@@ -200,14 +202,14 @@ class GUI:
             for i in range(list_length):
                 match_request = dict(
                     host=list_of_the_next_games_to_be_predicted[i][0],
-                    guest=list_of_the_next_games_to_be_predicted[i][0])
+                    guest=list_of_the_next_games_to_be_predicted[i][1])
                 #hier wurde der algorithm benutzt um einzelne ergebnisse zu liefern
-               #####
-                result=self.dict_algorithm[0].request(match_request)
-               ######
+                result=curr_algo.request(
+                 match_request)
                 texte = '  HomeTeam: ' + "{:.2%}  ".format(result.get('win')) + '  AwayTeam: ' + "{:.2%}  ".format(
                     result.get('lose')) + '  Draw: ' + "{:.2%}  ".format(result.get('draw'))
                 list1.append(texte)
+
             lengthlist1 = len(list1)
             list1 = numpy.array(numpy.resize(list1, (lengthlist1, 1)))
             print(list1)
