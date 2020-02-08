@@ -13,7 +13,8 @@ def new_gui():
 
 @pytest.mark.guitest
 def test_cr_button_default_season_from(new_gui):
-    new_gui.update_SMD(None)
+    new_gui.update_smd(None)
+    new_gui.select_crawl_from_season.set('')
     new_gui.select_crawl_to_season.set('2008')
     new_gui.start_crawler()
     assert new_gui.crd_from_season == 2008
@@ -21,6 +22,7 @@ def test_cr_button_default_season_from(new_gui):
 
 def test_cr_button_default_season_to(new_gui):
     new_gui.select_crawl_from_season.set('2018')
+    new_gui.select_crawl_to_season.set('')
     new_gui.select_crawl_to_md.set('3')
     new_gui.start_crawler()
     current_season = get_current_season('bl1')
@@ -28,7 +30,7 @@ def test_cr_button_default_season_to(new_gui):
 
 
 def test_cr_button_default_md_from(new_gui):
-    new_gui.update_SMD(None)
+    new_gui.update_smd(None)
     new_gui.select_crawl_from_season.set('2009')
     new_gui.select_crawl_to_season.set('2009')
     new_gui.select_crawl_to_md.set('3')
@@ -37,7 +39,7 @@ def test_cr_button_default_md_from(new_gui):
 
 
 def test_cr_button_default_md_to(new_gui):
-    new_gui.update_SMD(None)
+    new_gui.update_smd(None)
     new_gui.select_crawl_from_season.set('2009')
     new_gui.select_crawl_to_season.set('2009')
     new_gui.select_crawl_from_md.set('30')
@@ -46,7 +48,7 @@ def test_cr_button_default_md_to(new_gui):
 
 
 def test_algorithm_selection(new_gui):
-    new_gui.update_SMD(None)
+    new_gui.update_smd(None)
     new_gui.select_crawl_from_season.set('2008')
     new_gui.select_crawl_to_season.set('2008')
     new_gui.start_crawler()
@@ -67,13 +69,13 @@ def test_algorithm_selection(new_gui):
 
 
 def test_team_selection(new_gui):
-    new_gui.update_SMD(None)
+    new_gui.update_smd(None)
     new_gui.select_crawl_from_season.set('2011')
     new_gui.select_crawl_to_season.set('2012')
     new_gui.start_crawler()
     new_gui.select_algorithm.current(0)
     new_gui.start_training()
-    assert len(new_gui.list_teamselection) == 21
+    assert len(new_gui.list_team_selection) == 21
 
 
 def test_current_season(new_gui):
