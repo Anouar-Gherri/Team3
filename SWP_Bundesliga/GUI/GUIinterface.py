@@ -21,7 +21,6 @@ class GUI:
         self.root.geometry("%dx%d+0+0" % (w, h))
         self.root.state('zoomed')
         self.root.title('Bundesliga Vorhersage')
-
         # structural attributes
         self.main_grid = Frame(self.root)
         self.main_grid.pack()
@@ -181,20 +180,17 @@ class GUI:
         year = get_current_season("bl1")
         next_game_list = TheCurrentLists(year)
         list_of_the_next_games = next_game_list.GetTheListOfTheNextRoundIfItExist[0]
-        list_of_the_next_games_to_be_predicted = next_game_list.GetTheListOfTheNextRoundIfItExist[
-            1]
+        list_of_the_next_games_to_be_predicted = next_game_list.GetTheListOfTheNextRoundIfItExist[1]
         rouund = next_game_list.GetTheListOfTheNextRoundIfItExist[2]
         list_length = len(list_of_the_next_games)
-        curr = crawler_class.Crawler("bl1")
-        curr.get_match_data_interval(year, 1, year, 34)
-        curr_algo = algorithm3.create()
-        curr_algo.train('matches.csv')
-        # muss irgendwie anders
+        #hier sollte ein Poisson regression deklariert und trainiert
+        #####
+        self.dict_algorithm.get('PoissonAlgorithm').train('matches.csv')
+        #####
         t = Texttable(0)
         t.set_chars(['', '', '', ''])
         t.set_deco(Texttable.BORDER | Texttable.HEADER |
                    Texttable.HLINES | Texttable.VLINES)
-
         t.header(["Next Matches will be:"])
         t.set_cols_align(["c"])
         list1 = []
@@ -205,9 +201,10 @@ class GUI:
                 match_request = dict(
                     host=list_of_the_next_games_to_be_predicted[i][0],
                     guest=list_of_the_next_games_to_be_predicted[i][0])
-
-                result = curr_algo.request(
-                    match_request)  # muss irgendwie anders
+                #hier wurde der algorithm benutzt um einzelne ergebnisse zu liefern
+               #####
+                result=self.dict_algorithm[0].request(match_request)
+               ######
                 texte = '  HomeTeam: ' + "{:.2%}  ".format(result.get('win')) + '  AwayTeam: ' + "{:.2%}  ".format(
                     result.get('lose')) + '  Draw: ' + "{:.2%}  ".format(result.get('draw'))
                 list1.append(texte)
@@ -224,28 +221,21 @@ class GUI:
 
         # Vertical (y) Scroll Bar
         yscrollbar = Scrollbar(self.frame_NMD)
-        yscrollbar.pack(side=LEFT, expand=False)
+        yscrollbar.pack(side=LEFT, expand=TRUE,fill=Y)
         # Text Widget
-
-        text=Text(self.frame_NMD,yscrollcommand=yscrollbar.set)
-        text.tag_configure("center", justify='center')
-        text.insert("1.0",table['text'])
-        text.tag_add("center", "1.0", "end")
-        text.pack(expand=1,fill=BOTH)
-        text.config(state=DISABLED,width=110,height=25,bg='green',fg="white",font='helvetica 12')
-
         text = Text(self.frame_NMD, yscrollcommand=yscrollbar.set)
-        text.insert(END, table['text'])
+        text.tag_configure("center", justify='center')
+        text.insert("1.0", table['text'])
+        text.tag_add("center", "1.0", "end")
         text.pack(fill="both", expand=True)
         text.config(
             state=DISABLED,
             width=110,
             height=25,
             bg='green',
-            fg="white")
+            fg="white",
+            font='helvetica 12')
 
-        # Configure the scrollbars
-        yscrollbar.config(command=text.yview)
 
     def init_list_teams(self):
         """Sets team selection options based on crawled data."""
@@ -331,6 +321,7 @@ class GUI:
             self.dict_algorithm.get(
                 self.select_algorithm.get()).train('matches.csv')
 
+
         self.status_training['text'] = 'Done'
         self.label_current_algorithm['text'] = "Current training: {}".format(
             self.select_algorithm.get())
@@ -377,6 +368,7 @@ class GUI:
             if self.current_algorithm == 0 or a == self.current_algorithm:
                 self.is_trained[a - 1] = self.dict_algorithm[self.list_algorithms[a]
                                                              ].request(match_request)
+                print(self.list_algorithms[0])
                 name = self.list_algorithms[a]
                 win = "{:.2%}".format(self.is_trained[a - 1]['win'])
                 lose = "{:.2%}".format(
