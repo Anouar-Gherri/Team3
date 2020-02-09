@@ -180,7 +180,7 @@ class GUI:
         nmd_table = nmd_data.get_display[0]
         list_length = len(nmd_table)
         self.dict_algorithm.get('PoissonAlgorithm').train('matches.csv')
-        for a in range(list_length):
+        for a in range(list_length+2):
             if list_length == 1:
                 Label(self.frame_NMD, text=nmd_table[0])
             else:
