@@ -18,14 +18,15 @@ def create_algorithms() -> dict:
     return algorithm_dict
 
 
-def train_all(algorithm_dict, crawler_data_file_name) -> dict:
+def train_all(algorithm_dict, crawler_data_file_name, data_type='file') -> dict:
     """Trains all algorithms on the data file.
 
+    :param data_type: Whether you train by file or dataframe
     :param algorithm_dict: An algorithm dictionary
     :param crawler_data_file_name: A data file name
     :return: A dictionary of the trained algorithms
     """
-    algorithm_dict = {k: v.train(crawler_data_file_name)
+    algorithm_dict = {k: v.train(crawler_data_file_name, data_type=data_type)
                       for k, v in algorithm_dict.items()}
     return algorithm_dict
 

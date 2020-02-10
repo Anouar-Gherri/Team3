@@ -77,24 +77,29 @@ class Algorithm:
 
     # --- Common Functions ---
     # Trains the Library (sets obj.trained = true)
-    def train(self, crawler_data_file_name, *args):
+    def train(self, crawler_data, *args, data_type='file'):
         """Trains the algorithm. The function will use a file called
         crawler_crawler_data_file_name to create a library
 
-        :param crawler_data_file_name: The name of the data-file used to create the library
+        :param data_type:
+        :param crawler_data: The name of the data-file used to create the library
         :param args: additional arguments the training_function may use
 
-        :type crawler_data_file_name: str
+        :type crawler_data: str 'or' a pandas dataframe
         """
-        # Generate the name of the Library from the Algorithm name and Library ending
-        if not crawler_data_file_name.endswith(self.data_format):
-            raise ValueError(
-                "The type of the requested crawler-data-file does not match the expected type: " + self.data_format)
-
         kwargs = self.specifications['train_kwargs']
 
+        # Generate the name of the Library from the Algorithm name and Library ending
+        if not data_type == 'frame':
+            if not crawler_data.endswith(self.data_format):
+                raise ValueError(
+                    "The type of the requested crawler-data-file does not match the expected type: " + self.data_format)
+            data_frame = pd.read_csv(crawler_data)
+        else:
+            data_frame = crawler_data
+
         # reads the crawler data file and extracts all valid matches
-        data = extract_valid_matches(crawler_data_file_name)
+        data = extract_valid_matches(data_frame)
 
         self.library = self.training_function(data, *args, **kwargs)
 
@@ -140,9 +145,7 @@ def results_to_dict(host, results):
     return res_dict
 
 
-def extract_valid_matches(crawler_data_file_name: str, delimiter: str = ','):
-    data = pd.read_csv(crawler_data_file_name, delimiter=delimiter)
-
+def extract_valid_matches(data):
     rows = data['is_finished'].values.tolist()
     matches = data[rows]
     matches = matches.drop(columns='is_finished')
