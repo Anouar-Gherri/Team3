@@ -1,4 +1,4 @@
-import crawler_class
+from Crawler import crawler_class
 import pytest
 import pandas as pd
 
