@@ -179,19 +179,18 @@ class GUI:
         nmd_table = nmd_data.get_display[0]
         list_length = len(nmd_table)
         # get training data 
-        crawler_class.Crawler("bl1").get_match_data_interval(year-9, 1, year-1, 34)
+        crawler_class.Crawler("bl1").get_match_data_interval(year - 9, 1, year - 1, 34)
         self.dict_algorithm.get('PoissonAlgorithm').train('matches.csv')
-        crawler_class.Crawler("bl1").get_teams(year-9, year-1)
+        crawler_class.Crawler("bl1").get_teams(year - 9, year - 1)
         valid_teams = []
         with open('teams.csv', encoding='utf-8') as csvfile:
-                        reader = csv.DictReader(csvfile)
-                        for team in reader:
-                            valid_teams.append(team['name'])
-        for a in range(list_length+2):
+            reader = csv.DictReader(csvfile)
+            for team in reader:
+                valid_teams.append(team['name'])
+        for a in range(list_length + 2):
             if list_length == 1 and isinstance(nmd_table[0], str):
                 Label(self.frame_NMD, text=nmd_table[0])
             else:
-                match_ups = nmd_data.get_display[1]
                 if a == 0:
                     Label(
                         self.frame_NMD,
@@ -212,7 +211,7 @@ class GUI:
                     guest = nmd_table[a - 2]['guest']
                     date = nmd_table[a - 2]['date']
                     time = nmd_table[a - 2]['time']
-                    if ((host in valid_teams) and (guest in valid_teams)):
+                    if (host in valid_teams) and (guest in valid_teams):
                         match_request = dict(
                             host=host, guest=guest)
                         result = self.dict_algorithm['PoissonAlgorithm'].request(
@@ -409,8 +408,7 @@ class GUI:
             sticky=N + S + E + W)
         for a in range(1, len(self.list_algorithms)):
             if self.current_algorithm == 0 or a == self.current_algorithm:
-                self.is_trained[a - 1] = self.dict_algorithm[self.list_algorithms[a]
-                                                             ].request(match_request)
+                self.is_trained[a - 1] = self.dict_algorithm[self.list_algorithms[a]].request(match_request)
                 name = self.list_algorithms[a]
                 win = "{:.2%}".format(self.is_trained[a - 1]['win'])
                 lose = "{:.2%}".format(
@@ -535,16 +533,16 @@ def return_invalid(status):
     status['text'] = 'Invalid'
 
 
-def cbb_width(list):
+def cbb_width(ls):
     """Calculates an appropriate size for comboboxes depending on their values."""
-    return 1 if not list else max(len(str(x)) for x in list) + 1
+    return 1 if not ls else max(len(str(x)) for x in ls) + 1
 
 
 def internet_on():
     try:
         urllib.request.urlopen('http://216.58.192.142', timeout=1)
         return True
-    except urllib.request.URLError as err:
+    except urllib.request.URLError:
         return False
 
 
