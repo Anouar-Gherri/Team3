@@ -43,6 +43,12 @@ class CurrentGames:
                 smallest_round = min(round_not_complete['play_day'])
                 df = round_not_complete[round_not_complete['play_day']
                                         == smallest_round]
+                a = df['date'].values.tolist()[0].split('T')
+
+                if str(a[0])<str(datetime.date.today()):
+                  smallest_round=smallest_round+1
+                  df=round_not_complete[round_not_complete['play_day']
+                                        == smallest_round]
                 df = df.drop(df.columns[[3, 4, 5, 6]],
                              axis=1).reset_index(drop=True)
                 list1 = []
