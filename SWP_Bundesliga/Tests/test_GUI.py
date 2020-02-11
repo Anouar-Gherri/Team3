@@ -1,7 +1,6 @@
 import pytest
 from GUI.GUIinterface import *
 from Algorithm import algorithm1
-from GUI import GUIinterface
 
 
 @pytest.fixture()
