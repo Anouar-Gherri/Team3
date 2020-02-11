@@ -11,17 +11,6 @@ def test_MakeCurrentSeasonMatchesList():
     assert current_games.CurrentGames(datetime.today().year + 1).get_current_season() is None
 
 
-# CheckingIfMatchesOfTheCurrentSeasonFileExist attribute doesnt exist
-"""
-def test_CheckingIfTeamsOfTheCurrentSeasonFileExist():
-    assert current_games.TheCurrentLists(datetime.today().year - 1).CheckingIfMatchesOfTheCurrentSeasonFileExist() is None
-    assert current_games.TheCurrentLists(datetime.today().year).CheckingIfMatchesOfTheCurrentSeasonFileExist()  is None
-    assert current_games.TheCurrentLists(datetime.today().year + 1).CheckingIfMatchesOfTheCurrentSeasonFileExist()  is None
-"""
-
-
-# Nachdem man matches.csv in den Ordner schiebt, wird das TestData(2018).csv file gelöscht und
-# die anderen Test funktionieren nicht
 def test_GetTheListOfTheNextRoundIfItExist():
     assert current_games.CurrentGames(2018).get_display == \
            [['The Season 2018/2019 is Finished See you Soon in The next Season ;)']]
