@@ -18,7 +18,7 @@ def test_creation(pa):
 def test_running(pa):
     pa.train('Testdata(2018).csv')
     assert pa.request(dict(host='VfL Wolfsburg', guest='Bayer Leverkusen')) \
-        == dict(host='VfL Wolfsburg', win=0.4629223557879712, lose=0.32289460983490426, draw=0.21418279483537836)
+        == dict(host='VfL Wolfsburg', win=0.4629, lose=0.3229, draw=0.2142)
 
 
 def algorithm3_print_running():
