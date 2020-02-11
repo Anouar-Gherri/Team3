@@ -3,7 +3,8 @@ from pathlib import Path
 from Crawler import crawler_class
 import pandas as pd
 import numpy
-import datetime
+from datetime import datetime
+from _datetime import date
 
 
 class CurrentGames:
@@ -27,8 +28,8 @@ class CurrentGames:
         # the_rounds_where_matches_are_not_completely_played is shorten to
         # round_not_complete
         if not is_it_empty:
-            round_not_complete = df[min(df['play_day']) and (
-                df['is_finished'] == False)]
+            round_not_complete = df[min(df['play_day']) & (df['is_finished'] == False) 
+                                    & (df['date'] > str(datetime.today()))]
             # if all games have been played
             if round_not_complete.empty:
                 display.append(
@@ -42,12 +43,6 @@ class CurrentGames:
                 # to round_not_complete
                 smallest_round = min(round_not_complete['play_day'])
                 df = round_not_complete[round_not_complete['play_day']
-                                        == smallest_round]
-                a = df['date'].values.tolist()[0].split('T')
-
-                if str(a[0])<str(datetime.date.today()):
-                  smallest_round=smallest_round+1
-                  df=round_not_complete[round_not_complete['play_day']
                                         == smallest_round]
                 df = df.drop(df.columns[[3, 4, 5, 6]],
                              axis=1).reset_index(drop=True)
