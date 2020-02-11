@@ -187,7 +187,6 @@ class GUI:
                         reader = csv.DictReader(csvfile)
                         for team in reader:
                             valid_teams.append(team['name'])
-        print(set(valid_teams))
         for a in range(list_length+2):
             if list_length == 1 and isinstance(nmd_table[0], str):
                 Label(self.frame_NMD, text=nmd_table[0])
@@ -213,8 +212,6 @@ class GUI:
                     guest = nmd_table[a - 2]['guest']
                     date = nmd_table[a - 2]['date']
                     time = nmd_table[a - 2]['time']
-                    print(host)
-                    print(guest)
                     if ((host in valid_teams) and (guest in valid_teams)):
                         match_request = dict(
                             host=host, guest=guest)
