@@ -5,10 +5,8 @@ from _datetime import datetime
 import csv
 from Crawler import crawler_class
 from builtins import int
-from texttable import Texttable
 from GUI.current_games import CurrentGames
-from Algorithm import algorithm_dict, algorithm3
-import numpy
+from Algorithm import algorithm_dict
 import urllib.request
 
 
@@ -175,11 +173,21 @@ class GUI:
         Label(self.frame_prediction, text='').grid(row=3)
 
     def init_nmd_table(self):
+        """Builds table displaying next matchday."""
         year = get_current_season("bl1")
         nmd_data = CurrentGames(year)
         nmd_table = nmd_data.get_display[0]
         list_length = len(nmd_table)
+        # get training data 
+        crawler_class.Crawler("bl1").get_match_data_interval(year-9, 1, year-1, 34)
         self.dict_algorithm.get('PoissonAlgorithm').train('matches.csv')
+        crawler_class.Crawler("bl1").get_teams(year-9, year-1)
+        valid_teams = []
+        with open('teams.csv', encoding='utf-8') as csvfile:
+                        reader = csv.DictReader(csvfile)
+                        for team in reader:
+                            valid_teams.append(team['name'])
+        print(set(valid_teams))
         for a in range(list_length+2):
             if list_length == 1 and isinstance(nmd_table[0], str):
                 Label(self.frame_NMD, text=nmd_table[0])
@@ -205,13 +213,20 @@ class GUI:
                     guest = nmd_table[a - 2]['guest']
                     date = nmd_table[a - 2]['date']
                     time = nmd_table[a - 2]['time']
-                    match_request = dict(
-                        host=match_ups[a - 2][0], guest=match_ups[a - 2][1])
-                    result = self.dict_algorithm['PoissonAlgorithm'].request(
-                        match_request)
-                    prediction_win = "{:.2%}".format(result.get('win'))
-                    prediction_lose = "{:.2%}".format(result.get('lose'))
-                    prediction_draw = "{:.2%}".format(result.get('draw'))
+                    print(host)
+                    print(guest)
+                    if ((host in valid_teams) and (guest in valid_teams)):
+                        match_request = dict(
+                            host=host, guest=guest)
+                        result = self.dict_algorithm['PoissonAlgorithm'].request(
+                            match_request)
+                        prediction_win = "{:.2%}".format(result.get('win'))
+                        prediction_lose = "{:.2%}".format(result.get('lose'))
+                        prediction_draw = "{:.2%}".format(result.get('draw'))
+                    else:
+                        prediction_win = 'n/a'
+                        prediction_lose = 'n/a'
+                        prediction_draw = 'n/a'
                 Label(
                     self.frame_NMD,
                     relief=GROOVE,
